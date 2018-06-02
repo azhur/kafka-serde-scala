@@ -1,5 +1,7 @@
 # kafka-serde-scala
 
+[![Build Status](https://travis-ci.org/azhur/kafka-serde-scala.svg?branch=master)](https://travis-ci.org/azhur/kafka-serde-scala)
+
 kafka-serde-scala provides implicit conversions from different type class Encoder/Decoder to kafka Serializer, Deserializer, Serde. 
 Following target libraries are supported:
 - [circe](https://circe.github.io/circe/)
