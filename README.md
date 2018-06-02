@@ -3,8 +3,10 @@
 [![Build Status](https://travis-ci.org/azhur/kafka-serde-scala.svg?branch=master)](https://travis-ci.org/azhur/kafka-serde-scala)
 
 kafka-serde-scala provides implicit conversions from different type class Encoder/Decoder to kafka Serializer, Deserializer, Serde. 
+
 Following target libraries are supported:
 - [circe](https://circe.github.io/circe/)
+- [Json4s](https://github.com/json4s/json4s)
 
 Inspired by [https://github.com/hseeberger/akka-http-json](https://github.com/hseeberger/akka-http-json).
 
@@ -24,6 +26,7 @@ libraryDependencies ++= List(
 ## Usage
 
 Mix `CirceSupport` into your code which requires implicit kafka `Serde|Serializer|Deserializer`, provide your implicit type class instances (i.e: io.circe.Encoder[T], io.circe.Decoder[T]) and the magic will convert them to kafka serializers.
+For more info take a look at unit tests please.
 
 ## Contribution
 
