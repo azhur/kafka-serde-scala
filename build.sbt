@@ -76,6 +76,7 @@ lazy val commonSettings =
   Seq(
     resolvers += "Sonatype OSS Staging" at "https://oss.sonatype.org/content/repositories/staging",
     scalaVersion := "2.12.6",
+    homepage := Some(url("https://github.com/azhur/kafka-serde-scala")),
     organization := "io.github.azhur",
     organizationName := "Artur Zhurat",
     organizationHomepage := Some(url("https://github.com/azhur")),
