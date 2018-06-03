@@ -119,6 +119,6 @@ lazy val publishSettings = Seq(
       "scm:git@github.com:azhur/kafka-serde-scala.git"
     )
   ),
-  publishMavenStyle := false,
+  publishMavenStyle := true,
   pomIncludeRepository := { _ => false }
 )
