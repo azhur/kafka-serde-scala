@@ -76,6 +76,7 @@ lazy val commonSettings =
   Seq(
     resolvers += "Sonatype OSS Staging" at "https://oss.sonatype.org/content/repositories/staging",
     scalaVersion := "2.12.6",
+    homepage := Some(url("https://github.com/azhur/kafka-serde-scala")),
     organization := "io.github.azhur",
     organizationName := "Artur Zhurat",
     organizationHomepage := Some(url("https://github.com/azhur")),
@@ -112,6 +113,7 @@ lazy val noPublishSettings = Seq(
 lazy val publishSettings = Seq(
   publishTo := Some(if (isSnapshot.value) Opts.resolver.sonatypeSnapshots else Opts.resolver.sonatypeStaging),
   sonatypeProfileName := "io.github.azhur",
+  homepage := Some(url("https://github.com/azhur/kafka-serde-scala")),
   scmInfo := Some(
     ScmInfo(
       url("https://github.com/azhur/kafka-serde-scala"),

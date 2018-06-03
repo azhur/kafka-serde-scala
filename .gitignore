@@ -1,5 +1,9 @@
-*.class
-*.log
+# Sbt
+target/
 
-# IntelliJ
-.idea
+# Idea
+.idea/
+*.iml
+*.ipr
+*.iws
+.buildpath
