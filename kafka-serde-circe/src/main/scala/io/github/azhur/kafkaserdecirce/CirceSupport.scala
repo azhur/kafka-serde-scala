@@ -33,6 +33,8 @@ trait CirceSupport {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
       override def serialize(topic: String, data: T): Array[Byte] =
+        Option(data).map(serialize).orNull
+      private def serialize(data: T): Array[Byte] =
         Try(data.asJson.noSpaces.getBytes) match {
           case Failure(e) =>
             throw new SerializationException("Error serializing JSON message", e)
@@ -48,6 +50,8 @@ trait CirceSupport {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
       override def deserialize(topic: String, data: Array[Byte]): T =
+        Option(data).map(deserialize).orNull
+      private def deserialize(data: Array[Byte]): T =
         parser
           .parse(new String(data, StandardCharsets.UTF_8))
           .valueOr(e => throw new SerializationException(e))
@@ -55,7 +59,7 @@ trait CirceSupport {
           .valueOr(e => throw new SerializationException(e))
     }
 
-  implicit def circetoSerde[T >: Null](implicit encoder: Encoder[T],
+  implicit def circeToSerde[T >: Null](implicit encoder: Encoder[T],
                                        decoder: Decoder[T]): Serde[T] =
     new Serde[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}

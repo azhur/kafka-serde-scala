@@ -28,24 +28,31 @@ import scala.util.control.NonFatal
 import scala.util.{ Failure, Success, Try }
 
 trait Json4sSupport {
-  implicit def toSerializer[T <: AnyRef](implicit serialization: Serialization,
-                                         formats: Formats): Serializer[T] = new Serializer[T] {
-    override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
-    override def close(): Unit                                                 = {}
-    override def serialize(topic: String, data: T): Array[Byte] =
-      Try(serialization.write[T](data).getBytes(StandardCharsets.UTF_8)) match {
-        case Success(result)      => result
-        case Failure(NonFatal(e)) => throw new SerializationException(e)
-        case Failure(e)           => throw e
-      }
-  }
+  implicit def json4sToSerializer[T <: AnyRef](implicit serialization: Serialization,
+                                               formats: Formats): Serializer[T] =
+    new Serializer[T] {
+      override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
+      override def close(): Unit                                                 = {}
+      override def serialize(topic: String, data: T): Array[Byte] =
+        Option(data).map(serialize).orNull
+      private def serialize(data: T): Array[Byte] =
+        Try(serialization.write[T](data).getBytes(StandardCharsets.UTF_8)) match {
+          case Success(result)      => result
+          case Failure(NonFatal(e)) => throw new SerializationException(e)
+          case Failure(e)           => throw e
+        }
+    }
 
-  implicit def toDeserializer[T <: AnyRef: Manifest](implicit serialization: Serialization,
-                                                     formats: Formats): Deserializer[T] =
+  implicit def json4sToDeserializer[T >: Null <: AnyRef: Manifest](
+      implicit serialization: Serialization,
+      formats: Formats
+  ): Deserializer[T] =
     new Deserializer[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
       override def deserialize(topic: String, data: Array[Byte]): T =
+        Option(data).map(deserialize).orNull
+      private def deserialize(data: Array[Byte]): T =
         Try(serialization.read[T](new String(data, StandardCharsets.UTF_8))) match {
           case Success(result)      => result
           case Failure(NonFatal(e)) => throw new SerializationException(e)
@@ -53,13 +60,14 @@ trait Json4sSupport {
         }
     }
 
-  implicit def toSerde[T <: AnyRef: Manifest](implicit serialization: Serialization,
-                                              formats: Formats): Serde[T] = new Serde[T] {
-    override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
-    override def close(): Unit                                                 = {}
-    override def serializer(): Serializer[T]                                   = toSerializer[T]
-    override def deserializer(): Deserializer[T]                               = toDeserializer[T]
-  }
+  implicit def json4sToSerde[T >: Null <: AnyRef: Manifest](implicit serialization: Serialization,
+                                                            formats: Formats): Serde[T] =
+    new Serde[T] {
+      override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
+      override def close(): Unit                                                 = {}
+      override def serializer(): Serializer[T]                                   = json4sToSerializer[T]
+      override def deserializer(): Deserializer[T]                               = json4sToDeserializer[T]
+    }
 }
 
 object Json4sSupport extends Json4sSupport
