@@ -112,12 +112,13 @@ lazy val noPublishSettings = Seq(
 lazy val publishSettings = Seq(
   publishTo := Some(if (isSnapshot.value) Opts.resolver.sonatypeSnapshots else Opts.resolver.sonatypeStaging),
   sonatypeProfileName := "io.github.azhur",
+  homepage := Some(url("https://github.com/azhur/kafka-serde-scala")),
   scmInfo := Some(
     ScmInfo(
       url("https://github.com/azhur/kafka-serde-scala"),
       "scm:git@github.com:azhur/kafka-serde-scala.git"
     )
   ),
-  publishMavenStyle := true,
+  publishMavenStyle := false,
   pomIncludeRepository := { _ => false }
 )
