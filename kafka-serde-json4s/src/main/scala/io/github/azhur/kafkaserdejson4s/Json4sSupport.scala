@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.azhur.kafkaserdejson4s
+package io.github.azhur.kafkaserdejson4s
 
 import java.nio.charset.StandardCharsets
 import java.util
