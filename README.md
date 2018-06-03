@@ -1,7 +1,7 @@
 # kafka-serde-scala
 
 [![Join the chat at https://gitter.im/azhur/kafka-serde-scala](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/azhur/kafka-serde-scala?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Build Status](https://travis-ci.org/azhur/kafka-serde-scala.svg?branch=master)](https://travis-ci.org/azhur/kafka-serde-scala)
+[![Build Status](https://travis-ci.org/azhur/kafka-serde-scala.svg?branch=master)](https://travis-ci.org/azhur/kafka-serde-scala) [![Join the chat at https://gitter.im/kafka-serde-scala/Lobby](https://badges.gitter.im/kafka-serde-scala/Lobby.svg)](https://gitter.im/kafka-serde-scala/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 kafka-serde-scala provides implicit conversions from different type class Encoder/Decoder to kafka Serializer, Deserializer, Serde. 
 
