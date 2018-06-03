@@ -2,6 +2,7 @@
 
 [![Join the chat at https://gitter.im/azhur/kafka-serde-scala](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/azhur/kafka-serde-scala?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://travis-ci.org/azhur/kafka-serde-scala.svg?branch=master)](https://travis-ci.org/azhur/kafka-serde-scala)
+[![code coverage](https://codecov.io/gh/azhur/kafka-serde-scala/branch/master/graph/badge.svg)](https://codecov.io/gh/azhur/kafka-serde-scala) 
 
 kafka-serde-scala provides implicit conversions from different type class Encoder/Decoder to kafka Serializer, Deserializer, Serde. 
 
@@ -14,12 +15,8 @@ Inspired by [https://github.com/hseeberger/akka-http-json](https://github.com/hs
 ## Installation
 
 ``` scala
-// All releases including intermediate ones are published here,
-// final ones are also published to Maven Central.
-resolvers += Resolver.bintrayRepo("azhur", "maven")
-
 libraryDependencies ++= List(
-  "io.github.azhur" %% "kafka-serde-scala" % "0.1.0",
+  "io.github.azhur" %% "kafka-serde-circe" % "0.1.0",
   ...
 )
 ```
