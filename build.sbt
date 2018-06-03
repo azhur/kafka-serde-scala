@@ -2,21 +2,23 @@
 lazy val `kafka-serde-scala` =
   project
     .in(file("."))
-    .enablePlugins(GitVersioning)
     .aggregate(
       `kafka-serde-circe`,
       `kafka-serde-json4s`
     )
-    .settings(settings)
+    .settings(commonSettings)
+    .settings(scalafmtSettings)
+    .settings(noPublishSettings)
     .settings(
       Compile / unmanagedSourceDirectories := Seq.empty,
-      Test / unmanagedSourceDirectories    := Seq.empty,
-      publishArtifact := false
+      Test / unmanagedSourceDirectories    := Seq.empty
     )
 
 lazy val `kafka-serde-circe` = project
   .enablePlugins(AutomateHeaderPlugin)
-  .settings(settings)
+  .settings(commonSettings)
+  .settings(scalafmtSettings)
+  .settings(publishSettings)
   .settings(
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
@@ -30,7 +32,9 @@ lazy val `kafka-serde-circe` = project
 
 lazy val `kafka-serde-json4s` = project
   .enablePlugins(AutomateHeaderPlugin)
-  .settings(settings)
+  .settings(commonSettings)
+  .settings(scalafmtSettings)
+  .settings(publishSettings)
   .settings(
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
@@ -63,16 +67,16 @@ lazy val dependency =
 
 lazy val settings =
   commonSettings ++
-  gitSettings ++
   scalafmtSettings ++
   publishSettings
 
 lazy val commonSettings =
   Seq(
-    // scalaVersion from .travis.yml via sbt-travisci
-    //scalaVersion := "2.12.6",
+    resolvers += "Sonatype OSS Staging" at "https://oss.sonatype.org/content/repositories/staging",
+    scalaVersion := "2.12.6",
     organization := "io.github.azhur",
     organizationName := "Artur Zhurat",
+    organizationHomepage := Some(url("https://github.com/azhur")),
     startYear := Some(2018),
     licenses += ("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0")),
     scalacOptions ++= Seq(
@@ -82,13 +86,16 @@ lazy val commonSettings =
       "-target:jvm-1.8",
       "-encoding", "UTF-8"
     ),
+    developers := List(
+      Developer(
+        id = "azhur",
+        name = "Artur Zhurat",
+        email = "artur.zhurat@gmail.com",
+        url = url("https://twitter.com/a_zhur")
+      )
+    ),
     Compile / unmanagedSourceDirectories := Seq((Compile / scalaSource).value),
     Test / unmanagedSourceDirectories := Seq((Test / scalaSource).value)
-  )
-
-lazy val gitSettings =
-  Seq(
-    git.useGitDescribe := true
   )
 
 lazy val scalafmtSettings =
@@ -97,15 +104,20 @@ lazy val scalafmtSettings =
   )
 
 
-lazy val publishSettings =
-  Seq(
-    homepage := Some(url("https://github.com/azhur/kafka-serde-scala")),
-    scmInfo := Some(ScmInfo(url("https://github.com/azhur/kafka-serde-scala"),
-      "git@github.com:azhur/kafka-serde-scala.git")),
-    developers += Developer("azhur",
-      "Artur Zhurat",
-      "artur.zhurat@gmail.com",
-      url("https://github.com/azhur")),
-    pomIncludeRepository := (_ => false),
-    bintrayPackage := "kafka-serde-scala"
-  )
+lazy val noPublishSettings = Seq(
+  skip in publish := true,
+  publishTo := Some(if (isSnapshot.value) Opts.resolver.sonatypeSnapshots else Opts.resolver.sonatypeStaging)
+)
+
+lazy val publishSettings = Seq(
+  publishTo := Some(if (isSnapshot.value) Opts.resolver.sonatypeSnapshots else Opts.resolver.sonatypeStaging),
+  sonatypeProfileName := "io.github.azhur",
+  scmInfo := Some(
+    ScmInfo(
+      url("https://github.com/azhur/kafka-serde-scala"),
+      "scm:git@github.com:azhur/kafka-serde-scala.git"
+    )
+  ),
+  publishMavenStyle := true,
+  pomIncludeRepository := { _ => false }
+)

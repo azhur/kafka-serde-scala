@@ -14,12 +14,8 @@ Inspired by [https://github.com/hseeberger/akka-http-json](https://github.com/hs
 ## Installation
 
 ``` scala
-// All releases including intermediate ones are published here,
-// final ones are also published to Maven Central.
-resolvers += Resolver.bintrayRepo("azhur", "maven")
-
 libraryDependencies ++= List(
-  "io.github.azhur" %% "kafka-serde-scala" % "0.1.0",
+  "io.github.azhur" %% "kafka-serde-circe" % "0.1.0",
   ...
 )
 ```
