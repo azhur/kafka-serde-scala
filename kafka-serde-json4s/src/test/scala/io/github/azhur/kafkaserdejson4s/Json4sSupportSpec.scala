@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package org.azhur.kafkaserdecirce
+package io.github.azhur.kafkaserdejson4s
 
 import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
+import org.json4s.{ DefaultFormats, jackson, native }
 import org.scalatest.{ FreeSpec, Matchers }
 
-object CirceSupportSpec {
+object Json4sSupportSpec {
   case class Foo(a: Int, b: String)
 
   def serializeFoo(foo: Foo)(implicit serializer: Serializer[Foo]): Array[Byte] =
@@ -32,12 +33,14 @@ object CirceSupportSpec {
     serde.deserializer().deserialize("unused_topic", bytes)
 }
 
-class CirceSupportSpec extends FreeSpec with Matchers {
-  import io.circe.generic.auto._
-  import CirceSupportSpec._
-  import CirceSupport._
+class Json4sSupportSpec extends FreeSpec with Matchers {
+  import Json4sSupportSpec._
+  import io.github.azhur.kafkaserdejson4s.Json4sSupport._
 
-  "CirceSupport" - {
+  private implicit val formats = DefaultFormats
+
+  "Json4sSupport jackson" - {
+    implicit val serialization = jackson.Serialization
     "should implicitly convert to kafka Serializer" in {
       serializeFoo(Foo(1, "2")) shouldBe """{"a":1,"b":"2"}""".getBytes
     }
@@ -46,7 +49,22 @@ class CirceSupportSpec extends FreeSpec with Matchers {
       deserializeFoo("""{"a":1,"b":"2"}""".getBytes) shouldBe Foo(1, "2")
     }
 
-    "should implicitly convert to kafka Serde" in {
+    "should implicitly convert to Serde" in {
+      serdeFoo("""{"a":1,"b":"2"}""".getBytes) shouldBe Foo(1, "2")
+    }
+  }
+
+  "Json4sSupport native" - {
+    implicit val serialization = native.Serialization
+    "should implicitly convert to kafka Serializer" in {
+      serializeFoo(Foo(1, "2")) shouldBe """{"a":1,"b":"2"}""".getBytes
+    }
+
+    "should implicitly convert to kafka Deserializer" in {
+      deserializeFoo("""{"a":1,"b":"2"}""".getBytes) shouldBe Foo(1, "2")
+    }
+
+    "should implicitly convert to Serde" in {
       serdeFoo("""{"a":1,"b":"2"}""".getBytes) shouldBe Foo(1, "2")
     }
   }

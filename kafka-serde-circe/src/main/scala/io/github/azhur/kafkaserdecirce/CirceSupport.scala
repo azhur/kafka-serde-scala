@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.azhur.kafkaserdecirce
+package io.github.azhur.kafkaserdecirce
 
 import java.nio.charset.StandardCharsets
 import java.util
