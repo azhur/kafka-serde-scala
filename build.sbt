@@ -20,6 +20,7 @@ lazy val `kafka-serde-circe` = project
   .settings(scalafmtSettings)
   .settings(publishSettings)
   .settings(
+    crossScalaVersions := Seq("2.12.6", "2.11.12"),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.circe,
@@ -36,6 +37,7 @@ lazy val `kafka-serde-json4s` = project
   .settings(scalafmtSettings)
   .settings(publishSettings)
   .settings(
+    crossScalaVersions := Seq("2.12.6", "2.11.12"),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.json4sCore,
@@ -93,9 +95,7 @@ lazy val commonSettings =
         email = "artur.zhurat@gmail.com",
         url = url("https://twitter.com/a_zhur")
       )
-    ),
-    Compile / unmanagedSourceDirectories := Seq((Compile / scalaSource).value),
-    Test / unmanagedSourceDirectories := Seq((Test / scalaSource).value)
+    )
   )
 
 lazy val scalafmtSettings =

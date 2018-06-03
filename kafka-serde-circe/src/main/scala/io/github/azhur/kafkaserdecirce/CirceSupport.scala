@@ -47,15 +47,12 @@ trait CirceSupport {
 
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
-      override def deserialize(topic: String, data: Array[Byte]): T = data match {
-        case null => null
-        case _ =>
-          parser
-            .parse(new String(data, StandardCharsets.UTF_8))
-            .valueOr(e => throw new SerializationException(e))
-            .as[T]
-            .valueOr(e => throw new SerializationException(e))
-      }
+      override def deserialize(topic: String, data: Array[Byte]): T =
+        parser
+          .parse(new String(data, StandardCharsets.UTF_8))
+          .valueOr(e => throw new SerializationException(e))
+          .as[T]
+          .valueOr(e => throw new SerializationException(e))
     }
 
   implicit def circetoSerde[T >: Null](implicit encoder: Encoder[T],
