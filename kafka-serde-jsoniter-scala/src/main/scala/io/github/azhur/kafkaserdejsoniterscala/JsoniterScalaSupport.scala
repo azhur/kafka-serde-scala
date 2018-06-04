@@ -14,36 +14,37 @@
  * limitations under the License.
  */
 
-package io.github.azhur.kafkaserdejson4s
+package io.github.azhur.kafkaserdejsoniterscala
 
-import java.nio.charset.StandardCharsets.UTF_8
 import java.util
 
+import com.github.plokhotnyuk.jsoniter_scala.core._
 import org.apache.kafka.common.errors.SerializationException
 import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
-import org.json4s.{ Formats, Serialization }
 
 import scala.language.implicitConversions
 import scala.util.control.NonFatal
 
-trait Json4sSupport {
-  implicit def json4sToSerializer[T <: AnyRef](implicit serialization: Serialization,
-                                               formats: Formats): Serializer[T] =
+trait JsoniterScalaSupport {
+  implicit def jsoniterScalaToSerializer[T >: Null](
+      implicit codec: JsonValueCodec[T],
+      writerConfig: WriterConfig = WriterConfig()
+  ): Serializer[T] =
     new Serializer[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
       override def serialize(topic: String, data: T): Array[Byte] =
         if (data == null) null
         else
-          try serialization.write[T](data).getBytes(UTF_8)
+          try writeToArray(data, writerConfig)
           catch {
             case NonFatal(e) => throw new SerializationException(e)
           }
     }
 
-  implicit def json4sToDeserializer[T >: Null <: AnyRef: Manifest](
-      implicit serialization: Serialization,
-      formats: Formats
+  implicit def jsoniterScalaToDeserializer[T >: Null](
+      implicit codec: JsonValueCodec[T],
+      readerConfig: ReaderConfig = ReaderConfig()
   ): Deserializer[T] =
     new Deserializer[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
@@ -51,20 +52,23 @@ trait Json4sSupport {
       override def deserialize(topic: String, data: Array[Byte]): T =
         if (data == null) null
         else
-          try serialization.read[T](new String(data, UTF_8))
+          try readFromArray(data, readerConfig)
           catch {
             case NonFatal(e) => throw new SerializationException(e)
           }
     }
 
-  implicit def json4sToSerde[T >: Null <: AnyRef: Manifest](implicit serialization: Serialization,
-                                                            formats: Formats): Serde[T] =
+  implicit def jsoniterScalaToSerde[T >: Null](
+      implicit codec: JsonValueCodec[T],
+      writerConfig: WriterConfig = WriterConfig(),
+      readerConfig: ReaderConfig = ReaderConfig()
+  ): Serde[T] =
     new Serde[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
-      override def serializer(): Serializer[T]                                   = json4sToSerializer[T]
-      override def deserializer(): Deserializer[T]                               = json4sToDeserializer[T]
+      override def serializer(): Serializer[T]                                   = jsoniterScalaToSerializer[T]
+      override def deserializer(): Deserializer[T]                               = jsoniterScalaToDeserializer[T]
     }
 }
 
-object Json4sSupport extends Json4sSupport
+object JsoniterScalaSupport extends JsoniterScalaSupport

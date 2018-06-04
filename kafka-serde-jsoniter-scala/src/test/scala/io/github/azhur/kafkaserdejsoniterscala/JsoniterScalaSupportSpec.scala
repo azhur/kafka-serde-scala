@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-package io.github.azhur.kafkaserdecirce
+package io.github.azhur.kafkaserdejsoniterscala
 
 import java.nio.charset.StandardCharsets.UTF_8
 
+import com.github.plokhotnyuk.jsoniter_scala.core.JsonValueCodec
+import com.github.plokhotnyuk.jsoniter_scala.macros.{ CodecMakerConfig, JsonCodecMaker }
 import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
 import org.scalatest.{ FreeSpec, Matchers }
 
-object CirceSupportSpec {
+object JsoniterScalaSupportSpec {
   case class Foo(a: Int, b: String)
 
   def serializeFoo(foo: Foo)(implicit serializer: Serializer[Foo]): Array[Byte] =
@@ -34,12 +36,13 @@ object CirceSupportSpec {
     serde.deserializer().deserialize("unused_topic", bytes)
 }
 
-class CirceSupportSpec extends FreeSpec with Matchers {
-  import CirceSupport._
-  import CirceSupportSpec._
-  import io.circe.generic.auto._
+class JsoniterScalaSupportSpec extends FreeSpec with Matchers {
+  import JsoniterScalaSupportSpec._
+  import io.github.azhur.kafkaserdejsoniterscala.JsoniterScalaSupport._
 
-  "CirceSupport" - {
+  private implicit val fooCodec: JsonValueCodec[Foo] = JsonCodecMaker.make[Foo](CodecMakerConfig())
+
+  "JsoniterScalaSupport" - {
     "should implicitly convert to kafka Serializer" in {
       serializeFoo(Foo(1, "𝄞")) shouldBe """{"a":1,"b":"𝄞"}""".getBytes(UTF_8)
       serializeFoo(null) shouldBe null
@@ -50,7 +53,7 @@ class CirceSupportSpec extends FreeSpec with Matchers {
       deserializeFoo(null) shouldBe null
     }
 
-    "should implicitly convert to kafka Serde" in {
+    "should implicitly convert to Serde" in {
       serdeFoo("""{"a":1,"b":"𝄞"}""".getBytes(UTF_8)) shouldBe Foo(1, "𝄞")
     }
   }

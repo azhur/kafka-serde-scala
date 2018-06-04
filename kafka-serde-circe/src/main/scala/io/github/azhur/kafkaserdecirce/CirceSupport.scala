@@ -16,7 +16,7 @@
 
 package io.github.azhur.kafkaserdecirce
 
-import java.nio.charset.StandardCharsets
+import java.nio.charset.StandardCharsets.UTF_8
 import java.util
 
 import io.circe.{ Decoder, Encoder }
@@ -24,7 +24,7 @@ import org.apache.kafka.common.errors.SerializationException
 import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
 
 import scala.language.implicitConversions
-import scala.util.{ Failure, Success, Try }
+import scala.util.control.NonFatal
 
 trait CirceSupport {
   implicit def circeToSerializer[T >: Null](implicit encoder: Encoder[T]): Serializer[T] =
@@ -33,13 +33,12 @@ trait CirceSupport {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
       override def serialize(topic: String, data: T): Array[Byte] =
-        Option(data).map(serialize).orNull
-      private def serialize(data: T): Array[Byte] =
-        Try(data.asJson.noSpaces.getBytes) match {
-          case Failure(e) =>
-            throw new SerializationException("Error serializing JSON message", e)
-          case Success(r) => r
-        }
+        if (data == null) null
+        else
+          try data.asJson.noSpaces.getBytes(UTF_8)
+          catch {
+            case NonFatal(e) => throw new SerializationException(e)
+          }
     }
 
   implicit def circeToDeserializer[T >: Null](implicit decoder: Decoder[T]): Deserializer[T] =
@@ -50,13 +49,13 @@ trait CirceSupport {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
       override def deserialize(topic: String, data: Array[Byte]): T =
-        Option(data).map(deserialize).orNull
-      private def deserialize(data: Array[Byte]): T =
-        parser
-          .parse(new String(data, StandardCharsets.UTF_8))
-          .valueOr(e => throw new SerializationException(e))
-          .as[T]
-          .valueOr(e => throw new SerializationException(e))
+        if (data == null) null
+        else
+          parser
+            .parse(new String(data, UTF_8))
+            .valueOr(e => throw new SerializationException(e))
+            .as[T]
+            .valueOr(e => throw new SerializationException(e))
     }
 
   implicit def circeToSerde[T >: Null](implicit encoder: Encoder[T],
