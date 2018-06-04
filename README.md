@@ -16,7 +16,7 @@ Inspired by [https://github.com/hseeberger/akka-http-json](https://github.com/hs
 
 ``` scala
 libraryDependencies ++= List(
-  "io.github.azhur" %% "kafka-serde-circe" % "0.1.2",
+  "io.github.azhur" %% "kafka-serde-circe" % "0.2.0",
   ...
 )
 ```
