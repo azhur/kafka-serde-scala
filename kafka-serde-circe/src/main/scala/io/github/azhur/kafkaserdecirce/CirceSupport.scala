@@ -34,9 +34,11 @@ trait CirceSupport {
       override def close(): Unit                                                 = {}
       override def serialize(topic: String, data: T): Array[Byte] =
         if (data == null) null
-        else try data.asJson.noSpaces.getBytes(UTF_8) catch {
-          case NonFatal(e) => throw new SerializationException(e)
-        }
+        else
+          try data.asJson.noSpaces.getBytes(UTF_8)
+          catch {
+            case NonFatal(e) => throw new SerializationException(e)
+          }
     }
 
   implicit def circeToDeserializer[T >: Null](implicit decoder: Decoder[T]): Deserializer[T] =
@@ -48,11 +50,12 @@ trait CirceSupport {
       override def close(): Unit                                                 = {}
       override def deserialize(topic: String, data: Array[Byte]): T =
         if (data == null) null
-        else parser
-          .parse(new String(data, UTF_8))
-          .valueOr(e => throw new SerializationException(e))
-          .as[T]
-          .valueOr(e => throw new SerializationException(e))
+        else
+          parser
+            .parse(new String(data, UTF_8))
+            .valueOr(e => throw new SerializationException(e))
+            .as[T]
+            .valueOr(e => throw new SerializationException(e))
     }
 
   implicit def circeToSerde[T >: Null](implicit encoder: Encoder[T],

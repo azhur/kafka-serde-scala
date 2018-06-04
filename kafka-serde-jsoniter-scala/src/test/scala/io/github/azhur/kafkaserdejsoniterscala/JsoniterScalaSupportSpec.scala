@@ -44,17 +44,17 @@ class JsoniterScalaSupportSpec extends FreeSpec with Matchers {
 
   "JsoniterScalaSupport" - {
     "should implicitly convert to kafka Serializer" in {
-      serializeFoo(Foo(1, "2")) shouldBe """{"a":1,"b":"2"}""".getBytes(UTF_8)
+      serializeFoo(Foo(1, "𝄞")) shouldBe """{"a":1,"b":"𝄞"}""".getBytes(UTF_8)
       serializeFoo(null) shouldBe null
     }
 
     "should implicitly convert to kafka Deserializer" in {
-      deserializeFoo("""{"a":1,"b":"2"}""".getBytes(UTF_8)) shouldBe Foo(1, "2")
+      deserializeFoo("""{"a":1,"b":"𝄞"}""".getBytes(UTF_8)) shouldBe Foo(1, "𝄞")
       deserializeFoo(null) shouldBe null
     }
 
     "should implicitly convert to Serde" in {
-      serdeFoo("""{"a":1,"b":"2"}""".getBytes(UTF_8)) shouldBe Foo(1, "2")
+      serdeFoo("""{"a":1,"b":"𝄞"}""".getBytes(UTF_8)) shouldBe Foo(1, "𝄞")
     }
   }
 }

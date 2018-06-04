@@ -35,9 +35,11 @@ trait JsoniterScalaSupport {
       override def close(): Unit                                                 = {}
       override def serialize(topic: String, data: T): Array[Byte] =
         if (data == null) null
-        else try writeToArray(data, writerConfig) catch {
-          case NonFatal(e) => throw new SerializationException(e)
-        }
+        else
+          try writeToArray(data, writerConfig)
+          catch {
+            case NonFatal(e) => throw new SerializationException(e)
+          }
     }
 
   implicit def jsoniterScalaToDeserializer[T >: Null](
@@ -49,9 +51,11 @@ trait JsoniterScalaSupport {
       override def close(): Unit                                                 = {}
       override def deserialize(topic: String, data: Array[Byte]): T =
         if (data == null) null
-        else try readFromArray(data, readerConfig) catch {
-          case NonFatal(e) => throw new SerializationException(e)
-        }
+        else
+          try readFromArray(data, readerConfig)
+          catch {
+            case NonFatal(e) => throw new SerializationException(e)
+          }
     }
 
   implicit def jsoniterScalaToSerde[T >: Null](

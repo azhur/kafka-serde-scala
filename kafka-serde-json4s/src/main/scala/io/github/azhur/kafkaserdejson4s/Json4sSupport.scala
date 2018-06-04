@@ -34,9 +34,11 @@ trait Json4sSupport {
       override def close(): Unit                                                 = {}
       override def serialize(topic: String, data: T): Array[Byte] =
         if (data == null) null
-        else try serialization.write[T](data).getBytes(UTF_8) catch {
-          case NonFatal(e) => throw new SerializationException(e)
-        }
+        else
+          try serialization.write[T](data).getBytes(UTF_8)
+          catch {
+            case NonFatal(e) => throw new SerializationException(e)
+          }
     }
 
   implicit def json4sToDeserializer[T >: Null <: AnyRef: Manifest](
@@ -48,9 +50,11 @@ trait Json4sSupport {
       override def close(): Unit                                                 = {}
       override def deserialize(topic: String, data: Array[Byte]): T =
         if (data == null) null
-        else try serialization.read[T](new String(data, UTF_8)) catch {
-          case NonFatal(e) => throw new SerializationException(e)
-        }
+        else
+          try serialization.read[T](new String(data, UTF_8))
+          catch {
+            case NonFatal(e) => throw new SerializationException(e)
+          }
     }
 
   implicit def json4sToSerde[T >: Null <: AnyRef: Manifest](implicit serialization: Serialization,
