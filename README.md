@@ -1,5 +1,6 @@
 # kafka-serde-scala
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/583da4938d754fa4a4927fa88385ee02)](https://app.codacy.com/app/azhur/kafka-serde-scala?utm_source=github.com&utm_medium=referral&utm_content=azhur/kafka-serde-scala&utm_campaign=badger)
 [![Join the chat at https://gitter.im/azhur/kafka-serde-scala](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/azhur/kafka-serde-scala?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://travis-ci.org/azhur/kafka-serde-scala.svg?branch=master)](https://travis-ci.org/azhur/kafka-serde-scala)
 
