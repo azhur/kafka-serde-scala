@@ -16,7 +16,7 @@
 
 package io.github.azhur.kafkaserdejson4s
 
-import java.nio.charset.StandardCharsets
+import java.nio.charset.StandardCharsets.UTF_8
 import java.util
 
 import org.apache.kafka.common.errors.SerializationException
@@ -36,7 +36,7 @@ trait Json4sSupport {
       override def serialize(topic: String, data: T): Array[Byte] =
         Option(data).map(serialize).orNull
       private def serialize(data: T): Array[Byte] =
-        Try(serialization.write[T](data).getBytes(StandardCharsets.UTF_8)) match {
+        Try(serialization.write[T](data).getBytes(UTF_8)) match {
           case Success(result)      => result
           case Failure(NonFatal(e)) => throw new SerializationException(e)
           case Failure(e)           => throw e
@@ -53,7 +53,7 @@ trait Json4sSupport {
       override def deserialize(topic: String, data: Array[Byte]): T =
         Option(data).map(deserialize).orNull
       private def deserialize(data: Array[Byte]): T =
-        Try(serialization.read[T](new String(data, StandardCharsets.UTF_8))) match {
+        Try(serialization.read[T](new String(data, UTF_8))) match {
           case Success(result)      => result
           case Failure(NonFatal(e)) => throw new SerializationException(e)
           case Failure(e)           => throw e

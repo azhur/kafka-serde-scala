@@ -16,7 +16,7 @@
 
 package io.github.azhur.kafkaserdecirce
 
-import java.nio.charset.StandardCharsets
+import java.nio.charset.StandardCharsets.UTF_8
 import java.util
 
 import io.circe.{ Decoder, Encoder }
@@ -35,7 +35,7 @@ trait CirceSupport {
       override def serialize(topic: String, data: T): Array[Byte] =
         Option(data).map(serialize).orNull
       private def serialize(data: T): Array[Byte] =
-        Try(data.asJson.noSpaces.getBytes) match {
+        Try(data.asJson.noSpaces.getBytes(UTF_8)) match {
           case Failure(e) =>
             throw new SerializationException("Error serializing JSON message", e)
           case Success(r) => r
@@ -53,7 +53,7 @@ trait CirceSupport {
         Option(data).map(deserialize).orNull
       private def deserialize(data: Array[Byte]): T =
         parser
-          .parse(new String(data, StandardCharsets.UTF_8))
+          .parse(new String(data, UTF_8))
           .valueOr(e => throw new SerializationException(e))
           .as[T]
           .valueOr(e => throw new SerializationException(e))

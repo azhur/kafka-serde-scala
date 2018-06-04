@@ -16,6 +16,8 @@
 
 package io.github.azhur.kafkaserdecirce
 
+import java.nio.charset.StandardCharsets.UTF_8
+
 import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
 import org.scalatest.{ FreeSpec, Matchers }
 
@@ -39,15 +41,15 @@ class CirceSupportSpec extends FreeSpec with Matchers {
 
   "CirceSupport" - {
     "should implicitly convert to kafka Serializer" in {
-      serializeFoo(Foo(1, "2")) shouldBe """{"a":1,"b":"2"}""".getBytes
+      serializeFoo(Foo(1, "2")) shouldBe """{"a":1,"b":"2"}""".getBytes(UTF_8)
     }
 
     "should implicitly convert to kafka Deserializer" in {
-      deserializeFoo("""{"a":1,"b":"2"}""".getBytes) shouldBe Foo(1, "2")
+      deserializeFoo("""{"a":1,"b":"2"}""".getBytes(UTF_8)) shouldBe Foo(1, "2")
     }
 
     "should implicitly convert to kafka Serde" in {
-      serdeFoo("""{"a":1,"b":"2"}""".getBytes) shouldBe Foo(1, "2")
+      serdeFoo("""{"a":1,"b":"2"}""".getBytes(UTF_8)) shouldBe Foo(1, "2")
     }
   }
 }

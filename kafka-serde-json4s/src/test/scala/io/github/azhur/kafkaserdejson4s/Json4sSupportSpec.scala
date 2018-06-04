@@ -16,6 +16,8 @@
 
 package io.github.azhur.kafkaserdejson4s
 
+import java.nio.charset.StandardCharsets.UTF_8
+
 import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
 import org.json4s.{ DefaultFormats, jackson, native }
 import org.scalatest.{ FreeSpec, Matchers }
@@ -42,30 +44,30 @@ class Json4sSupportSpec extends FreeSpec with Matchers {
   "Json4sSupport jackson" - {
     implicit val serialization = jackson.Serialization
     "should implicitly convert to kafka Serializer" in {
-      serializeFoo(Foo(1, "2")) shouldBe """{"a":1,"b":"2"}""".getBytes
+      serializeFoo(Foo(1, "2")) shouldBe """{"a":1,"b":"2"}""".getBytes(UTF_8)
     }
 
     "should implicitly convert to kafka Deserializer" in {
-      deserializeFoo("""{"a":1,"b":"2"}""".getBytes) shouldBe Foo(1, "2")
+      deserializeFoo("""{"a":1,"b":"2"}""".getBytes(UTF_8)) shouldBe Foo(1, "2")
     }
 
     "should implicitly convert to Serde" in {
-      serdeFoo("""{"a":1,"b":"2"}""".getBytes) shouldBe Foo(1, "2")
+      serdeFoo("""{"a":1,"b":"2"}""".getBytes(UTF_8)) shouldBe Foo(1, "2")
     }
   }
 
   "Json4sSupport native" - {
     implicit val serialization = native.Serialization
     "should implicitly convert to kafka Serializer" in {
-      serializeFoo(Foo(1, "2")) shouldBe """{"a":1,"b":"2"}""".getBytes
+      serializeFoo(Foo(1, "2")) shouldBe """{"a":1,"b":"2"}""".getBytes(UTF_8)
     }
 
     "should implicitly convert to kafka Deserializer" in {
-      deserializeFoo("""{"a":1,"b":"2"}""".getBytes) shouldBe Foo(1, "2")
+      deserializeFoo("""{"a":1,"b":"2"}""".getBytes(UTF_8)) shouldBe Foo(1, "2")
     }
 
     "should implicitly convert to Serde" in {
-      serdeFoo("""{"a":1,"b":"2"}""".getBytes) shouldBe Foo(1, "2")
+      serdeFoo("""{"a":1,"b":"2"}""".getBytes(UTF_8)) shouldBe Foo(1, "2")
     }
   }
 }
