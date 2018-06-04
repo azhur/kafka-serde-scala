@@ -45,10 +45,12 @@ class Json4sSupportSpec extends FreeSpec with Matchers {
     implicit val serialization = jackson.Serialization
     "should implicitly convert to kafka Serializer" in {
       serializeFoo(Foo(1, "2")) shouldBe """{"a":1,"b":"2"}""".getBytes(UTF_8)
+      serializeFoo(null) shouldBe null
     }
 
     "should implicitly convert to kafka Deserializer" in {
       deserializeFoo("""{"a":1,"b":"2"}""".getBytes(UTF_8)) shouldBe Foo(1, "2")
+      deserializeFoo(null) shouldBe null
     }
 
     "should implicitly convert to Serde" in {
@@ -60,10 +62,12 @@ class Json4sSupportSpec extends FreeSpec with Matchers {
     implicit val serialization = native.Serialization
     "should implicitly convert to kafka Serializer" in {
       serializeFoo(Foo(1, "2")) shouldBe """{"a":1,"b":"2"}""".getBytes(UTF_8)
+      serializeFoo(null) shouldBe null
     }
 
     "should implicitly convert to kafka Deserializer" in {
       deserializeFoo("""{"a":1,"b":"2"}""".getBytes(UTF_8)) shouldBe Foo(1, "2")
+      deserializeFoo(null) shouldBe null
     }
 
     "should implicitly convert to Serde" in {

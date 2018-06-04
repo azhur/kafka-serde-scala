@@ -25,7 +25,6 @@ import org.json4s.{ Formats, Serialization }
 
 import scala.language.implicitConversions
 import scala.util.control.NonFatal
-import scala.util.{ Failure, Success, Try }
 
 trait Json4sSupport {
   implicit def json4sToSerializer[T <: AnyRef](implicit serialization: Serialization,
@@ -34,12 +33,9 @@ trait Json4sSupport {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
       override def serialize(topic: String, data: T): Array[Byte] =
-        Option(data).map(serialize).orNull
-      private def serialize(data: T): Array[Byte] =
-        Try(serialization.write[T](data).getBytes(UTF_8)) match {
-          case Success(result)      => result
-          case Failure(NonFatal(e)) => throw new SerializationException(e)
-          case Failure(e)           => throw e
+        if (data == null) null
+        else try serialization.write[T](data).getBytes(UTF_8) catch {
+          case NonFatal(e) => throw new SerializationException(e)
         }
     }
 
@@ -51,12 +47,9 @@ trait Json4sSupport {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
       override def deserialize(topic: String, data: Array[Byte]): T =
-        Option(data).map(deserialize).orNull
-      private def deserialize(data: Array[Byte]): T =
-        Try(serialization.read[T](new String(data, UTF_8))) match {
-          case Success(result)      => result
-          case Failure(NonFatal(e)) => throw new SerializationException(e)
-          case Failure(e)           => throw e
+        if (data == null) null
+        else try serialization.read[T](new String(data, UTF_8)) catch {
+          case NonFatal(e) => throw new SerializationException(e)
         }
     }
 
