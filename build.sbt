@@ -4,7 +4,8 @@ lazy val `kafka-serde-scala` =
     .in(file("."))
     .aggregate(
       `kafka-serde-circe`,
-      `kafka-serde-json4s`
+      `kafka-serde-json4s`,
+      `kafka-serde-jsoniter-scala`
     )
     .settings(commonSettings)
     .settings(scalafmtSettings)
@@ -43,7 +44,22 @@ lazy val `kafka-serde-json4s` = project
       dependency.json4sCore,
       dependency.json4sJackson % Test,
       dependency.json4sNative  % Test,
-      dependency.scalaTest    % Test
+      dependency.scalaTest     % Test
+    )
+  )
+
+lazy val `kafka-serde-jsoniter-scala` = project
+  .enablePlugins(AutomateHeaderPlugin)
+  .settings(commonSettings)
+  .settings(scalafmtSettings)
+  .settings(publishSettings)
+  .settings(
+    crossScalaVersions := Seq("2.12.6", "2.11.12"),
+    libraryDependencies ++= Seq(
+      dependency.kafkaClients,
+      dependency.jsoniterScalaCore,
+      dependency.jsoniterScalaMacros % Test,
+      dependency.scalaTest           % Test
     )
   )
 
@@ -52,6 +68,7 @@ lazy val dependency =
     object Version {
       val circe         = "0.9.3"
       val json4s        = "3.5.4"
+      val jsoniterScala = "0.27.2"
       val scalaTest     = "3.0.5"
       val kafka         = "1.1.0"
     }
@@ -63,6 +80,8 @@ lazy val dependency =
     val json4sCore          = "org.json4s"                            %% "json4s-core"          % Version.json4s
     val json4sJackson       = "org.json4s"                            %% "json4s-jackson"       % Version.json4s
     val json4sNative        = "org.json4s"                            %% "json4s-native"        % Version.json4s
+    val jsoniterScalaCore   = "com.github.plokhotnyuk.jsoniter-scala" %% "core"                 % Version.jsoniterScala
+    val jsoniterScalaMacros = "com.github.plokhotnyuk.jsoniter-scala" %% "macros"               % Version.jsoniterScala
     val scalaTest           = "org.scalatest"                         %% "scalatest"            % Version.scalaTest
   }
 
