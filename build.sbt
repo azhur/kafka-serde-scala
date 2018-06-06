@@ -68,7 +68,7 @@ lazy val dependency =
     object Version {
       val circe         = "0.9.3"
       val json4s        = "3.5.4"
-      val jsoniterScala = "0.27.2"
+      val jsoniterScala = "0.27.4"
       val scalaTest     = "3.0.5"
       val kafka         = "1.1.0"
     }
