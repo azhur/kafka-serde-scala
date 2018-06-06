@@ -52,6 +52,7 @@ class CirceSupportSpec extends FreeSpec with Matchers {
 
     "should implicitly convert to kafka Serde" in {
       serdeFoo("""{"a":1,"b":"𝄞"}""".getBytes(UTF_8)) shouldBe Foo(1, "𝄞")
+      serdeFoo(null) shouldBe null
     }
   }
 }

@@ -14,60 +14,67 @@
  * limitations under the License.
  */
 
-package io.github.azhur.kafkaserdecirce
+package io.github.azhur.kafkaserdeplayjson
 
 import java.nio.charset.StandardCharsets.UTF_8
 import java.util
 
-import io.circe.{ Decoder, Encoder, Printer }
+import io.github.azhur.kafkaserdeplayjson.PlayJsonSupport.PlayJsonError
 import org.apache.kafka.common.errors.SerializationException
 import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
+import play.api.libs.json.{ JsError, JsValue, Json, Reads, Writes }
 
 import scala.language.implicitConversions
 import scala.util.control.NonFatal
 
-trait CirceSupport {
-  implicit def circeToSerializer[T >: Null](implicit encoder: Encoder[T],
-                                            printer: Printer = Printer.noSpaces): Serializer[T] =
+trait PlayJsonSupport {
+  implicit def playJsonToSerializer[T <: AnyRef](
+      implicit writes: Writes[T],
+      printer: JsValue => String = Json.stringify
+  ): Serializer[T] =
     new Serializer[T] {
-      import io.circe.syntax._
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
       override def serialize(topic: String, data: T): Array[Byte] =
         if (data == null) null
         else
-          try printer.pretty(data.asJson).getBytes(UTF_8)
+          try printer(writes.writes(data)).getBytes(UTF_8)
           catch {
             case NonFatal(e) => throw new SerializationException(e)
           }
     }
 
-  implicit def circeToDeserializer[T >: Null](implicit decoder: Decoder[T]): Deserializer[T] =
+  implicit def playJsonToDeserializer[T >: Null <: AnyRef: Manifest](
+      implicit reads: Reads[T]
+  ): Deserializer[T] =
     new Deserializer[T] {
-      import io.circe._
-      import cats.syntax.either._
-
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
       override def deserialize(topic: String, data: Array[Byte]): T =
         if (data == null) null
         else
-          parser
-            .parse(new String(data, UTF_8))
-            .valueOr(e => throw new SerializationException(e))
-            .as[T]
-            .valueOr(e => throw new SerializationException(e))
+          reads
+            .reads(Json.parse(new String(data, UTF_8)))
+            .recoverTotal { e =>
+              throw new SerializationException(PlayJsonError(e))
+            }
     }
 
-  implicit def circeToSerde[T >: Null](implicit encoder: Encoder[T],
-                                       printer: Printer = Printer.noSpaces,
-                                       decoder: Decoder[T]): Serde[T] =
+  implicit def playJsonToSerde[T >: Null <: AnyRef: Manifest](implicit writes: Writes[T],
+                                                              reads: Reads[T],
+                                                              printer: JsValue => String =
+                                                                Json.stringify): Serde[T] =
     new Serde[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
-      override def serializer(): Serializer[T]                                   = circeToSerializer[T]
-      override def deserializer(): Deserializer[T]                               = circeToDeserializer[T]
+      override def serializer(): Serializer[T]                                   = playJsonToSerializer[T]
+      override def deserializer(): Deserializer[T]                               = playJsonToDeserializer[T]
     }
 }
 
-object CirceSupport extends CirceSupport
+object PlayJsonSupport extends PlayJsonSupport {
+  final case class PlayJsonError(error: JsError) extends RuntimeException {
+    override def getMessage: String =
+      JsError.toJson(error).toString()
+  }
+}

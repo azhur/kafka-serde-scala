@@ -5,7 +5,8 @@ lazy val `kafka-serde-scala` =
     .aggregate(
       `kafka-serde-circe`,
       `kafka-serde-json4s`,
-      `kafka-serde-jsoniter-scala`
+      `kafka-serde-jsoniter-scala`,
+      `kafka-serde-play-json`
     )
     .settings(commonSettings)
     .settings(scalafmtSettings)
@@ -63,6 +64,20 @@ lazy val `kafka-serde-jsoniter-scala` = project
     )
   )
 
+lazy val `kafka-serde-play-json` = project
+  .enablePlugins(AutomateHeaderPlugin)
+  .settings(commonSettings)
+  .settings(scalafmtSettings)
+  .settings(publishSettings)
+  .settings(
+    crossScalaVersions := Seq("2.12.6", "2.11.12"),
+    libraryDependencies ++= Seq(
+      dependency.kafkaClients,
+      dependency.playJson,
+      dependency.scalaTest     % Test
+    )
+  )
+
 lazy val dependency =
   new {
     object Version {
@@ -71,6 +86,7 @@ lazy val dependency =
       val jsoniterScala = "0.27.4"
       val scalaTest     = "3.0.5"
       val kafka         = "1.1.0"
+      val play          = "2.6.9"
     }
     val kafkaClients        = "org.apache.kafka"                      %  "kafka-clients"        % Version.kafka
     val circe               = "io.circe"                              %% "circe-core"           % Version.circe
@@ -82,6 +98,7 @@ lazy val dependency =
     val json4sNative        = "org.json4s"                            %% "json4s-native"        % Version.json4s
     val jsoniterScalaCore   = "com.github.plokhotnyuk.jsoniter-scala" %% "core"                 % Version.jsoniterScala
     val jsoniterScalaMacros = "com.github.plokhotnyuk.jsoniter-scala" %% "macros"               % Version.jsoniterScala
+    val playJson            = "com.typesafe.play"                     %% "play-json"            % Version.play
     val scalaTest           = "org.scalatest"                         %% "scalatest"            % Version.scalaTest
   }
 
