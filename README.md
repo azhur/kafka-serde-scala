@@ -11,6 +11,7 @@ Following target libraries are supported:
 - [Json4s](https://github.com/json4s/json4s)
 - [jsoniter-scala](https://github.com/plokhotnyuk/jsoniter-scala)
 - [play-json](https://github.com/playframework/play-json)
+- [upickle](https://github.com/lihaoyi/upickle)
 
 Inspired by [https://github.com/hseeberger/akka-http-json](https://github.com/hseeberger/akka-http-json).
 
@@ -47,9 +48,16 @@ libraryDependencies ++= List(
 )
 ```
 
+- for upickle:
+``` scala
+libraryDependencies ++= List(
+  "io.github.azhur" %% "kafka-serde-upickle" % "0.2.0"
+)
+```
+
 ## Usage
 
-Mix `CirceSupport`,`Json4sSupport`, `JsoniterScalaSupport` or `PlayJsonSupport` into your code which requires implicit Kafka 
+Mix `CirceSupport`, `Json4sSupport`, `JsoniterScalaSupport`, `PlayJsonSupport` or `UpickleSupport` into your code which requires implicit Kafka 
 `Serde`, `Serializer` or `Deserializer`.
  
 Provide your implicit type class instances and the magic will convert them to Kafka serializers:
@@ -58,6 +66,7 @@ Provide your implicit type class instances and the magic will convert them to Ka
 - for jsoniter-scala: `com.github.plokhotnyuk.jsoniter_scala.core.JsonValueCodec[T]`,  (and optionally 
 `com.github.plokhotnyuk.jsoniter_scala.core.WriterConfig` or/and `com.github.plokhotnyuk.jsoniter_scala.core.ReaderConfig`)
 - for play-json: `play.api.libs.json.Reads`, `play.api.libs.json.Writes`.  
+- for upickle: `upickle.default.Reader`, `upickle.default.Writer`.  
 
 For more info, please, take a look at unit tests.
 

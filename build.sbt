@@ -6,7 +6,8 @@ lazy val `kafka-serde-scala` =
       `kafka-serde-circe`,
       `kafka-serde-json4s`,
       `kafka-serde-jsoniter-scala`,
-      `kafka-serde-play-json`
+      `kafka-serde-play-json`,
+      `kafka-serde-upickle`
     )
     .settings(commonSettings)
     .settings(scalafmtSettings)
@@ -78,6 +79,20 @@ lazy val `kafka-serde-play-json` = project
     )
   )
 
+lazy val `kafka-serde-upickle` = project
+  .enablePlugins(AutomateHeaderPlugin)
+  .settings(commonSettings)
+  .settings(scalafmtSettings)
+  .settings(publishSettings)
+  .settings(
+    crossScalaVersions := Seq("2.12.6", "2.11.12"),
+    libraryDependencies ++= Seq(
+      dependency.kafkaClients,
+      dependency.upickle,
+      dependency.scalaTest     % Test
+    )
+  )
+
 lazy val dependency =
   new {
     object Version {
@@ -87,6 +102,7 @@ lazy val dependency =
       val scalaTest     = "3.0.5"
       val kafka         = "1.1.0"
       val play          = "2.6.9"
+      val upickle       = "0.6.6"
     }
     val kafkaClients        = "org.apache.kafka"                      %  "kafka-clients"        % Version.kafka
     val circe               = "io.circe"                              %% "circe-core"           % Version.circe
@@ -99,6 +115,7 @@ lazy val dependency =
     val jsoniterScalaCore   = "com.github.plokhotnyuk.jsoniter-scala" %% "core"                 % Version.jsoniterScala
     val jsoniterScalaMacros = "com.github.plokhotnyuk.jsoniter-scala" %% "macros"               % Version.jsoniterScala
     val playJson            = "com.typesafe.play"                     %% "play-json"            % Version.play
+    val upickle             = "com.lihaoyi"                           %% "upickle"              % Version.upickle
     val scalaTest           = "org.scalatest"                         %% "scalatest"            % Version.scalaTest
   }
 
