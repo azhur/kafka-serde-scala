@@ -14,17 +14,42 @@ Inspired by [https://github.com/hseeberger/akka-http-json](https://github.com/hs
 
 ## Installation
 
+Add dependencies for the selected integration:
+
+- for circe:
 ``` scala
 libraryDependencies ++= List(
   "io.github.azhur" %% "kafka-serde-circe" % "0.2.0",
-  ...
+)
+```
+
+- for Json4s:
+``` scala
+libraryDependencies ++= List(
+  "io.github.azhur" %% "kafka-serde-json4s" % "0.2.0",
+)
+```
+
+- for jsoniter-scala:
+``` scala
+libraryDependencies ++= List(
+  "io.github.azhur" %% "kafka-serde-jsoniter-scala" % "0.2.0",
+  "com.github.plokhotnyuk.jsoniter-scala" %% "macros" % "0.27.4" % Provided // required only in compile-time
 )
 ```
 
 ## Usage
 
-Mix `CirceSupport` into your code which requires implicit kafka `Serde|Serializer|Deserializer`, provide your implicit type class instances (i.e: io.circe.Encoder[T], io.circe.Decoder[T]) and the magic will convert them to kafka serializers.
-For more info take a look at unit tests please.
+Mix `CirceSupport`,`Json4sSupport` or `JsoniterScalaSupport` into your code which requires implicit Kafka 
+`Serde`, `Serializer` or `Deserializer`.
+ 
+Provide your implicit type class instances and the magic will convert them to Kafka serializers:
+- for circe: `io.circe.Encoder[T]`, `io.circe.Decoder[T]` 
+- for Json4s: `org.json4s.DefaultFormats`, `org.json4s.Serialization`
+- for jsoniter-scala: `com.github.plokhotnyuk.jsoniter_scala.core.JsonValueCodec[T]`,  (and optionally 
+`com.github.plokhotnyuk.jsoniter_scala.core.WriterConfig` or/and `com.github.plokhotnyuk.jsoniter_scala.core.ReaderConfig`)   
+
+For more info, please, take a look at unit tests.
 
 ## Contribution
 
