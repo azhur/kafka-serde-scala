@@ -28,13 +28,6 @@ libraryDependencies ++= List(
 )
 ```
 
-- for avro4s-json:
-``` scala
-libraryDependencies ++= List(
-  "io.github.azhur" %% "kafka-serde-avro4s-json" % "0.2.0",
-)
-```
-
 - for circe:
 ``` scala
 libraryDependencies ++= List(
