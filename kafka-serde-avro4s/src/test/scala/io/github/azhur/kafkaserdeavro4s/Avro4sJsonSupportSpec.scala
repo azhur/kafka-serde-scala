@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package io.github.azhur.kafkaserdeupickle
+package io.github.azhur.kafkaserdeavro4s
 
 import java.nio.charset.StandardCharsets.UTF_8
 
+import com.sksamuel.avro4s.{ FromRecord, SchemaFor, ToRecord }
 import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
 import org.scalatest.{ FreeSpec, Matchers }
-import upickle.default.{ ReadWriter, macroRW }
 
-object UpickleSupportSpec {
+object Avro4sJsonSupportSpec {
   case class Foo(a: Int, b: String)
 
   def serializeFoo(foo: Foo)(implicit serializer: Serializer[Foo]): Array[Byte] =
@@ -34,16 +34,18 @@ object UpickleSupportSpec {
   def serdeFoo(bytes: Array[Byte])(implicit serde: Serde[Foo]): Foo =
     serde.deserializer().deserialize("unused_topic", bytes)
 
-  implicit val rw: ReadWriter[Foo] = macroRW
+  implicit val schemaFor  = SchemaFor[Foo]
+  implicit val toRecord   = ToRecord[Foo]
+  implicit val fromRecord = FromRecord[Foo]
 }
 
-class UpickleSupportSpec extends FreeSpec with Matchers {
-  import UpickleSupport._
-  import UpickleSupportSpec._
+class Avro4sJsonSupportSpec extends FreeSpec with Matchers {
+  import Avro4sJsonSupport._
+  import Avro4sJsonSupportSpec._
 
-  "UpickleSupport" - {
+  "Avro4sJsonSupport" - {
     "should implicitly convert to kafka Serializer" in {
-      // upickle serializes as {"a":1,"b":"\ud834\udd1e"}
+      // avro4sjson serializes as {"a":1,"b":"\uD834\UDD1E"}
       deserializeFoo(serializeFoo(Foo(1, "𝄞"))) shouldBe Foo(1, "𝄞")
       serializeFoo(null) shouldBe null
     }

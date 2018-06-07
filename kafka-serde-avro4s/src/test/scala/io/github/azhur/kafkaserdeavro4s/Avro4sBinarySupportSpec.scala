@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-package io.github.azhur.kafkaserdeupickle
+package io.github.azhur.kafkaserdeavro4s
 
-import java.nio.charset.StandardCharsets.UTF_8
-
+import com.sksamuel.avro4s.{ FromRecord, SchemaFor, ToRecord }
 import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
 import org.scalatest.{ FreeSpec, Matchers }
-import upickle.default.{ ReadWriter, macroRW }
 
-object UpickleSupportSpec {
-  case class Foo(a: Int, b: String)
+object Avro4sBinarySupportSpec {
+  case class Foo(a: Int, b: String, c: Boolean)
 
   def serializeFoo(foo: Foo)(implicit serializer: Serializer[Foo]): Array[Byte] =
     serializer.serialize("unused_topic", foo)
@@ -34,28 +32,19 @@ object UpickleSupportSpec {
   def serdeFoo(bytes: Array[Byte])(implicit serde: Serde[Foo]): Foo =
     serde.deserializer().deserialize("unused_topic", bytes)
 
-  implicit val rw: ReadWriter[Foo] = macroRW
+  implicit val schemaFor  = SchemaFor[Foo]
+  implicit val toRecord   = ToRecord[Foo]
+  implicit val fromRecord = FromRecord[Foo]
 }
 
-class UpickleSupportSpec extends FreeSpec with Matchers {
-  import UpickleSupport._
-  import UpickleSupportSpec._
+class Avro4sBinarySupportSpec extends FreeSpec with Matchers {
+  import Avro4sBinarySupport._
+  import Avro4sBinarySupportSpec._
 
-  "UpickleSupport" - {
+  "Avro4sBinarySupport" - {
     "should implicitly convert to kafka Serializer" in {
-      // upickle serializes as {"a":1,"b":"\ud834\udd1e"}
-      deserializeFoo(serializeFoo(Foo(1, "𝄞"))) shouldBe Foo(1, "𝄞")
+      deserializeFoo(serializeFoo(Foo(1, "𝄞", false))) shouldBe Foo(1, "𝄞", false)
       serializeFoo(null) shouldBe null
-    }
-
-    "should implicitly convert to kafka Deserializer" in {
-      deserializeFoo("""{"a":1,"b":"𝄞"}""".getBytes(UTF_8)) shouldBe Foo(1, "𝄞")
-      deserializeFoo(null) shouldBe null
-    }
-
-    "should implicitly convert to kafka Serde" in {
-      serdeFoo("""{"a":1,"b":"𝄞"}""".getBytes(UTF_8)) shouldBe Foo(1, "𝄞")
-      serdeFoo(null) shouldBe null
     }
   }
 }
