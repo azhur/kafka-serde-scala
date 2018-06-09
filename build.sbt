@@ -122,7 +122,6 @@ lazy val dependency =
     }
     val kafkaClients        = "org.apache.kafka"                      %  "kafka-clients"        % Version.kafka
     val avro4sCore          = "com.sksamuel.avro4s"                   %% "avro4s-core"          % Version.avro4s
-    val avro4sJson          = "com.sksamuel.avro4s"                   %% "avro4s-json"          % Version.avro4s
     val circe               = "io.circe"                              %% "circe-core"           % Version.circe
     val circeParser         = "io.circe"                              %% "circe-parser"         % Version.circe
     val circeJawn           = "io.circe"                              %% "circe-jawn"           % Version.circe
