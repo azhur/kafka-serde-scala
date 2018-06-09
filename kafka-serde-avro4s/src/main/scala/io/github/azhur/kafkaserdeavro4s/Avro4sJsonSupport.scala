@@ -20,9 +20,7 @@ import java.io.ByteArrayOutputStream
 import java.util
 
 import com.sksamuel.avro4s.{
-  AvroInputStream,
   AvroJsonInputStream,
-  AvroJsonOutputStream,
   AvroOutputStream,
   FromRecord,
   SchemaFor,
