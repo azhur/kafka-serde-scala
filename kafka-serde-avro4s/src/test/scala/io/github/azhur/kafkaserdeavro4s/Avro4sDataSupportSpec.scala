@@ -16,14 +16,12 @@
 
 package io.github.azhur.kafkaserdeavro4s
 
-import java.nio.charset.StandardCharsets.UTF_8
-
 import com.sksamuel.avro4s.{ FromRecord, SchemaFor, ToRecord }
 import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
 import org.scalatest.{ FreeSpec, Matchers }
 
-object Avro4sJsonSupportSpec {
-  case class Foo(a: Int, b: String)
+object Avro4sDataSupportSpec {
+  case class Foo(a: Int, b: String, c: Boolean)
 
   def serializeFoo(foo: Foo)(implicit serializer: Serializer[Foo]): Array[Byte] =
     serializer.serialize("unused_topic", foo)
@@ -31,32 +29,37 @@ object Avro4sJsonSupportSpec {
   def deserializeFoo(bytes: Array[Byte])(implicit deserializer: Deserializer[Foo]): Foo =
     deserializer.deserialize("unused_topic", bytes)
 
-  def serdeFoo(bytes: Array[Byte])(implicit serde: Serde[Foo]): Foo =
+  def serdeFooDes(bytes: Array[Byte])(implicit serde: Serde[Foo]): Foo =
     serde.deserializer().deserialize("unused_topic", bytes)
+
+  def serdeFooSer(foo: Foo)(implicit serde: Serde[Foo]): Array[Byte] =
+    serde.serializer().serialize("unused_topic", foo)
 
   implicit val schemaFor  = SchemaFor[Foo]
   implicit val toRecord   = ToRecord[Foo]
   implicit val fromRecord = FromRecord[Foo]
 }
 
-class Avro4sJsonSupportSpec extends FreeSpec with Matchers {
-  import Avro4sJsonSupport._
-  import Avro4sJsonSupportSpec._
+class Avro4sDataSupportSpec extends FreeSpec with Matchers {
+  import Avro4sDataSupport._
+  import Avro4sDataSupportSpec._
 
-  "Avro4sJsonSupport" - {
-    "should implicitly convert to kafka Serializer" in {
-      deserializeFoo(serializeFoo(Foo(1, "𝄞"))) shouldBe Foo(1, "𝄞")
-      serializeFoo(null) shouldBe null
-    }
+  "Avro4sDataSupport" - {
+    "should implicitly convert to kafka Serializer/Deserializer/Serde" in {
+      val schema = schemaFor().toString
+      val foo    = Foo(1, "𝄞", false)
 
-    "should implicitly convert to kafka Deserializer" in {
-      deserializeFoo("""{"a":1,"b":"𝄞"}""".getBytes(UTF_8)) shouldBe Foo(1, "𝄞")
-      deserializeFoo(null) shouldBe null
-    }
+      val serializedFoo = serializeFoo(foo)
+      new String(serializedFoo) should include(schema)
 
-    "should implicitly convert to kafka Serde" in {
-      serdeFoo("""{"a":1,"b":"𝄞"}""".getBytes(UTF_8)) shouldBe Foo(1, "𝄞")
-      serdeFoo(null) shouldBe null
+      deserializeFoo(serializedFoo) shouldBe foo
+      serializeFoo(deserializeFoo(null)) shouldBe null
+
+      serdeFooDes(serializedFoo) shouldBe foo
+      serdeFooDes(null) shouldBe null
+
+      new String(serdeFooSer(foo)) should include(schema)
+      serdeFooSer(null) shouldBe null
     }
   }
 }

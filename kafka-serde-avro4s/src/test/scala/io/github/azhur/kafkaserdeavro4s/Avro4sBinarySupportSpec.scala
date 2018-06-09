@@ -29,8 +29,11 @@ object Avro4sBinarySupportSpec {
   def deserializeFoo(bytes: Array[Byte])(implicit deserializer: Deserializer[Foo]): Foo =
     deserializer.deserialize("unused_topic", bytes)
 
-  def serdeFoo(bytes: Array[Byte])(implicit serde: Serde[Foo]): Foo =
+  def serdeFooDes(bytes: Array[Byte])(implicit serde: Serde[Foo]): Foo =
     serde.deserializer().deserialize("unused_topic", bytes)
+
+  def serdeFooSer(foo: Foo)(implicit serde: Serde[Foo]): Array[Byte] =
+    serde.serializer().serialize("unused_topic", foo)
 
   implicit val schemaFor  = SchemaFor[Foo]
   implicit val toRecord   = ToRecord[Foo]
@@ -42,9 +45,21 @@ class Avro4sBinarySupportSpec extends FreeSpec with Matchers {
   import Avro4sBinarySupportSpec._
 
   "Avro4sBinarySupport" - {
-    "should implicitly convert to kafka Serializer" in {
-      deserializeFoo(serializeFoo(Foo(1, "𝄞", false))) shouldBe Foo(1, "𝄞", false)
-      serializeFoo(null) shouldBe null
+    "should implicitly convert to kafka Serializer/Deserializer/Serde" in {
+      val schema = schemaFor().toString
+      val foo    = Foo(1, "𝄞", false)
+
+      val serializedFoo = serializeFoo(foo)
+      new String(serializedFoo) shouldNot include(schema)
+
+      deserializeFoo(serializedFoo) shouldBe foo
+      serializeFoo(deserializeFoo(null)) shouldBe null
+
+      serdeFooDes(serializedFoo) shouldBe foo
+      serdeFooDes(null) shouldBe null
+
+      new String(serdeFooSer(foo)) shouldNot include(schema)
+      serdeFooSer(null) shouldBe null
     }
   }
 }
