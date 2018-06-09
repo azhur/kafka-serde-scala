@@ -8,7 +8,6 @@ kafka-serde-scala provides implicit conversions from different type class Encode
 
 Following target libraries are supported:
 - [avro4s](https://github.com/sksamuel/avro4s)
-- [avro4s-json](https://github.com/sksamuel/avro4s)
 - [circe](https://circe.github.io/circe/)
 - [Json4s](https://github.com/json4s/json4s)
 - [jsoniter-scala](https://github.com/plokhotnyuk/jsoniter-scala)
