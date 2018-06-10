@@ -7,6 +7,7 @@
 kafka-serde-scala provides implicit conversions from different type class Encoder/Decoder to kafka Serializer, Deserializer, Serde. 
 
 Following target libraries are supported:
+- [avro4s](https://github.com/sksamuel/avro4s)
 - [circe](https://circe.github.io/circe/)
 - [Json4s](https://github.com/json4s/json4s)
 - [jsoniter-scala](https://github.com/plokhotnyuk/jsoniter-scala)
@@ -18,6 +19,13 @@ Inspired by [https://github.com/hseeberger/akka-http-json](https://github.com/hs
 ## Installation
 
 Add dependencies for the selected integration:
+
+- for avro4s:
+``` scala
+libraryDependencies ++= List(
+  "io.github.azhur" %% "kafka-serde-avro4s" % "0.2.0",
+)
+```
 
 - for circe:
 ``` scala
@@ -57,10 +65,11 @@ libraryDependencies ++= List(
 
 ## Usage
 
-Mix `CirceSupport`, `Json4sSupport`, `JsoniterScalaSupport`, `PlayJsonSupport` or `UpickleSupport` into your code which requires implicit Kafka 
-`Serde`, `Serializer` or `Deserializer`.
+Mix `xxxSupport` into your code which requires implicit Kafka 
+`Serde`, `Serializer` or `Deserializer`, where `xxx` is the target library used for serialization, i.e: CirceSupport.
  
 Provide your implicit type class instances and the magic will convert them to Kafka serializers:
+- for avro4s: `com.sksamuel.avro4s.SchemaFor[T]`, `com.sksamuel.avro4s.ToRecord[T]`, `com.sksamuel.avro4s.FromRecord[T]` 
 - for circe: `io.circe.Encoder[T]`, `io.circe.Decoder[T]` 
 - for Json4s: `org.json4s.DefaultFormats`, `org.json4s.Serialization`
 - for jsoniter-scala: `com.github.plokhotnyuk.jsoniter_scala.core.JsonValueCodec[T]`,  (and optionally 

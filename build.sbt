@@ -3,6 +3,7 @@ lazy val `kafka-serde-scala` =
   project
     .in(file("."))
     .aggregate(
+      `kafka-serde-avro4s`,
       `kafka-serde-circe`,
       `kafka-serde-json4s`,
       `kafka-serde-jsoniter-scala`,
@@ -93,9 +94,24 @@ lazy val `kafka-serde-upickle` = project
     )
   )
 
+lazy val `kafka-serde-avro4s` = project
+  .enablePlugins(AutomateHeaderPlugin)
+  .settings(commonSettings)
+  .settings(scalafmtSettings)
+  .settings(publishSettings)
+  .settings(
+    crossScalaVersions := Seq("2.12.6", "2.11.12"),
+    libraryDependencies ++= Seq(
+      dependency.kafkaClients,
+      dependency.avro4sCore,
+      dependency.scalaTest     % Test
+    )
+  )
+
 lazy val dependency =
   new {
     object Version {
+      val avro4s        = "1.9.0"
       val circe         = "0.9.3"
       val json4s        = "3.5.4"
       val jsoniterScala = "0.27.4"
@@ -105,6 +121,7 @@ lazy val dependency =
       val upickle       = "0.6.6"
     }
     val kafkaClients        = "org.apache.kafka"                      %  "kafka-clients"        % Version.kafka
+    val avro4sCore          = "com.sksamuel.avro4s"                   %% "avro4s-core"          % Version.avro4s
     val circe               = "io.circe"                              %% "circe-core"           % Version.circe
     val circeParser         = "io.circe"                              %% "circe-parser"         % Version.circe
     val circeJawn           = "io.circe"                              %% "circe-jawn"           % Version.circe

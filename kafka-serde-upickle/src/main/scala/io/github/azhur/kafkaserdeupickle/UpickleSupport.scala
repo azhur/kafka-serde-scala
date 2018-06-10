@@ -21,7 +21,7 @@ import java.util
 
 import org.apache.kafka.common.errors.SerializationException
 import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
-import upickle.default.{Reader, Writer, readJs, writeJs}
+import upickle.default.{ Reader, Writer, readJs, writeJs }
 import upickle.json
 
 import scala.language.implicitConversions
@@ -54,8 +54,7 @@ trait UpickleSupport {
           }
     }
 
-  implicit def upickleToSerde[T >: Null](implicit reader: Reader[T],
-                                         writer: Writer[T]): Serde[T] =
+  implicit def upickleToSerde[T >: Null](implicit reader: Reader[T], writer: Writer[T]): Serde[T] =
     new Serde[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
