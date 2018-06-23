@@ -9,7 +9,8 @@ kafka-serde-scala provides implicit conversions from different type class Encode
 Following target libraries are supported:
 - [avro4s](https://github.com/sksamuel/avro4s)
 - [circe](https://circe.github.io/circe/)
-- [Json4s](https://github.com/json4s/json4s)
+- [jackson (json, protobuf, avro)](https://github.com/FasterXML/jackson)
+- [json4s](https://github.com/json4s/json4s)
 - [jsoniter-scala](https://github.com/plokhotnyuk/jsoniter-scala)
 - [play-json](https://github.com/playframework/play-json)
 - [upickle](https://github.com/lihaoyi/upickle)
@@ -34,7 +35,14 @@ libraryDependencies ++= List(
 )
 ```
 
-- for Json4s:
+- for jackson:
+``` scala
+libraryDependencies ++= List(
+  "io.github.azhur" %% "kafka-serde-jackson" % "0.3.0",
+)
+```
+
+- for json4s:
 ``` scala
 libraryDependencies ++= List(
   "io.github.azhur" %% "kafka-serde-json4s" % "0.3.0",
@@ -71,7 +79,9 @@ Mix `xxxSupport` into your code which requires implicit Kafka
 Provide your implicit type class instances and the magic will convert them to Kafka serializers:
 - for avro4s: `com.sksamuel.avro4s.SchemaFor[T]`, `com.sksamuel.avro4s.ToRecord[T]`, `com.sksamuel.avro4s.FromRecord[T]` 
 - for circe: `io.circe.Encoder[T]`, `io.circe.Decoder[T]` 
-- for Json4s: `org.json4s.DefaultFormats`, `org.json4s.Serialization`
+- for jackson json: `com.fasterxml.jackson.databind.ObjectMapper`, `org.json4s.Serialization`
+- for jackson binary: `com.fasterxml.jackson.databind.ObjectMapper`, `org.codehaus.jackson.FormatSchema`
+- for json4s: `org.json4s.DefaultFormats`, `org.json4s.Serialization`
 - for jsoniter-scala: `com.github.plokhotnyuk.jsoniter_scala.core.JsonValueCodec[T]`,  (and optionally 
 `com.github.plokhotnyuk.jsoniter_scala.core.WriterConfig` or/and `com.github.plokhotnyuk.jsoniter_scala.core.ReaderConfig`)
 - for play-json: `play.api.libs.json.Reads`, `play.api.libs.json.Writes`.  

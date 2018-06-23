@@ -5,6 +5,7 @@ lazy val `kafka-serde-scala` =
     .aggregate(
       `kafka-serde-avro4s`,
       `kafka-serde-circe`,
+      `kafka-serde-jackson`,
       `kafka-serde-json4s`,
       `kafka-serde-jsoniter-scala`,
       `kafka-serde-play-json`,
@@ -108,6 +109,23 @@ lazy val `kafka-serde-avro4s` = project
     )
   )
 
+lazy val `kafka-serde-jackson` = project
+  .enablePlugins(AutomateHeaderPlugin)
+  .settings(commonSettings)
+  .settings(scalafmtSettings)
+  .settings(publishSettings)
+  .settings(
+    crossScalaVersions := Seq("2.12.6", "2.11.12"),
+    libraryDependencies ++= Seq(
+      dependency.kafkaClients,
+      dependency.jacksonCore,
+      dependency.jacksonScala,
+      dependency.jacksonProtobuf % Test,
+      dependency.jacksonAvro     % Test,
+      dependency.scalaTest       % Test
+    )
+  )
+
 lazy val dependency =
   new {
     object Version {
@@ -119,21 +137,27 @@ lazy val dependency =
       val kafka         = "1.1.0"
       val play          = "2.6.9"
       val upickle       = "0.6.6"
+      val jackson       = "2.9.6"
     }
-    val kafkaClients        = "org.apache.kafka"                      %  "kafka-clients"        % Version.kafka
-    val avro4sCore          = "com.sksamuel.avro4s"                   %% "avro4s-core"          % Version.avro4s
-    val circe               = "io.circe"                              %% "circe-core"           % Version.circe
-    val circeParser         = "io.circe"                              %% "circe-parser"         % Version.circe
-    val circeJawn           = "io.circe"                              %% "circe-jawn"           % Version.circe
-    val circeGeneric        = "io.circe"                              %% "circe-generic"        % Version.circe
-    val json4sCore          = "org.json4s"                            %% "json4s-core"          % Version.json4s
-    val json4sJackson       = "org.json4s"                            %% "json4s-jackson"       % Version.json4s
-    val json4sNative        = "org.json4s"                            %% "json4s-native"        % Version.json4s
-    val jsoniterScalaCore   = "com.github.plokhotnyuk.jsoniter-scala" %% "core"                 % Version.jsoniterScala
-    val jsoniterScalaMacros = "com.github.plokhotnyuk.jsoniter-scala" %% "macros"               % Version.jsoniterScala
-    val playJson            = "com.typesafe.play"                     %% "play-json"            % Version.play
-    val upickle             = "com.lihaoyi"                           %% "upickle"              % Version.upickle
-    val scalaTest           = "org.scalatest"                         %% "scalatest"            % Version.scalaTest
+    val kafkaClients        = "org.apache.kafka"                      %  "kafka-clients"               % Version.kafka
+    val avro4sCore          = "com.sksamuel.avro4s"                   %% "avro4s-core"                 % Version.avro4s
+    val circe               = "io.circe"                              %% "circe-core"                  % Version.circe
+    val circeParser         = "io.circe"                              %% "circe-parser"                % Version.circe
+    val circeJawn           = "io.circe"                              %% "circe-jawn"                  % Version.circe
+    val circeGeneric        = "io.circe"                              %% "circe-generic"               % Version.circe
+    val json4sCore          = "org.json4s"                            %% "json4s-core"                 % Version.json4s
+    val json4sJackson       = "org.json4s"                            %% "json4s-jackson"              % Version.json4s
+    val json4sNative        = "org.json4s"                            %% "json4s-native"               % Version.json4s
+    val jsoniterScalaCore   = "com.github.plokhotnyuk.jsoniter-scala" %% "core"                        % Version.jsoniterScala
+    val jsoniterScalaMacros = "com.github.plokhotnyuk.jsoniter-scala" %% "macros"                      % Version.jsoniterScala
+    val playJson            = "com.typesafe.play"                     %% "play-json"                   % Version.play
+    val upickle             = "com.lihaoyi"                           %% "upickle"                     % Version.upickle
+    val jacksonScala        = "com.fasterxml.jackson.module"          %% "jackson-module-scala"        % Version.jackson
+    val jacksonCore         = "com.fasterxml.jackson.core"            %  "jackson-core"                % Version.jackson
+    val jacksonDatabind     = "com.fasterxml.jackson.core"            %  "jackson-databind"            % Version.jackson
+    val jacksonProtobuf     = "com.fasterxml.jackson.dataformat"      %  "jackson-dataformat-protobuf" % Version.jackson
+    val jacksonAvro         = "com.fasterxml.jackson.dataformat"      %  "jackson-dataformat-avro"     % Version.jackson
+    val scalaTest           = "org.scalatest"                         %% "scalatest"                   % Version.scalaTest
   }
 
 

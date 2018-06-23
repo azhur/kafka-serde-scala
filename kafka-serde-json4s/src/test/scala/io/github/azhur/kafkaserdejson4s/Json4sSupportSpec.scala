@@ -36,8 +36,8 @@ object Json4sSupportSpec {
 }
 
 class Json4sSupportSpec extends FreeSpec with Matchers {
+  import Json4sSupport._
   import Json4sSupportSpec._
-  import io.github.azhur.kafkaserdejson4s.Json4sSupport._
 
   private implicit val formats = DefaultFormats
 
