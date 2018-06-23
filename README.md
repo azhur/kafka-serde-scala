@@ -79,7 +79,7 @@ Mix `xxxSupport` into your code which requires implicit Kafka
 Provide your implicit type class instances and the magic will convert them to Kafka serializers:
 - for avro4s: `com.sksamuel.avro4s.SchemaFor[T]`, `com.sksamuel.avro4s.ToRecord[T]`, `com.sksamuel.avro4s.FromRecord[T]` 
 - for circe: `io.circe.Encoder[T]`, `io.circe.Decoder[T]` 
-- for jackson json: `com.fasterxml.jackson.databind.ObjectMapper`, `org.json4s.Serialization`
+- for jackson json: `com.fasterxml.jackson.databind.ObjectMapper`
 - for jackson binary: `com.fasterxml.jackson.databind.ObjectMapper`, `org.codehaus.jackson.FormatSchema`
 - for json4s: `org.json4s.DefaultFormats`, `org.json4s.Serialization`
 - for jsoniter-scala: `com.github.plokhotnyuk.jsoniter_scala.core.JsonValueCodec[T]`,  (and optionally 
