@@ -28,7 +28,7 @@ import scala.language.implicitConversions
 import scala.util.control.NonFatal
 
 trait PlayJsonSupport {
-  implicit def playJsonToSerializer[T <: AnyRef](
+  implicit def toSerializer[T <: AnyRef](
       implicit writes: Writes[T],
       printer: JsValue => String = Json.stringify
   ): Serializer[T] =
@@ -44,7 +44,7 @@ trait PlayJsonSupport {
           }
     }
 
-  implicit def playJsonToDeserializer[T >: Null <: AnyRef: Manifest](
+  implicit def toDeserializer[T >: Null <: AnyRef: Manifest](
       implicit reads: Reads[T]
   ): Deserializer[T] =
     new Deserializer[T] {
@@ -60,15 +60,16 @@ trait PlayJsonSupport {
             }
     }
 
-  implicit def playJsonToSerde[T >: Null <: AnyRef: Manifest](implicit writes: Writes[T],
-                                                              reads: Reads[T],
-                                                              printer: JsValue => String =
-                                                                Json.stringify): Serde[T] =
+  implicit def toSerde[T >: Null <: AnyRef: Manifest](
+      implicit writes: Writes[T],
+      reads: Reads[T],
+      printer: JsValue => String = Json.stringify
+  ): Serde[T] =
     new Serde[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
-      override def serializer(): Serializer[T]                                   = playJsonToSerializer[T]
-      override def deserializer(): Deserializer[T]                               = playJsonToDeserializer[T]
+      override def serializer(): Serializer[T]                                   = toSerializer[T]
+      override def deserializer(): Deserializer[T]                               = toDeserializer[T]
     }
 }
 

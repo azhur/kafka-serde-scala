@@ -28,7 +28,7 @@ import scala.language.implicitConversions
 import scala.util.control.NonFatal
 
 trait UpickleSupport {
-  implicit def upickleToSerializer[T >: Null](implicit writer: Writer[T]): Serializer[T] =
+  implicit def toSerializer[T >: Null](implicit writer: Writer[T]): Serializer[T] =
     new Serializer[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
@@ -41,7 +41,7 @@ trait UpickleSupport {
           }
     }
 
-  implicit def upickleToDeserializer[T >: Null](implicit reader: Reader[T]): Deserializer[T] =
+  implicit def toDeserializer[T >: Null](implicit reader: Reader[T]): Deserializer[T] =
     new Deserializer[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
@@ -54,12 +54,12 @@ trait UpickleSupport {
           }
     }
 
-  implicit def upickleToSerde[T >: Null](implicit reader: Reader[T], writer: Writer[T]): Serde[T] =
+  implicit def toSerde[T >: Null](implicit reader: Reader[T], writer: Writer[T]): Serde[T] =
     new Serde[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
-      override def serializer(): Serializer[T]                                   = upickleToSerializer[T]
-      override def deserializer(): Deserializer[T]                               = upickleToDeserializer[T]
+      override def serializer(): Serializer[T]                                   = toSerializer[T]
+      override def deserializer(): Deserializer[T]                               = toDeserializer[T]
     }
 }
 

@@ -26,7 +26,7 @@ import scala.language.implicitConversions
 import scala.util.control.NonFatal
 
 trait JsoniterScalaSupport {
-  implicit def jsoniterScalaToSerializer[T >: Null](
+  implicit def toSerializer[T >: Null](
       implicit codec: JsonValueCodec[T],
       writerConfig: WriterConfig = WriterConfig()
   ): Serializer[T] =
@@ -42,7 +42,7 @@ trait JsoniterScalaSupport {
           }
     }
 
-  implicit def jsoniterScalaToDeserializer[T >: Null](
+  implicit def toDeserializer[T >: Null](
       implicit codec: JsonValueCodec[T],
       readerConfig: ReaderConfig = ReaderConfig()
   ): Deserializer[T] =
@@ -58,7 +58,7 @@ trait JsoniterScalaSupport {
           }
     }
 
-  implicit def jsoniterScalaToSerde[T >: Null](
+  implicit def toSerde[T >: Null](
       implicit codec: JsonValueCodec[T],
       writerConfig: WriterConfig = WriterConfig(),
       readerConfig: ReaderConfig = ReaderConfig()
@@ -66,8 +66,8 @@ trait JsoniterScalaSupport {
     new Serde[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
-      override def serializer(): Serializer[T]                                   = jsoniterScalaToSerializer[T]
-      override def deserializer(): Deserializer[T]                               = jsoniterScalaToDeserializer[T]
+      override def serializer(): Serializer[T]                                   = toSerializer[T]
+      override def deserializer(): Deserializer[T]                               = toDeserializer[T]
     }
 }
 
