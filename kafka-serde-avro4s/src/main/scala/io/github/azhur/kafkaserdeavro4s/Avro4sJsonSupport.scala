@@ -35,8 +35,8 @@ import scala.util.control.NonFatal
 import scala.util.{ Failure, Success }
 
 trait Avro4sJsonSupport {
-  implicit def avro4sJsonToSerializer[T >: Null](implicit schemaFor: SchemaFor[T],
-                                                 toRecord: ToRecord[T]): Serializer[T] =
+  implicit def toSerializer[T >: Null](implicit schemaFor: SchemaFor[T],
+                                       toRecord: ToRecord[T]): Serializer[T] =
     new Serializer[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
@@ -60,10 +60,11 @@ trait Avro4sJsonSupport {
         }
     }
 
-  implicit def avro4sJsonToDeserializer[T >: Null](implicit schemaFor: SchemaFor[T],
-                                                   fromRecord: FromRecord[T],
-                                                   schemas: WriterReaderSchemas =
-                                                     WriterReaderSchemas()): Deserializer[T] =
+  implicit def toDeserializer[T >: Null](
+      implicit schemaFor: SchemaFor[T],
+      fromRecord: FromRecord[T],
+      schemas: WriterReaderSchemas = WriterReaderSchemas()
+  ): Deserializer[T] =
     new Deserializer[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
@@ -78,7 +79,7 @@ trait Avro4sJsonSupport {
           }
     }
 
-  implicit def avro4sJsonToSerde[T >: Null](
+  implicit def toSerde[T >: Null](
       implicit schemaFor: SchemaFor[T],
       toRecord: ToRecord[T],
       fromRecord: FromRecord[T],
@@ -87,8 +88,8 @@ trait Avro4sJsonSupport {
     new Serde[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
-      override def serializer(): Serializer[T]                                   = avro4sJsonToSerializer[T]
-      override def deserializer(): Deserializer[T]                               = avro4sJsonToDeserializer[T]
+      override def serializer(): Serializer[T]                                   = toSerializer[T]
+      override def deserializer(): Deserializer[T]                               = toDeserializer[T]
     }
 }
 

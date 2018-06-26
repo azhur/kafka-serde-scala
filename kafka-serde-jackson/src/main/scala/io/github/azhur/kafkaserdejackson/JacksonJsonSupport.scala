@@ -28,7 +28,7 @@ import scala.reflect.runtime.universe._
 import scala.util.control.NonFatal
 
 trait JacksonJsonSupport {
-  implicit def jsonSerializer[T <: AnyRef](implicit mapper: ObjectMapper): Serializer[T] =
+  implicit def toSerializer[T <: AnyRef](implicit mapper: ObjectMapper): Serializer[T] =
     new Serializer[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
@@ -41,7 +41,7 @@ trait JacksonJsonSupport {
           }
     }
 
-  implicit def jsonDeserializer[T >: Null <: AnyRef](
+  implicit def toDeserializer[T >: Null <: AnyRef](
       implicit mapper: ObjectMapper,
       tt: TypeTag[T]
   ): Deserializer[T] =
@@ -58,15 +58,15 @@ trait JacksonJsonSupport {
           }
     }
 
-  implicit def jsonSerde[T >: Null <: AnyRef](
+  implicit def toSerde[T >: Null <: AnyRef](
       implicit mapper: ObjectMapper,
       tt: TypeTag[T]
   ): Serde[T] =
     new Serde[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
-      override def serializer(): Serializer[T]                                   = jsonSerializer[T]
-      override def deserializer(): Deserializer[T]                               = jsonDeserializer[T]
+      override def serializer(): Serializer[T]                                   = toSerializer[T]
+      override def deserializer(): Deserializer[T]                               = toDeserializer[T]
     }
 }
 

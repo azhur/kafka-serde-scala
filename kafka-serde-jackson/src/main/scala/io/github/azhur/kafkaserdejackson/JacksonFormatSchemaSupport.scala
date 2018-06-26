@@ -31,8 +31,8 @@ import scala.reflect.ClassTag
 import scala.util.control.NonFatal
 
 trait JacksonFormatSchemaSupport {
-  implicit def formatSchemaSerializer[T <: AnyRef](implicit mapper: ObjectMapper,
-                                                   schema: FormatSchema): Serializer[T] =
+  implicit def toSerializer[T <: AnyRef](implicit mapper: ObjectMapper,
+                                         schema: FormatSchema): Serializer[T] =
     new Serializer[T] {
       private val writer                                                         = mapper.writer(schema)
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
@@ -46,7 +46,7 @@ trait JacksonFormatSchemaSupport {
           }
     }
 
-  implicit def formatSchemaDeserializer[T >: Null <: AnyRef](
+  implicit def toDeserializer[T >: Null <: AnyRef](
       implicit mapper: ObjectMapper,
       schema: FormatSchema,
       tt: TypeTag[T]
@@ -64,7 +64,7 @@ trait JacksonFormatSchemaSupport {
           }
     }
 
-  implicit def formatSchemaSerde[T >: Null <: AnyRef](
+  implicit def toSerde[T >: Null <: AnyRef](
       implicit mapper: ObjectMapper,
       schema: FormatSchema,
       ct: TypeTag[T]
@@ -72,8 +72,8 @@ trait JacksonFormatSchemaSupport {
     new Serde[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
-      override def serializer(): Serializer[T]                                   = formatSchemaSerializer[T]
-      override def deserializer(): Deserializer[T]                               = formatSchemaDeserializer[T]
+      override def serializer(): Serializer[T]                                   = toSerializer[T]
+      override def deserializer(): Deserializer[T]                               = toDeserializer[T]
     }
 }
 

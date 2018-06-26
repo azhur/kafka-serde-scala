@@ -27,8 +27,8 @@ import scala.language.implicitConversions
 import scala.util.control.NonFatal
 
 trait CirceSupport {
-  implicit def circeToSerializer[T >: Null](implicit encoder: Encoder[T],
-                                            printer: Printer = Printer.noSpaces): Serializer[T] =
+  implicit def toSerializer[T >: Null](implicit encoder: Encoder[T],
+                                       printer: Printer = Printer.noSpaces): Serializer[T] =
     new Serializer[T] {
       import io.circe.syntax._
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
@@ -42,7 +42,7 @@ trait CirceSupport {
           }
     }
 
-  implicit def circeToDeserializer[T >: Null](implicit decoder: Decoder[T]): Deserializer[T] =
+  implicit def toDeserializer[T >: Null](implicit decoder: Decoder[T]): Deserializer[T] =
     new Deserializer[T] {
       import io.circe._
       import cats.syntax.either._
@@ -59,14 +59,14 @@ trait CirceSupport {
             .valueOr(e => throw new SerializationException(e))
     }
 
-  implicit def circeToSerde[T >: Null](implicit encoder: Encoder[T],
-                                       printer: Printer = Printer.noSpaces,
-                                       decoder: Decoder[T]): Serde[T] =
+  implicit def toSerde[T >: Null](implicit encoder: Encoder[T],
+                                  printer: Printer = Printer.noSpaces,
+                                  decoder: Decoder[T]): Serde[T] =
     new Serde[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
-      override def serializer(): Serializer[T]                                   = circeToSerializer[T]
-      override def deserializer(): Deserializer[T]                               = circeToDeserializer[T]
+      override def serializer(): Serializer[T]                                   = toSerializer[T]
+      override def deserializer(): Deserializer[T]                               = toDeserializer[T]
     }
 }
 

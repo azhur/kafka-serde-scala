@@ -35,7 +35,7 @@ import scala.util.control.NonFatal
 import scala.util.{ Failure, Success }
 
 trait Avro4sDataSupport {
-  implicit def avro4sToSerializer[T >: Null](
+  implicit def toSerializer[T >: Null](
       implicit schemaFor: SchemaFor[T],
       toRecord: ToRecord[T],
       codec: CodecFactory = CodecFactory.nullCodec()
@@ -63,7 +63,7 @@ trait Avro4sDataSupport {
         }
     }
 
-  implicit def avro4sToDeserializer[T >: Null](
+  implicit def toDeserializer[T >: Null](
       implicit schemaFor: SchemaFor[T],
       fromRecord: FromRecord[T],
       schemas: WriterReaderSchemas = WriterReaderSchemas()
@@ -89,15 +89,15 @@ trait Avro4sDataSupport {
 
     }
 
-  implicit def avro4sToSerde[T >: Null](implicit schemaFor: SchemaFor[T],
-                                        toRecord: ToRecord[T],
-                                        fromRecord: FromRecord[T],
-                                        codec: CodecFactory = CodecFactory.nullCodec()): Serde[T] =
+  implicit def toSerde[T >: Null](implicit schemaFor: SchemaFor[T],
+                                  toRecord: ToRecord[T],
+                                  fromRecord: FromRecord[T],
+                                  codec: CodecFactory = CodecFactory.nullCodec()): Serde[T] =
     new Serde[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
-      override def serializer(): Serializer[T]                                   = avro4sToSerializer[T]
-      override def deserializer(): Deserializer[T]                               = avro4sToDeserializer[T]
+      override def serializer(): Serializer[T]                                   = toSerializer[T]
+      override def deserializer(): Deserializer[T]                               = toDeserializer[T]
     }
 }
 
