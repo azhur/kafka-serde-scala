@@ -53,7 +53,7 @@ libraryDependencies ++= List(
 ``` scala
 libraryDependencies ++= List(
   "io.github.azhur" %% "kafka-serde-jsoniter-scala" % "0.4.0",
-  "com.github.plokhotnyuk.jsoniter-scala" %% "macros" % "0.27.4" % Provided // required only in compile-time
+  "com.github.plokhotnyuk.jsoniter-scala" %% "jsoniter-scala-macros" % "0.29.2" % Provided // required only in compile-time
 )
 ```
 
