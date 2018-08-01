@@ -9,7 +9,8 @@ lazy val `kafka-serde-scala` =
       `kafka-serde-json4s`,
       `kafka-serde-jsoniter-scala`,
       `kafka-serde-play-json`,
-      `kafka-serde-upickle`
+      `kafka-serde-upickle`,
+      `kafka-serde-scala-example`
     )
     .settings(commonSettings)
     .settings(scalafmtSettings)
@@ -126,38 +127,60 @@ lazy val `kafka-serde-jackson` = project
     )
   )
 
+lazy val `kafka-serde-scala-example` = project
+  .enablePlugins(AutomateHeaderPlugin)
+  .settings(commonSettings)
+  .settings(scalafmtSettings)
+  .settings(noPublishSettings)
+  .settings(
+    crossScalaVersions := Seq("2.12.6", "2.11.12"),
+    libraryDependencies ++= Seq(
+      dependency.kafkaStreamsScala,
+      dependency.circe,
+      dependency.circeParser,
+      dependency.circeJawn,
+      dependency.kafkaSerdeCirce,
+      dependency.circeGeneric,
+      dependency.scalaTest        % Test
+    )
+  )
+
 lazy val dependency =
   new {
     object Version {
-      val avro4s        = "1.9.0"
-      val circe         = "0.9.3"
-      val json4s        = "3.5.4"
-      val jsoniterScala = "0.29.2"
-      val scalaTest     = "3.0.5"
-      val kafka         = "1.1.0"
-      val play          = "2.6.9"
-      val upickle       = "0.6.6"
-      val jackson       = "2.9.6"
+      val avro4s                        = "1.9.0"
+      val circe                         = "0.9.3"
+      val json4s                        = "3.5.4"
+      val jsoniterScala                 = "0.29.2"
+      val scalaTest                     = "3.0.5"
+      val kafka                         = "2.0.0"
+      val play                          = "2.6.9"
+      val upickle                       = "0.6.6"
+      val jackson                       = "2.9.6"
+      val kafkaSerdeScala               = "0.4.0"
     }
-    val kafkaClients        = "org.apache.kafka"                      %  "kafka-clients"               % Version.kafka
-    val avro4sCore          = "com.sksamuel.avro4s"                   %% "avro4s-core"                 % Version.avro4s
-    val circe               = "io.circe"                              %% "circe-core"                  % Version.circe
-    val circeParser         = "io.circe"                              %% "circe-parser"                % Version.circe
-    val circeJawn           = "io.circe"                              %% "circe-jawn"                  % Version.circe
-    val circeGeneric        = "io.circe"                              %% "circe-generic"               % Version.circe
-    val json4sCore          = "org.json4s"                            %% "json4s-core"                 % Version.json4s
-    val json4sJackson       = "org.json4s"                            %% "json4s-jackson"              % Version.json4s
-    val json4sNative        = "org.json4s"                            %% "json4s-native"               % Version.json4s
-    val jsoniterScalaCore   = "com.github.plokhotnyuk.jsoniter-scala" %% "jsoniter-scala-core"         % Version.jsoniterScala
-    val jsoniterScalaMacros = "com.github.plokhotnyuk.jsoniter-scala" %% "jsoniter-scala-macros"       % Version.jsoniterScala
-    val playJson            = "com.typesafe.play"                     %% "play-json"                   % Version.play
-    val upickle             = "com.lihaoyi"                           %% "upickle"                     % Version.upickle
-    val jacksonScala        = "com.fasterxml.jackson.module"          %% "jackson-module-scala"        % Version.jackson
-    val jacksonCore         = "com.fasterxml.jackson.core"            %  "jackson-core"                % Version.jackson
-    val jacksonDatabind     = "com.fasterxml.jackson.core"            %  "jackson-databind"            % Version.jackson
-    val jacksonProtobuf     = "com.fasterxml.jackson.dataformat"      %  "jackson-dataformat-protobuf" % Version.jackson
-    val jacksonAvro         = "com.fasterxml.jackson.dataformat"      %  "jackson-dataformat-avro"     % Version.jackson
-    val scalaTest           = "org.scalatest"                         %% "scalatest"                   % Version.scalaTest
+    val kafkaClients        = "org.apache.kafka"                      %  "kafka-clients"                    % Version.kafka
+    val kafkaStreamsScala   = "org.apache.kafka"                      %% "kafka-streams-scala"              % Version.kafka
+    val avro4sCore          = "com.sksamuel.avro4s"                   %% "avro4s-core"                      % Version.avro4s
+    val circe               = "io.circe"                              %% "circe-core"                       % Version.circe
+    val circeParser         = "io.circe"                              %% "circe-parser"                     % Version.circe
+    val circeJawn           = "io.circe"                              %% "circe-jawn"                       % Version.circe
+    val circeGeneric        = "io.circe"                              %% "circe-generic"                    % Version.circe
+    val json4sCore          = "org.json4s"                            %% "json4s-core"                      % Version.json4s
+    val json4sJackson       = "org.json4s"                            %% "json4s-jackson"                   % Version.json4s
+    val json4sNative        = "org.json4s"                            %% "json4s-native"                    % Version.json4s
+    val jsoniterScalaCore   = "com.github.plokhotnyuk.jsoniter-scala" %% "jsoniter-scala-core"              % Version.jsoniterScala
+    val jsoniterScalaMacros = "com.github.plokhotnyuk.jsoniter-scala" %% "jsoniter-scala-macros"            % Version.jsoniterScala
+    val playJson            = "com.typesafe.play"                     %% "play-json"                        % Version.play
+    val upickle             = "com.lihaoyi"                           %% "upickle"                          % Version.upickle
+    val jacksonScala        = "com.fasterxml.jackson.module"          %% "jackson-module-scala"             % Version.jackson
+    val jacksonCore         = "com.fasterxml.jackson.core"            %  "jackson-core"                     % Version.jackson
+    val jacksonDatabind     = "com.fasterxml.jackson.core"            %  "jackson-databind"                 % Version.jackson
+    val jacksonProtobuf     = "com.fasterxml.jackson.dataformat"      %  "jackson-dataformat-protobuf"      % Version.jackson
+    val jacksonAvro         = "com.fasterxml.jackson.dataformat"      %  "jackson-dataformat-avro"          % Version.jackson
+    val scalaTest           = "org.scalatest"                         %% "scalatest"                        % Version.scalaTest
+
+    val kafkaSerdeCirce     = "io.github.azhur"                       %% "kafka-serde-circe"                % Version.kafkaSerdeScala
   }
 
 
