@@ -87,11 +87,11 @@ Provide your implicit type class instances and the magic will convert them to Ka
 - for play-json: `play.api.libs.json.Reads`, `play.api.libs.json.Writes`.  
 - for upickle: `upickle.default.Reader`, `upickle.default.Writer`.  
 
-For more info, please, take a look at unit tests.
+For more info, please, take a look at unit tests and at `kafka-serde-scala-example` which is a kafka-streams (2.0) application with kafka-serde-scala usage.
 
 ## Contribution
 
-Feel free to create PRs which will extend this library with new target encoders.
+Feel free to contribute with creating PR or opening issues.
 
 ## License ##
 
