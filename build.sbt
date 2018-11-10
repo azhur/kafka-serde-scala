@@ -150,10 +150,10 @@ lazy val dependency =
     object Version {
       val avro4s                        = "1.9.0"
       val circe                         = "0.10.1"
-      val json4s                        = "3.5.4"
+      val json4s                        = "3.6.2"
       val jsoniterScala                 = "0.29.2"
       val scalaTest                     = "3.0.5"
-      val kafka                         = "2.0.0"
+      val kafka                         = "2.0.1"
       val play                          = "2.6.9"
       val upickle                       = "0.6.6"
       val jackson                       = "2.9.6"
