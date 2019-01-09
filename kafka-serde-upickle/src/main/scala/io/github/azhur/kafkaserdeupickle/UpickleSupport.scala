@@ -21,8 +21,7 @@ import java.util
 
 import org.apache.kafka.common.errors.SerializationException
 import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
-import upickle.default.{ Reader, Writer, readJs, writeJs }
-import upickle.json
+import upickle.default.{ Reader, Writer, read, write }
 
 import scala.language.implicitConversions
 import scala.util.control.NonFatal
@@ -35,7 +34,7 @@ trait UpickleSupport {
       override def serialize(topic: String, data: T): Array[Byte] =
         if (data == null) null
         else
-          try json.write(writeJs(data), -1).getBytes(UTF_8)
+          try write(data).getBytes(UTF_8)
           catch {
             case NonFatal(e) => throw new SerializationException(e)
           }
@@ -48,7 +47,7 @@ trait UpickleSupport {
       override def deserialize(topic: String, data: Array[Byte]): T =
         if (data == null) null
         else
-          try readJs[T](json.read(new String(data, UTF_8)))
+          try read(new String(data, UTF_8))
           catch {
             case NonFatal(e) => throw new SerializationException(e)
           }

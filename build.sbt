@@ -26,7 +26,7 @@ lazy val `kafka-serde-circe` = project
   .settings(scalafmtSettings)
   .settings(publishSettings)
   .settings(
-    crossScalaVersions := Seq("2.12.6", "2.11.12"),
+    crossScalaVersions := Seq("2.12.8", "2.11.12"),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.circe,
@@ -43,7 +43,7 @@ lazy val `kafka-serde-json4s` = project
   .settings(scalafmtSettings)
   .settings(publishSettings)
   .settings(
-    crossScalaVersions := Seq("2.12.6", "2.11.12"),
+    crossScalaVersions := Seq("2.12.8", "2.11.12"),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.json4sCore,
@@ -59,7 +59,7 @@ lazy val `kafka-serde-jsoniter-scala` = project
   .settings(scalafmtSettings)
   .settings(publishSettings)
   .settings(
-    crossScalaVersions := Seq("2.12.6", "2.11.12"),
+    crossScalaVersions := Seq("2.12.8", "2.11.12"),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.jsoniterScalaCore,
@@ -74,7 +74,7 @@ lazy val `kafka-serde-play-json` = project
   .settings(scalafmtSettings)
   .settings(publishSettings)
   .settings(
-    crossScalaVersions := Seq("2.12.6", "2.11.12"),
+    crossScalaVersions := Seq("2.12.8", "2.11.12"),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.playJson,
@@ -88,7 +88,7 @@ lazy val `kafka-serde-upickle` = project
   .settings(scalafmtSettings)
   .settings(publishSettings)
   .settings(
-    crossScalaVersions := Seq("2.12.6", "2.11.12"),
+    crossScalaVersions := Seq("2.12.8", "2.11.12"),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.upickle,
@@ -102,7 +102,7 @@ lazy val `kafka-serde-avro4s` = project
   .settings(scalafmtSettings)
   .settings(publishSettings)
   .settings(
-    crossScalaVersions := Seq("2.12.6", "2.11.12"),
+    crossScalaVersions := Seq("2.12.8", "2.11.12"),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.avro4sCore,
@@ -116,11 +116,12 @@ lazy val `kafka-serde-jackson` = project
   .settings(scalafmtSettings)
   .settings(publishSettings)
   .settings(
-    crossScalaVersions := Seq("2.12.6", "2.11.12"),
+    crossScalaVersions := Seq("2.12.8", "2.11.12"),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.jacksonCore,
       dependency.jacksonScala,
+      "org.scala-lang" % "scala-reflect" % scalaVersion.value,
       dependency.jacksonProtobuf % Test,
       dependency.jacksonAvro     % Test,
       dependency.scalaTest       % Test
@@ -133,7 +134,7 @@ lazy val `kafka-serde-scala-example` = project
   .settings(scalafmtSettings)
   .settings(noPublishSettings)
   .settings(
-    crossScalaVersions := Seq("2.12.6", "2.11.12"),
+    crossScalaVersions := Seq("2.12.8", "2.11.12"),
     libraryDependencies ++= Seq(
       dependency.kafkaStreamsScala,
       dependency.circe,
@@ -149,14 +150,14 @@ lazy val dependency =
   new {
     object Version {
       val avro4s                        = "1.9.0"
-      val circe                         = "0.10.1"
+      val circe                         = "0.11.0"
       val json4s                        = "3.6.3"
-      val jsoniterScala                 = "0.36.8"
+      val jsoniterScala                 = "0.37.6"
       val scalaTest                     = "3.0.5"
       val kafka                         = "2.1.0"
       val play                          = "2.6.9"
-      val upickle                       = "0.6.7"
-      val jackson                       = "2.9.6"
+      val upickle                       = "0.7.1"
+      val jackson                       = "2.9.8"
       val kafkaSerdeScala               = "0.4.0"
     }
     val kafkaClients        = "org.apache.kafka"                      %  "kafka-clients"                    % Version.kafka
@@ -192,7 +193,7 @@ lazy val settings =
 lazy val commonSettings =
   Seq(
     resolvers += "Sonatype OSS Staging" at "https://oss.sonatype.org/content/repositories/staging",
-    scalaVersion := "2.12.6",
+    scalaVersion := "2.12.8",
     homepage := Some(url("https://github.com/azhur/kafka-serde-scala")),
     organization := "io.github.azhur",
     organizationName := "Artur Zhurat",
