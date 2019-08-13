@@ -1,4 +1,8 @@
 
+lazy val latest211 = "2.11.12"
+
+lazy val latest212 = "2.12.8"
+
 lazy val `kafka-serde-scala` =
   project
     .in(file("."))
@@ -26,7 +30,7 @@ lazy val `kafka-serde-circe` = project
   .settings(scalafmtSettings)
   .settings(publishSettings)
   .settings(
-    crossScalaVersions := Seq("2.12.8", "2.11.12"),
+    crossScalaVersions := Seq(latest212, latest211),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.circe,
@@ -43,7 +47,7 @@ lazy val `kafka-serde-json4s` = project
   .settings(scalafmtSettings)
   .settings(publishSettings)
   .settings(
-    crossScalaVersions := Seq("2.12.8", "2.11.12"),
+    crossScalaVersions := Seq(latest212, latest211),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.json4sCore,
@@ -59,7 +63,7 @@ lazy val `kafka-serde-jsoniter-scala` = project
   .settings(scalafmtSettings)
   .settings(publishSettings)
   .settings(
-    crossScalaVersions := Seq("2.12.8", "2.11.12"),
+    crossScalaVersions := Seq(latest212, latest211),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.jsoniterScalaCore,
@@ -74,7 +78,7 @@ lazy val `kafka-serde-play-json` = project
   .settings(scalafmtSettings)
   .settings(publishSettings)
   .settings(
-    crossScalaVersions := Seq("2.12.8", "2.11.12"),
+    crossScalaVersions := Seq(latest212, latest211),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.playJson,
@@ -88,7 +92,7 @@ lazy val `kafka-serde-upickle` = project
   .settings(scalafmtSettings)
   .settings(publishSettings)
   .settings(
-    crossScalaVersions := Seq("2.12.8", "2.11.12"),
+    crossScalaVersions := Seq(latest212, latest211),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.upickle,
@@ -102,7 +106,7 @@ lazy val `kafka-serde-avro4s` = project
   .settings(scalafmtSettings)
   .settings(publishSettings)
   .settings(
-    crossScalaVersions := Seq("2.12.8", "2.11.12"),
+    crossScalaVersions := Seq(latest212, latest211),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.avro4sCore,
@@ -116,7 +120,7 @@ lazy val `kafka-serde-jackson` = project
   .settings(scalafmtSettings)
   .settings(publishSettings)
   .settings(
-    crossScalaVersions := Seq("2.12.8", "2.11.12"),
+    crossScalaVersions := Seq(latest212, latest211),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.jacksonCore,
@@ -134,7 +138,7 @@ lazy val `kafka-serde-scala-example` = project
   .settings(scalafmtSettings)
   .settings(noPublishSettings)
   .settings(
-    crossScalaVersions := Seq("2.12.8", "2.11.12"),
+    crossScalaVersions := Seq(latest212, latest211),
     libraryDependencies ++= Seq(
       dependency.kafkaStreamsScala,
       dependency.circe,
@@ -193,7 +197,7 @@ lazy val settings =
 lazy val commonSettings =
   Seq(
     resolvers += "Sonatype OSS Staging" at "https://oss.sonatype.org/content/repositories/staging",
-    scalaVersion := "2.12.8",
+    scalaVersion := latest212,
     homepage := Some(url("https://github.com/azhur/kafka-serde-scala")),
     organization := "io.github.azhur",
     organizationName := "Artur Zhurat",
