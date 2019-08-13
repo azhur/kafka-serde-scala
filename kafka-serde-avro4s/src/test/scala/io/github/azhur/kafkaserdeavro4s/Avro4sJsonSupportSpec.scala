@@ -31,8 +31,11 @@ object Avro4sJsonSupportSpec {
   def deserializeFoo(bytes: Array[Byte])(implicit deserializer: Deserializer[Foo]): Foo =
     deserializer.deserialize("unused_topic", bytes)
 
-  def serdeFoo(bytes: Array[Byte])(implicit serde: Serde[Foo]): Foo =
+  def serdeFooDes(bytes: Array[Byte])(implicit serde: Serde[Foo]): Foo =
     serde.deserializer().deserialize("unused_topic", bytes)
+
+  def serdeFooSer(foo: Foo)(implicit serde: Serde[Foo]): Array[Byte] =
+    serde.serializer().serialize("unused_topic", foo)
 
   implicit val schemaFor  = SchemaFor[Foo]
   implicit val toRecord   = ToRecord[Foo]
@@ -55,8 +58,11 @@ class Avro4sJsonSupportSpec extends FreeSpec with Matchers {
     }
 
     "should implicitly convert to kafka Serde" in {
-      serdeFoo("""{"a":1,"b":"𝄞"}""".getBytes(UTF_8)) shouldBe Foo(1, "𝄞")
-      serdeFoo(null) shouldBe null
+      val foo           = Foo(1, "𝄞")
+
+      serdeFooDes(null) shouldBe null
+      serdeFooSer(null) shouldBe null
+      serdeFooDes(serdeFooSer(foo)) shouldBe foo
     }
   }
 }
