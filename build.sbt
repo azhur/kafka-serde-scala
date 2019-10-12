@@ -158,10 +158,10 @@ lazy val dependency =
       val json4s                        = "3.6.4"
       val jsoniterScala                 = "0.39.0"
       val scalaTest                     = "3.0.8"
-      val kafka                         = "2.1.1"
+      val kafka                         = "2.3.0"
       val play                          = "2.7.1"
-      val upickle                       = "0.7.1"
-      val jackson                       = "2.9.10"
+      val upickle                       = "0.7.4"
+      val jackson                       = "2.9.8"
       val kafkaSerdeScala               = "0.4.0"
     }
     val kafkaClients        = "org.apache.kafka"                      %  "kafka-clients"                    % Version.kafka
