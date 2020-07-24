@@ -19,7 +19,7 @@ package io.github.azhur.kafkaserdejsoniterscala
 import java.nio.charset.StandardCharsets.UTF_8
 
 import com.github.plokhotnyuk.jsoniter_scala.core.JsonValueCodec
-import com.github.plokhotnyuk.jsoniter_scala.macros.{ CodecMakerConfig, JsonCodecMaker }
+import com.github.plokhotnyuk.jsoniter_scala.macros.JsonCodecMaker
 import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
 import org.scalatest.{ FreeSpec, Matchers }
 
@@ -43,7 +43,7 @@ class JsoniterScalaSupportSpec extends FreeSpec with Matchers {
   import JsoniterScalaSupportSpec._
   import io.github.azhur.kafkaserdejsoniterscala.JsoniterScalaSupport._
 
-  private implicit val fooCodec: JsonValueCodec[Foo] = JsonCodecMaker.make[Foo](CodecMakerConfig())
+  private implicit val fooCodec: JsonValueCodec[Foo] = JsonCodecMaker.make[Foo]
 
   "JsoniterScalaSupport" - {
     "should implicitly convert to kafka Serializer" in {

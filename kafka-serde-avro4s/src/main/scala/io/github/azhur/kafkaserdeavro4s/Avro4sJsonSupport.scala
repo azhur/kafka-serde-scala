@@ -35,8 +35,10 @@ import scala.util.control.NonFatal
 import scala.util.{ Failure, Success }
 
 trait Avro4sJsonSupport {
-  implicit def toSerializer[T >: Null](implicit schemaFor: SchemaFor[T],
-                                       toRecord: ToRecord[T]): Serializer[T] =
+  implicit def toSerializer[T >: Null](
+      implicit schemaFor: SchemaFor[T],
+      toRecord: ToRecord[T]
+  ): Serializer[T] =
     new Serializer[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
@@ -71,9 +73,11 @@ trait Avro4sJsonSupport {
       override def deserialize(topic: String, data: Array[Byte]): T =
         if (data == null) null
         else
-          new AvroJsonInputStream[T](new SeekableByteArrayInput(data),
-                                     schemas.writerSchema,
-                                     schemas.readerSchema).singleEntity match {
+          new AvroJsonInputStream[T](
+            new SeekableByteArrayInput(data),
+            schemas.writerSchema,
+            schemas.readerSchema
+          ).singleEntity match {
             case Success(json)  => json
             case Failure(error) => throw new SerializationException(error)
           }

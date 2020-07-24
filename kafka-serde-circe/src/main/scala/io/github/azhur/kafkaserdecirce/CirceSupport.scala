@@ -27,8 +27,10 @@ import scala.language.implicitConversions
 import scala.util.control.NonFatal
 
 trait CirceSupport {
-  implicit def toSerializer[T >: Null](implicit encoder: Encoder[T],
-                                       printer: Printer = Printer.noSpaces): Serializer[T] =
+  implicit def toSerializer[T >: Null](
+      implicit encoder: Encoder[T],
+      printer: Printer = Printer.noSpaces
+  ): Serializer[T] =
     new Serializer[T] {
       import io.circe.syntax._
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
@@ -59,9 +61,11 @@ trait CirceSupport {
             .valueOr(e => throw new SerializationException(e))
     }
 
-  implicit def toSerde[T >: Null](implicit encoder: Encoder[T],
-                                  printer: Printer = Printer.noSpaces,
-                                  decoder: Decoder[T]): Serde[T] =
+  implicit def toSerde[T >: Null](
+      implicit encoder: Encoder[T],
+      printer: Printer = Printer.noSpaces,
+      decoder: Decoder[T]
+  ): Serde[T] =
     new Serde[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
