@@ -38,7 +38,7 @@ trait CirceSupport {
       override def serialize(topic: String, data: T): Array[Byte] =
         if (data == null) null
         else
-          try printer.pretty(data.asJson).getBytes(UTF_8)
+          try printer.print(data.asJson).getBytes(UTF_8)
           catch {
             case NonFatal(e) => throw new SerializationException(e)
           }

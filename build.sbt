@@ -108,6 +108,7 @@ lazy val `kafka-serde-avro4s` = project
   .settings(scalafmtSettings)
   .settings(publishSettings)
   .settings(
+    scalaVersion := latest212,
     crossScalaVersions := Seq(/*TODO: latest213, */latest212, latest211),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
@@ -156,7 +157,7 @@ lazy val dependency =
       val circe                         = "0.13.0"
       val json4s                        = "3.6.9"
       val jsoniterScala                 = "2.6.0"
-      val scalaTest                     = "3.0.8"
+      val scalaTest                     = "3.2.0"
       val kafka                         = "2.5.0"
       val play                          = "2.9.0"
       val upickle                       = "1.2.0"
@@ -192,7 +193,7 @@ lazy val settings =
 lazy val commonSettings =
   Seq(
     resolvers += "Sonatype OSS Staging" at "https://oss.sonatype.org/content/repositories/staging",
-    scalaVersion := latest212,
+    scalaVersion := latest213,
     homepage := Some(url("https://github.com/azhur/kafka-serde-scala")),
     organization := "io.github.azhur",
     organizationName := "Artur Zhurat",

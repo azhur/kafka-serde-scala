@@ -19,7 +19,8 @@ package io.github.azhur.kafkaserdecirce
 import java.nio.charset.StandardCharsets.UTF_8
 
 import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
-import org.scalatest.{ FreeSpec, Matchers }
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 object CirceSupportSpec {
   case class Foo(a: Int, b: String)
@@ -37,7 +38,7 @@ object CirceSupportSpec {
     serde.serializer().serialize("unused_topic", foo)
 }
 
-class CirceSupportSpec extends FreeSpec with Matchers {
+class CirceSupportSpec extends AnyFreeSpec with Matchers {
   import CirceSupport._
   import CirceSupportSpec._
   import io.circe.generic.auto._
