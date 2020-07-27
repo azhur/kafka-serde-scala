@@ -20,13 +20,13 @@ import java.io.ByteArrayOutputStream
 import java.util
 
 import com.sksamuel.avro4s.{
-  AvroJsonInputStream,
+  AvroInputStream,
   AvroOutputStream,
-  FromRecord,
-  SchemaFor,
-  ToRecord
+  AvroSchema,
+  Decoder,
+  Encoder,
+  SchemaFor
 }
-import org.apache.avro.file.SeekableByteArrayInput
 import org.apache.kafka.common.errors.SerializationException
 import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
 
@@ -35,10 +35,7 @@ import scala.util.control.NonFatal
 import scala.util.{ Failure, Success }
 
 trait Avro4sJsonSupport {
-  implicit def toSerializer[T >: Null](
-      implicit schemaFor: SchemaFor[T],
-      toRecord: ToRecord[T]
-  ): Serializer[T] =
+  implicit def toSerializer[T >: Null: Encoder]: Serializer[T] =
     new Serializer[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
@@ -47,7 +44,7 @@ trait Avro4sJsonSupport {
         else {
           val baos = new ByteArrayOutputStream()
           try {
-            val output = AvroOutputStream.json[T](baos)
+            val output = AvroOutputStream.json[T].to(baos).build()
             try {
               output.write(data)
             } finally {
@@ -64,30 +61,31 @@ trait Avro4sJsonSupport {
 
   implicit def toDeserializer[T >: Null](
       implicit schemaFor: SchemaFor[T],
-      fromRecord: FromRecord[T],
-      schemas: WriterReaderSchemas = WriterReaderSchemas()
+      decoder: Decoder[T]
   ): Deserializer[T] =
     new Deserializer[T] {
+      private val schema                                                         = AvroSchema[T]
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
       override def deserialize(topic: String, data: Array[Byte]): T =
         if (data == null) null
-        else
-          new AvroJsonInputStream[T](
-            new SeekableByteArrayInput(data),
-            schemas.writerSchema,
-            schemas.readerSchema
-          ).singleEntity match {
-            case Success(json)  => json
-            case Failure(error) => throw new SerializationException(error)
+        else {
+          val it = AvroInputStream.json[T].from(data).build(schema).tryIterator
+          if (it.hasNext) {
+            it.next() match {
+              case Success(record) => record
+              case Failure(err)    => throw new SerializationException(err)
+            }
+          } else {
+            throw new SerializationException("Empty avro4s data iterator")
           }
+        }
     }
 
   implicit def toSerde[T >: Null](
       implicit schemaFor: SchemaFor[T],
-      toRecord: ToRecord[T],
-      fromRecord: FromRecord[T],
-      schemas: WriterReaderSchemas = WriterReaderSchemas()
+      encoder: Encoder[T],
+      decoder: Decoder[T]
   ): Serde[T] =
     new Serde[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}

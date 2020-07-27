@@ -18,7 +18,7 @@ package io.github.azhur.kafkaserdeavro4s
 
 import java.nio.charset.StandardCharsets.UTF_8
 
-import com.sksamuel.avro4s.{ FromRecord, SchemaFor, ToRecord }
+import com.sksamuel.avro4s.{ Decoder, Encoder, SchemaFor }
 import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -38,9 +38,9 @@ object Avro4sJsonSupportSpec {
   def serdeFooSer(foo: Foo)(implicit serde: Serde[Foo]): Array[Byte] =
     serde.serializer().serialize("unused_topic", foo)
 
-  implicit val schemaFor  = SchemaFor[Foo]
-  implicit val toRecord   = ToRecord[Foo]
-  implicit val fromRecord = FromRecord[Foo]
+  implicit val schemaFor = SchemaFor[Foo]
+  implicit val encoder   = Encoder[Foo]
+  implicit val decoder   = Decoder[Foo]
 }
 
 class Avro4sJsonSupportSpec extends AnyFreeSpec with Matchers {
