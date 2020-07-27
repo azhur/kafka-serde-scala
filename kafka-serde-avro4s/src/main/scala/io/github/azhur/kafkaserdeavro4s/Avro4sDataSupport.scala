@@ -74,9 +74,11 @@ trait Avro4sDataSupport {
       override def deserialize(topic: String, data: Array[Byte]): T =
         if (data == null) null
         else {
-          val it = new AvroDataInputStream[T](new SeekableByteArrayInput(data),
-                                              schemas.writerSchema,
-                                              schemas.readerSchema).tryIterator
+          val it = new AvroDataInputStream[T](
+            new SeekableByteArrayInput(data),
+            schemas.writerSchema,
+            schemas.readerSchema
+          ).tryIterator
           if (it.hasNext) {
             it.next() match {
               case Success(record) => record
@@ -89,10 +91,12 @@ trait Avro4sDataSupport {
 
     }
 
-  implicit def toSerde[T >: Null](implicit schemaFor: SchemaFor[T],
-                                  toRecord: ToRecord[T],
-                                  fromRecord: FromRecord[T],
-                                  codec: CodecFactory = CodecFactory.nullCodec()): Serde[T] =
+  implicit def toSerde[T >: Null](
+      implicit schemaFor: SchemaFor[T],
+      toRecord: ToRecord[T],
+      fromRecord: FromRecord[T],
+      codec: CodecFactory = CodecFactory.nullCodec()
+  ): Serde[T] =
     new Serde[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}

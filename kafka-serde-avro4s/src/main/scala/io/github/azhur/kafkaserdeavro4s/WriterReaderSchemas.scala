@@ -18,5 +18,7 @@ package io.github.azhur.kafkaserdeavro4s
 
 import org.apache.avro.Schema
 
-case class WriterReaderSchemas(writerSchema: Option[Schema] = None,
-                               readerSchema: Option[Schema] = None)
+case class WriterReaderSchemas(
+    writerSchema: Option[Schema] = None,
+    readerSchema: Option[Schema] = None
+)
