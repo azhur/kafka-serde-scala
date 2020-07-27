@@ -27,8 +27,10 @@ import scala.language.implicitConversions
 import scala.util.control.NonFatal
 
 trait Json4sSupport {
-  implicit def toSerializer[T <: AnyRef](implicit serialization: Serialization,
-                                         formats: Formats): Serializer[T] =
+  implicit def toSerializer[T <: AnyRef](
+      implicit serialization: Serialization,
+      formats: Formats
+  ): Serializer[T] =
     new Serializer[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
@@ -57,8 +59,10 @@ trait Json4sSupport {
           }
     }
 
-  implicit def toSerde[T >: Null <: AnyRef: Manifest](implicit serialization: Serialization,
-                                                      formats: Formats): Serde[T] =
+  implicit def toSerde[T >: Null <: AnyRef: Manifest](
+      implicit serialization: Serialization,
+      formats: Formats
+  ): Serde[T] =
     new Serde[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}

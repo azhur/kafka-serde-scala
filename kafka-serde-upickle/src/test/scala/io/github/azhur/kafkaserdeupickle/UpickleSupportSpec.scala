@@ -19,7 +19,8 @@ package io.github.azhur.kafkaserdeupickle
 import java.nio.charset.StandardCharsets.UTF_8
 
 import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
-import org.scalatest.{ FreeSpec, Matchers }
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 import upickle.default.{ ReadWriter, macroRW }
 
 object UpickleSupportSpec {
@@ -40,7 +41,7 @@ object UpickleSupportSpec {
   implicit val rw: ReadWriter[Foo] = macroRW
 }
 
-class UpickleSupportSpec extends FreeSpec with Matchers {
+class UpickleSupportSpec extends AnyFreeSpec with Matchers {
   import UpickleSupport._
   import UpickleSupportSpec._
 

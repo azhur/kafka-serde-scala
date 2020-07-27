@@ -19,9 +19,10 @@ package io.github.azhur.kafkaserdejsoniterscala
 import java.nio.charset.StandardCharsets.UTF_8
 
 import com.github.plokhotnyuk.jsoniter_scala.core.JsonValueCodec
-import com.github.plokhotnyuk.jsoniter_scala.macros.{ CodecMakerConfig, JsonCodecMaker }
+import com.github.plokhotnyuk.jsoniter_scala.macros.JsonCodecMaker
 import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
-import org.scalatest.{ FreeSpec, Matchers }
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 object JsoniterScalaSupportSpec {
   case class Foo(a: Int, b: String)
@@ -39,11 +40,11 @@ object JsoniterScalaSupportSpec {
     serde.serializer().serialize("unused_topic", foo)
 }
 
-class JsoniterScalaSupportSpec extends FreeSpec with Matchers {
+class JsoniterScalaSupportSpec extends AnyFreeSpec with Matchers {
   import JsoniterScalaSupportSpec._
   import io.github.azhur.kafkaserdejsoniterscala.JsoniterScalaSupport._
 
-  private implicit val fooCodec: JsonValueCodec[Foo] = JsonCodecMaker.make[Foo](CodecMakerConfig())
+  private implicit val fooCodec: JsonValueCodec[Foo] = JsonCodecMaker.make[Foo]
 
   "JsoniterScalaSupport" - {
     "should implicitly convert to kafka Serializer" in {

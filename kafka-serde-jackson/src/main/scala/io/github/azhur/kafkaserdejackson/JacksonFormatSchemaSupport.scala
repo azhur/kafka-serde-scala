@@ -31,8 +31,10 @@ import scala.reflect.ClassTag
 import scala.util.control.NonFatal
 
 trait JacksonFormatSchemaSupport {
-  implicit def toSerializer[T <: AnyRef](implicit mapper: ObjectMapper,
-                                         schema: FormatSchema): Serializer[T] =
+  implicit def toSerializer[T <: AnyRef](
+      implicit mapper: ObjectMapper,
+      schema: FormatSchema
+  ): Serializer[T] =
     new Serializer[T] {
       private val writer                                                         = mapper.writer(schema)
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}

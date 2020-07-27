@@ -35,8 +35,10 @@ import scala.util.{ Failure, Success }
 import scala.util.control.NonFatal
 
 trait Avro4sBinarySupport {
-  implicit def toSerializer[T >: Null](implicit schemaFor: SchemaFor[T],
-                                       toRecord: ToRecord[T]): Serializer[T] =
+  implicit def toSerializer[T >: Null](
+      implicit schemaFor: SchemaFor[T],
+      toRecord: ToRecord[T]
+  ): Serializer[T] =
     new Serializer[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
@@ -71,9 +73,11 @@ trait Avro4sBinarySupport {
       override def deserialize(topic: String, data: Array[Byte]): T =
         if (data == null) null
         else {
-          val it = new AvroBinaryInputStream[T](new SeekableByteArrayInput(data),
-                                                schemas.writerSchema,
-                                                schemas.readerSchema).tryIterator
+          val it = new AvroBinaryInputStream[T](
+            new SeekableByteArrayInput(data),
+            schemas.writerSchema,
+            schemas.readerSchema
+          ).tryIterator
           if (it.hasNext) {
             it.next() match {
               case Success(record) => record
