@@ -28,7 +28,7 @@ import scala.util.control.NonFatal
 trait JsoniterScalaSupport {
   implicit def toSerializer[T >: Null](
       implicit codec: JsonValueCodec[T],
-      writerConfig: WriterConfig = WriterConfig()
+      writerConfig: WriterConfig = WriterConfig
   ): Serializer[T] =
     new Serializer[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
@@ -44,7 +44,7 @@ trait JsoniterScalaSupport {
 
   implicit def toDeserializer[T >: Null](
       implicit codec: JsonValueCodec[T],
-      readerConfig: ReaderConfig = ReaderConfig()
+      readerConfig: ReaderConfig = ReaderConfig
   ): Deserializer[T] =
     new Deserializer[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
@@ -60,8 +60,8 @@ trait JsoniterScalaSupport {
 
   implicit def toSerde[T >: Null](
       implicit codec: JsonValueCodec[T],
-      writerConfig: WriterConfig = WriterConfig(),
-      readerConfig: ReaderConfig = ReaderConfig()
+      writerConfig: WriterConfig = WriterConfig,
+      readerConfig: ReaderConfig = ReaderConfig
   ): Serde[T] =
     new Serde[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}

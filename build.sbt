@@ -1,7 +1,9 @@
 
 lazy val latest211 = "2.11.12"
 
-lazy val latest212 = "2.12.8"
+lazy val latest212 = "2.12.12"
+
+lazy val latest213 = "2.13.3"
 
 lazy val `kafka-serde-scala` =
   project
@@ -30,7 +32,7 @@ lazy val `kafka-serde-circe` = project
   .settings(scalafmtSettings)
   .settings(publishSettings)
   .settings(
-    crossScalaVersions := Seq(latest212, latest211),
+    crossScalaVersions := Seq(latest213, latest212/*, latest211 Circe dropped Scala 2.11 support */),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.circe,
@@ -47,7 +49,7 @@ lazy val `kafka-serde-json4s` = project
   .settings(scalafmtSettings)
   .settings(publishSettings)
   .settings(
-    crossScalaVersions := Seq(latest212, latest211),
+    crossScalaVersions := Seq(latest213, latest212, latest211),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.json4sCore,
@@ -63,7 +65,7 @@ lazy val `kafka-serde-jsoniter-scala` = project
   .settings(scalafmtSettings)
   .settings(publishSettings)
   .settings(
-    crossScalaVersions := Seq(latest212, latest211),
+    crossScalaVersions := Seq(latest213, latest212, latest211),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.jsoniterScalaCore,
@@ -78,7 +80,7 @@ lazy val `kafka-serde-play-json` = project
   .settings(scalafmtSettings)
   .settings(publishSettings)
   .settings(
-    crossScalaVersions := Seq(latest212, latest211),
+    crossScalaVersions := Seq(latest213, latest212/*, latest211 Play-JSON dropped Scala 2.11 support */),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.playJson,
@@ -92,7 +94,7 @@ lazy val `kafka-serde-upickle` = project
   .settings(scalafmtSettings)
   .settings(publishSettings)
   .settings(
-    crossScalaVersions := Seq(latest212, latest211),
+    crossScalaVersions := Seq(latest213, latest212/*, latest211 uPickle dropped Scala 2.11 support */),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.upickle,
@@ -106,7 +108,7 @@ lazy val `kafka-serde-avro4s` = project
   .settings(scalafmtSettings)
   .settings(publishSettings)
   .settings(
-    crossScalaVersions := Seq(latest212, latest211),
+    crossScalaVersions := Seq(/*TODO: latest213, */latest212, latest211),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.avro4sCore,
@@ -120,7 +122,7 @@ lazy val `kafka-serde-jackson` = project
   .settings(scalafmtSettings)
   .settings(publishSettings)
   .settings(
-    crossScalaVersions := Seq(latest212, latest211),
+    crossScalaVersions := Seq(latest213, latest212, latest211),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.jacksonCore,
@@ -133,18 +135,15 @@ lazy val `kafka-serde-jackson` = project
   )
 
 lazy val `kafka-serde-scala-example` = project
+  .dependsOn(`kafka-serde-circe`)
   .enablePlugins(AutomateHeaderPlugin)
   .settings(commonSettings)
   .settings(scalafmtSettings)
   .settings(noPublishSettings)
   .settings(
-    crossScalaVersions := Seq(latest212, latest211),
+    crossScalaVersions := Seq(latest213, latest212/*, latest211 Circe dropped Scala 2.11 support */),
     libraryDependencies ++= Seq(
       dependency.kafkaStreamsScala,
-      dependency.circe,
-      dependency.circeParser,
-      dependency.circeJawn,
-      dependency.kafkaSerdeCirce,
       dependency.circeGeneric,
       dependency.scalaTest        % Test
     )
@@ -154,15 +153,14 @@ lazy val dependency =
   new {
     object Version {
       val avro4s                        = "1.9.0"
-      val circe                         = "0.11.1"
-      val json4s                        = "3.6.4"
-      val jsoniterScala                 = "0.39.0"
-      val scalaTest                     = "3.2.0"
-      val kafka                         = "2.3.0"
-      val play                          = "2.7.1"
-      val upickle                       = "0.7.4"
-      val jackson                       = "2.9.8"
-      val kafkaSerdeScala               = "0.4.0"
+      val circe                         = "0.13.0"
+      val json4s                        = "3.6.9"
+      val jsoniterScala                 = "2.6.0"
+      val scalaTest                     = "3.0.8"
+      val kafka                         = "2.5.0"
+      val play                          = "2.9.0"
+      val upickle                       = "1.2.0"
+      val jackson                       = "2.11.1"
     }
     val kafkaClients        = "org.apache.kafka"                      %  "kafka-clients"                    % Version.kafka
     val kafkaStreamsScala   = "org.apache.kafka"                      %% "kafka-streams-scala"              % Version.kafka
@@ -180,12 +178,9 @@ lazy val dependency =
     val upickle             = "com.lihaoyi"                           %% "upickle"                          % Version.upickle
     val jacksonScala        = "com.fasterxml.jackson.module"          %% "jackson-module-scala"             % Version.jackson
     val jacksonCore         = "com.fasterxml.jackson.core"            %  "jackson-core"                     % Version.jackson
-    val jacksonDatabind     = "com.fasterxml.jackson.core"            %  "jackson-databind"                 % Version.jackson
     val jacksonProtobuf     = "com.fasterxml.jackson.dataformat"      %  "jackson-dataformat-protobuf"      % Version.jackson
     val jacksonAvro         = "com.fasterxml.jackson.dataformat"      %  "jackson-dataformat-avro"          % Version.jackson
     val scalaTest           = "org.scalatest"                         %% "scalatest"                        % Version.scalaTest
-
-    val kafkaSerdeCirce     = "io.github.azhur"                       %% "kafka-serde-circe"                % Version.kafkaSerdeScala
   }
 
 

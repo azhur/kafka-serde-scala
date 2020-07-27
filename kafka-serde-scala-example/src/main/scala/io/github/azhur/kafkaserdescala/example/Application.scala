@@ -52,8 +52,10 @@ object Application extends App with CirceSupport {
     val streamsConfiguration = new Properties
     streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, "test-app")
     streamsConfiguration.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092")
-    streamsConfiguration.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,
-                             Topology.AutoOffsetReset.EARLIEST.toString.toLowerCase)
+    streamsConfiguration.put(
+      ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,
+      Topology.AutoOffsetReset.EARLIEST.toString.toLowerCase
+    )
     streamsConfiguration
   }
 }

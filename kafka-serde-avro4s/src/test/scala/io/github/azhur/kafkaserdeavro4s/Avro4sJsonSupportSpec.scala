@@ -58,7 +58,7 @@ class Avro4sJsonSupportSpec extends FreeSpec with Matchers {
     }
 
     "should implicitly convert to kafka Serde" in {
-      val foo           = Foo(1, "𝄞")
+      val foo = Foo(1, "𝄞")
 
       serdeFooDes(null) shouldBe null
       serdeFooSer(null) shouldBe null
