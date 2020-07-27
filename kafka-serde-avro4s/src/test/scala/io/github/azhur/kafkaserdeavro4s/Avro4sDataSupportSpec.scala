@@ -18,7 +18,8 @@ package io.github.azhur.kafkaserdeavro4s
 
 import com.sksamuel.avro4s.{ FromRecord, SchemaFor, ToRecord }
 import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
-import org.scalatest.{ FreeSpec, Matchers }
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 object Avro4sDataSupportSpec {
   case class Foo(a: Int, b: String, c: Boolean)
@@ -40,7 +41,7 @@ object Avro4sDataSupportSpec {
   implicit val fromRecord = FromRecord[Foo]
 }
 
-class Avro4sDataSupportSpec extends FreeSpec with Matchers {
+class Avro4sDataSupportSpec extends AnyFreeSpec with Matchers {
   import Avro4sDataSupport._
   import Avro4sDataSupportSpec._
 

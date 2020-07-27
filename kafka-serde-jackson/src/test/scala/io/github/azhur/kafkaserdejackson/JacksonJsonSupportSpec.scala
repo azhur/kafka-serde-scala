@@ -18,9 +18,10 @@ package io.github.azhur.kafkaserdejackson
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
-import org.scalatest.{ FreeSpec, Matchers }
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class JacksonJsonSupportSpec extends FreeSpec with Matchers {
+class JacksonJsonSupportSpec extends AnyFreeSpec with Matchers {
   import JacksonJsonSupport._
   import ApiSpec._
 
