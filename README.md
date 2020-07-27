@@ -25,35 +25,35 @@ Add dependencies for the selected integration:
 - for avro4s:
 ``` scala
 libraryDependencies ++= List(
-  "io.github.azhur" %% "kafka-serde-avro4s" % "0.4.0",
+  "io.github.azhur" %% "kafka-serde-avro4s" % "0.5.0",
 )
 ```
 
 - for circe:
 ``` scala
 libraryDependencies ++= List(
-  "io.github.azhur" %% "kafka-serde-circe" % "0.4.0",
+  "io.github.azhur" %% "kafka-serde-circe" % "0.5.0",
 )
 ```
 
 - for jackson:
 ``` scala
 libraryDependencies ++= List(
-  "io.github.azhur" %% "kafka-serde-jackson" % "0.4.0",
+  "io.github.azhur" %% "kafka-serde-jackson" % "0.5.0",
 )
 ```
 
 - for json4s:
 ``` scala
 libraryDependencies ++= List(
-  "io.github.azhur" %% "kafka-serde-json4s" % "0.4.0",
+  "io.github.azhur" %% "kafka-serde-json4s" % "0.5.0",
 )
 ```
 
 - for jsoniter-scala:
 ``` scala
 libraryDependencies ++= List(
-  "io.github.azhur" %% "kafka-serde-jsoniter-scala" % "0.4.0",
+  "io.github.azhur" %% "kafka-serde-jsoniter-scala" % "0.5.0",
   "com.github.plokhotnyuk.jsoniter-scala" %% "jsoniter-scala-macros" % "0.29.2" % Provided // required only in compile-time
 )
 ```
@@ -61,14 +61,14 @@ libraryDependencies ++= List(
 - for play-json:
 ``` scala
 libraryDependencies ++= List(
-  "io.github.azhur" %% "kafka-serde-play-json" % "0.4.0"
+  "io.github.azhur" %% "kafka-serde-play-json" % "0.5.0"
 )
 ```
 
 - for upickle:
 ``` scala
 libraryDependencies ++= List(
-  "io.github.azhur" %% "kafka-serde-upickle" % "0.4.0"
+  "io.github.azhur" %% "kafka-serde-upickle" % "0.5.0"
 )
 ```
 
