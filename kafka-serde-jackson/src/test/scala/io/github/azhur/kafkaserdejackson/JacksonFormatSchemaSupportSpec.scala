@@ -20,9 +20,10 @@ import com.fasterxml.jackson.dataformat.avro.{ AvroMapper, AvroSchema }
 import com.fasterxml.jackson.dataformat.protobuf.ProtobufMapper
 import com.fasterxml.jackson.dataformat.protobuf.schema.ProtobufSchema
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
-import org.scalatest.{ FreeSpec, Matchers }
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class JacksonFormatSchemaSupportSpec extends FreeSpec with Matchers {
+class JacksonFormatSchemaSupportSpec extends AnyFreeSpec with Matchers {
   import JacksonFormatSchemaSupport._
   import ApiSpec._
 

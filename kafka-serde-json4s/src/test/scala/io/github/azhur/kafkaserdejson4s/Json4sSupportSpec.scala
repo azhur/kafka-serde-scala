@@ -20,7 +20,8 @@ import java.nio.charset.StandardCharsets.UTF_8
 
 import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
 import org.json4s.{ DefaultFormats, jackson, native }
-import org.scalatest.{ FreeSpec, Matchers }
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 object Json4sSupportSpec {
   case class Foo(a: Int, b: String)
@@ -38,7 +39,7 @@ object Json4sSupportSpec {
     serde.serializer().serialize("unused_topic", foo)
 }
 
-class Json4sSupportSpec extends FreeSpec with Matchers {
+class Json4sSupportSpec extends AnyFreeSpec with Matchers {
   import Json4sSupport._
   import Json4sSupportSpec._
 

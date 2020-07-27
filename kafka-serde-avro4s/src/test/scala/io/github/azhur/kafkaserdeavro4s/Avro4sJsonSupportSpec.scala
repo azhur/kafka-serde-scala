@@ -20,7 +20,8 @@ import java.nio.charset.StandardCharsets.UTF_8
 
 import com.sksamuel.avro4s.{ FromRecord, SchemaFor, ToRecord }
 import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
-import org.scalatest.{ FreeSpec, Matchers }
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 object Avro4sJsonSupportSpec {
   case class Foo(a: Int, b: String)
@@ -42,7 +43,7 @@ object Avro4sJsonSupportSpec {
   implicit val fromRecord = FromRecord[Foo]
 }
 
-class Avro4sJsonSupportSpec extends FreeSpec with Matchers {
+class Avro4sJsonSupportSpec extends AnyFreeSpec with Matchers {
   import Avro4sJsonSupport._
   import Avro4sJsonSupportSpec._
 
@@ -58,7 +59,7 @@ class Avro4sJsonSupportSpec extends FreeSpec with Matchers {
     }
 
     "should implicitly convert to kafka Serde" in {
-      val foo           = Foo(1, "𝄞")
+      val foo = Foo(1, "𝄞")
 
       serdeFooDes(null) shouldBe null
       serdeFooSer(null) shouldBe null
