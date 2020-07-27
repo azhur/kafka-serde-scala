@@ -20,13 +20,13 @@ import java.io.ByteArrayOutputStream
 import java.util
 
 import com.sksamuel.avro4s.{
-  AvroBinaryInputStream,
+  AvroInputStream,
   AvroOutputStream,
-  FromRecord,
-  SchemaFor,
-  ToRecord
+  AvroSchema,
+  Decoder,
+  Encoder,
+  SchemaFor
 }
-import org.apache.avro.file.SeekableByteArrayInput
 import org.apache.kafka.common.errors.SerializationException
 import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
 
@@ -35,10 +35,7 @@ import scala.util.{ Failure, Success }
 import scala.util.control.NonFatal
 
 trait Avro4sBinarySupport {
-  implicit def toSerializer[T >: Null](
-      implicit schemaFor: SchemaFor[T],
-      toRecord: ToRecord[T]
-  ): Serializer[T] =
+  implicit def toSerializer[T >: Null: Encoder]: Serializer[T] =
     new Serializer[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
@@ -47,7 +44,7 @@ trait Avro4sBinarySupport {
         else {
           val baos = new ByteArrayOutputStream()
           try {
-            val output = AvroOutputStream.binary[T](baos)
+            val output = AvroOutputStream.binary[T].to(baos).build()
             try {
               output.write(data)
             } finally {
@@ -64,20 +61,17 @@ trait Avro4sBinarySupport {
 
   implicit def toDeserializer[T >: Null](
       implicit schemaFor: SchemaFor[T],
-      fromRecord: FromRecord[T],
-      schemas: WriterReaderSchemas = WriterReaderSchemas()
+      decoder: Decoder[T]
   ): Deserializer[T] =
     new Deserializer[T] {
+      private val schema                                                         = AvroSchema[T]
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
       override def deserialize(topic: String, data: Array[Byte]): T =
         if (data == null) null
         else {
-          val it = new AvroBinaryInputStream[T](
-            new SeekableByteArrayInput(data),
-            schemas.writerSchema,
-            schemas.readerSchema
-          ).tryIterator
+          val it = AvroInputStream.binary[T].from(data).build(schema).tryIterator
+
           if (it.hasNext) {
             it.next() match {
               case Success(record) => record
@@ -90,12 +84,7 @@ trait Avro4sBinarySupport {
 
     }
 
-  implicit def toSerde[T >: Null](
-      implicit schemaFor: SchemaFor[T],
-      toRecord: ToRecord[T],
-      fromRecord: FromRecord[T],
-      schemas: WriterReaderSchemas = WriterReaderSchemas()
-  ): Serde[T] =
+  implicit def toSerde[T >: Null: SchemaFor: Encoder: Decoder]: Serde[T] =
     new Serde[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}

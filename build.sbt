@@ -108,11 +108,11 @@ lazy val `kafka-serde-avro4s` = project
   .settings(scalafmtSettings)
   .settings(publishSettings)
   .settings(
-    scalaVersion := latest212,
-    crossScalaVersions := Seq(/*TODO: latest213, */latest212, latest211),
+    crossScalaVersions := Seq(latest213, latest212),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.avro4sCore,
+      dependency.avro4sKafka,
       dependency.scalaTest     % Test
     )
   )
@@ -153,7 +153,7 @@ lazy val `kafka-serde-scala-example` = project
 lazy val dependency =
   new {
     object Version {
-      val avro4s                        = "1.9.0"
+      val avro4s                        = "3.1.1"
       val circe                         = "0.13.0"
       val json4s                        = "3.6.9"
       val jsoniterScala                 = "2.6.0"
@@ -166,6 +166,7 @@ lazy val dependency =
     val kafkaClients        = "org.apache.kafka"                      %  "kafka-clients"                    % Version.kafka
     val kafkaStreamsScala   = "org.apache.kafka"                      %% "kafka-streams-scala"              % Version.kafka
     val avro4sCore          = "com.sksamuel.avro4s"                   %% "avro4s-core"                      % Version.avro4s
+    val avro4sKafka         = "com.sksamuel.avro4s"                   %% "avro4s-kafka"                     % Version.avro4s
     val circe               = "io.circe"                              %% "circe-core"                       % Version.circe
     val circeParser         = "io.circe"                              %% "circe-parser"                     % Version.circe
     val circeJawn           = "io.circe"                              %% "circe-jawn"                       % Version.circe

@@ -19,14 +19,8 @@ package io.github.azhur.kafkaserdeavro4s
 import java.io.ByteArrayOutputStream
 import java.util
 
-import com.sksamuel.avro4s.{
-  AvroDataInputStream,
-  AvroDataOutputStream,
-  FromRecord,
-  SchemaFor,
-  ToRecord
-}
-import org.apache.avro.file.{ CodecFactory, SeekableByteArrayInput }
+import com.sksamuel.avro4s._
+import org.apache.avro.file.CodecFactory
 import org.apache.kafka.common.errors.SerializationException
 import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
 
@@ -36,8 +30,7 @@ import scala.util.{ Failure, Success }
 
 trait Avro4sDataSupport {
   implicit def toSerializer[T >: Null](
-      implicit schemaFor: SchemaFor[T],
-      toRecord: ToRecord[T],
+      implicit encoder: Encoder[T],
       codec: CodecFactory = CodecFactory.nullCodec()
   ): Serializer[T] =
     new Serializer[T] {
@@ -65,20 +58,16 @@ trait Avro4sDataSupport {
 
   implicit def toDeserializer[T >: Null](
       implicit schemaFor: SchemaFor[T],
-      fromRecord: FromRecord[T],
-      schemas: WriterReaderSchemas = WriterReaderSchemas()
+      decoder: Decoder[T]
   ): Deserializer[T] =
     new Deserializer[T] {
+      private val schema                                                         = AvroSchema[T]
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
       override def deserialize(topic: String, data: Array[Byte]): T =
         if (data == null) null
         else {
-          val it = new AvroDataInputStream[T](
-            new SeekableByteArrayInput(data),
-            schemas.writerSchema,
-            schemas.readerSchema
-          ).tryIterator
+          val it = AvroInputStream.data[T].from(data).build(schema).tryIterator
           if (it.hasNext) {
             it.next() match {
               case Success(record) => record
@@ -93,8 +82,8 @@ trait Avro4sDataSupport {
 
   implicit def toSerde[T >: Null](
       implicit schemaFor: SchemaFor[T],
-      toRecord: ToRecord[T],
-      fromRecord: FromRecord[T],
+      encoder: Encoder[T],
+      decoder: Decoder[T],
       codec: CodecFactory = CodecFactory.nullCodec()
   ): Serde[T] =
     new Serde[T] {
