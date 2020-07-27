@@ -19,8 +19,9 @@ package io.github.azhur.kafkaserdeplayjson
 import java.nio.charset.StandardCharsets.UTF_8
 
 import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
-import org.scalatest.{ FreeSpec, Matchers }
 import play.api.libs.json.{ Format, Json }
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 object PlayJsonSupportSpec {
   case class Foo(a: Int, b: String)
@@ -40,7 +41,7 @@ object PlayJsonSupportSpec {
   implicit val fooFormat: Format[Foo] = Json.format[Foo]
 }
 
-class PlayJsonSupportSpec extends FreeSpec with Matchers {
+class PlayJsonSupportSpec extends AnyFreeSpec with Matchers {
   import PlayJsonSupportSpec._
   import io.github.azhur.kafkaserdeplayjson.PlayJsonSupport._
 
