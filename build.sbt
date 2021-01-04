@@ -159,7 +159,7 @@ lazy val dependency =
       val jsoniterScala                 = "2.6.2"
       val scalaTest                     = "3.2.3"
       val kafka                         = "2.6.0"
-      val play                          = "2.9.1"
+      val play                          = "2.9.2"
       val upickle                       = "1.2.2"
       val jackson                       = "2.11.3"
     }
