@@ -93,8 +93,8 @@ Provide your implicit type class instances and the magic will convert them to Ka
 - for json4s: `org.json4s.DefaultFormats`, `org.json4s.Serialization`
 - for jsoniter-scala: `com.github.plokhotnyuk.jsoniter_scala.core.JsonValueCodec[T]`,  (and optionally 
 `com.github.plokhotnyuk.jsoniter_scala.core.WriterConfig` or/and `com.github.plokhotnyuk.jsoniter_scala.core.ReaderConfig`)
-- for play-json: `play.api.libs.json.Reads`, `play.api.libs.json.Writes`.  
-- for upickle: `upickle.default.Reader`, `upickle.default.Writer`.  
+- for play-json: `play.api.libs.json.Reads`, `play.api.libs.json.Writes`  
+- for upickle: `upickle.default.Reader`, `upickle.default.Writer`  
 - for scalapb: `scalapb.GeneratedMessageCompanion`
 
 For more info, please, take a look at unit tests and at `kafka-serde-scala-example` which is a kafka-streams (2.0) application with kafka-serde-scala usage.
