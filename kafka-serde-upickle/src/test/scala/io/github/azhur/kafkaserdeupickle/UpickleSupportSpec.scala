@@ -18,10 +18,10 @@ package io.github.azhur.kafkaserdeupickle
 
 import java.nio.charset.StandardCharsets.UTF_8
 
-import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
+import org.apache.kafka.common.serialization.{Deserializer, Serde, Serializer}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
-import upickle.default.{ ReadWriter, macroRW }
+import upickle.default.{macroRW, ReadWriter}
 
 object UpickleSupportSpec {
   case class Foo(a: Int, b: String)
@@ -58,7 +58,7 @@ class UpickleSupportSpec extends AnyFreeSpec with Matchers {
     }
 
     "should implicitly convert to kafka Serde" in {
-      val foo           = Foo(1, "𝄞")
+      val foo = Foo(1, "𝄞")
       val serializedFoo = """{"a":1,"b":"𝄞"}""".getBytes(UTF_8)
 
       serdeFooDes(serializedFoo) shouldBe foo

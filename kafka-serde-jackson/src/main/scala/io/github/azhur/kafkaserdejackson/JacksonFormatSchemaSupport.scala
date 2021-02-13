@@ -23,7 +23,7 @@ import scala.reflect.runtime.universe._
 import com.fasterxml.jackson.core.FormatSchema
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.apache.kafka.common.errors.SerializationException
-import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
+import org.apache.kafka.common.serialization.{Deserializer, Serde, Serializer}
 import Jackson.typeReference
 
 import scala.language.implicitConversions
@@ -31,14 +31,14 @@ import scala.reflect.ClassTag
 import scala.util.control.NonFatal
 
 trait JacksonFormatSchemaSupport {
-  implicit def toSerializer[T <: AnyRef](
-      implicit mapper: ObjectMapper,
-      schema: FormatSchema
+  implicit def toSerializer[T <: AnyRef](implicit
+    mapper: ObjectMapper,
+    schema: FormatSchema
   ): Serializer[T] =
     new Serializer[T] {
-      private val writer                                                         = mapper.writer(schema)
+      private val writer = mapper.writer(schema)
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
-      override def close(): Unit                                                 = {}
+      override def close(): Unit = {}
       override def serialize(topic: String, data: T): Array[Byte] =
         if (data == null) null
         else
@@ -48,15 +48,15 @@ trait JacksonFormatSchemaSupport {
           }
     }
 
-  implicit def toDeserializer[T >: Null <: AnyRef](
-      implicit mapper: ObjectMapper,
-      schema: FormatSchema,
-      tt: TypeTag[T]
+  implicit def toDeserializer[T >: Null <: AnyRef](implicit
+    mapper: ObjectMapper,
+    schema: FormatSchema,
+    tt: TypeTag[T]
   ): Deserializer[T] =
     new Deserializer[T] {
-      private val reader                                                         = mapper.readerFor(typeReference[T]).`with`(schema)
+      private val reader = mapper.readerFor(typeReference[T]).`with`(schema)
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
-      override def close(): Unit                                                 = {}
+      override def close(): Unit = {}
       override def deserialize(topic: String, data: Array[Byte]): T =
         if (data == null) null
         else
@@ -66,16 +66,16 @@ trait JacksonFormatSchemaSupport {
           }
     }
 
-  implicit def toSerde[T >: Null <: AnyRef](
-      implicit mapper: ObjectMapper,
-      schema: FormatSchema,
-      ct: TypeTag[T]
+  implicit def toSerde[T >: Null <: AnyRef](implicit
+    mapper: ObjectMapper,
+    schema: FormatSchema,
+    ct: TypeTag[T]
   ): Serde[T] =
     new Serde[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
-      override def close(): Unit                                                 = {}
-      override def serializer(): Serializer[T]                                   = toSerializer[T]
-      override def deserializer(): Deserializer[T]                               = toDeserializer[T]
+      override def close(): Unit = {}
+      override def serializer(): Serializer[T] = toSerializer[T]
+      override def deserializer(): Deserializer[T] = toDeserializer[T]
     }
 }
 

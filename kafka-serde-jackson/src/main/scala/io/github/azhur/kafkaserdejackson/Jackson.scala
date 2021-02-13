@@ -18,20 +18,20 @@ package io.github.azhur.kafkaserdejackson
 
 import com.fasterxml.jackson.core.`type`.TypeReference
 import scala.reflect.runtime.universe._
-import java.lang.reflect.{ ParameterizedType, Type => JType }
+import java.lang.reflect.{ParameterizedType, Type => JType}
 
 object Jackson {
   def typeReference[T: TypeTag]: TypeReference[T] = {
-    val t      = typeTag[T]
+    val t = typeTag[T]
     val mirror = t.mirror
     def mapType(t: Type): JType =
       if (t.typeArgs.isEmpty) {
         mirror.runtimeClass(t)
       } else {
         new ParameterizedType {
-          def getRawType: JType                    = mirror.runtimeClass(t)
+          def getRawType: JType = mirror.runtimeClass(t)
           def getActualTypeArguments: Array[JType] = t.typeArgs.map(mapType).toArray
-          def getOwnerType: JType                  = null
+          def getOwnerType: JType = null
         }
       }
 

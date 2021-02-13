@@ -16,7 +16,7 @@
 
 package io.github.azhur.kafkaserdejackson
 
-import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
+import org.apache.kafka.common.serialization.{Deserializer, Serde, Serializer}
 
 object ApiSpec {
   case class Foo(a: Int, b: String)

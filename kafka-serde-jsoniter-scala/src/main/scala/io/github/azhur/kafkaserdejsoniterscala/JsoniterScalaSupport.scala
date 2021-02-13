@@ -20,19 +20,19 @@ import java.util
 
 import com.github.plokhotnyuk.jsoniter_scala.core._
 import org.apache.kafka.common.errors.SerializationException
-import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
+import org.apache.kafka.common.serialization.{Deserializer, Serde, Serializer}
 
 import scala.language.implicitConversions
 import scala.util.control.NonFatal
 
 trait JsoniterScalaSupport {
-  implicit def toSerializer[T >: Null](
-      implicit codec: JsonValueCodec[T],
-      writerConfig: WriterConfig = WriterConfig
+  implicit def toSerializer[T >: Null](implicit
+    codec: JsonValueCodec[T],
+    writerConfig: WriterConfig = WriterConfig
   ): Serializer[T] =
     new Serializer[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
-      override def close(): Unit                                                 = {}
+      override def close(): Unit = {}
       override def serialize(topic: String, data: T): Array[Byte] =
         if (data == null) null
         else
@@ -42,13 +42,13 @@ trait JsoniterScalaSupport {
           }
     }
 
-  implicit def toDeserializer[T >: Null](
-      implicit codec: JsonValueCodec[T],
-      readerConfig: ReaderConfig = ReaderConfig
+  implicit def toDeserializer[T >: Null](implicit
+    codec: JsonValueCodec[T],
+    readerConfig: ReaderConfig = ReaderConfig
   ): Deserializer[T] =
     new Deserializer[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
-      override def close(): Unit                                                 = {}
+      override def close(): Unit = {}
       override def deserialize(topic: String, data: Array[Byte]): T =
         if (data == null) null
         else
@@ -58,16 +58,16 @@ trait JsoniterScalaSupport {
           }
     }
 
-  implicit def toSerde[T >: Null](
-      implicit codec: JsonValueCodec[T],
-      writerConfig: WriterConfig = WriterConfig,
-      readerConfig: ReaderConfig = ReaderConfig
+  implicit def toSerde[T >: Null](implicit
+    codec: JsonValueCodec[T],
+    writerConfig: WriterConfig = WriterConfig,
+    readerConfig: ReaderConfig = ReaderConfig
   ): Serde[T] =
     new Serde[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
-      override def close(): Unit                                                 = {}
-      override def serializer(): Serializer[T]                                   = toSerializer[T]
-      override def deserializer(): Deserializer[T]                               = toDeserializer[T]
+      override def close(): Unit = {}
+      override def serializer(): Serializer[T] = toSerializer[T]
+      override def deserializer(): Deserializer[T] = toDeserializer[T]
     }
 }
 

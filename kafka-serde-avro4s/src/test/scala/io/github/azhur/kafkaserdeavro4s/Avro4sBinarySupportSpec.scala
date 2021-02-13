@@ -16,8 +16,8 @@
 
 package io.github.azhur.kafkaserdeavro4s
 
-import com.sksamuel.avro4s.{ Decoder, Encoder, SchemaFor }
-import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
+import com.sksamuel.avro4s.{Decoder, Encoder, SchemaFor}
+import org.apache.kafka.common.serialization.{Deserializer, Serde, Serializer}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -37,8 +37,8 @@ object Avro4sBinarySupportSpec {
     serde.serializer().serialize("unused_topic", foo)
 
   implicit val schemaFor = SchemaFor[Foo]
-  implicit val encoder   = Encoder[Foo]
-  implicit val decoder   = Decoder[Foo]
+  implicit val encoder = Encoder[Foo]
+  implicit val decoder = Decoder[Foo]
 }
 
 class Avro4sBinarySupportSpec extends AnyFreeSpec with Matchers {
@@ -48,7 +48,7 @@ class Avro4sBinarySupportSpec extends AnyFreeSpec with Matchers {
   "Avro4sBinarySupport" - {
     "should implicitly convert to kafka Serializer/Deserializer/Serde" in {
       val schema = schemaFor.schema.toString
-      val foo    = Foo(1, "𝄞", false)
+      val foo = Foo(1, "𝄞", false)
 
       val serializedFoo = serializeFoo(foo)
       new String(serializedFoo) shouldNot include(schema)

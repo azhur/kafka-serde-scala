@@ -19,12 +19,12 @@ import java.util.Properties
 
 import io.github.azhur.kafkaserdecirce.CirceSupport
 import org.apache.kafka.clients.consumer.ConsumerConfig
-import org.apache.kafka.streams.{ KafkaStreams, StreamsConfig, Topology }
+import org.apache.kafka.streams.{KafkaStreams, StreamsConfig, Topology}
 import org.apache.kafka.streams.scala.StreamsBuilder
 
 object Application extends App with CirceSupport {
   import io.circe.generic.auto._
-  import org.apache.kafka.streams.scala.Serdes._
+  import org.apache.kafka.streams.scala.serialization.Serdes._
   import org.apache.kafka.streams.scala.ImplicitConversions._
 
   case class User(id: Long, name: String, age: Int)
@@ -34,9 +34,9 @@ object Application extends App with CirceSupport {
   val streamingApp = new KafkaStreams(topology, streamProperties())
   streamingApp.start()
 
-  sys.addShutdownHook({
+  sys.addShutdownHook {
     streamingApp.close()
-  })
+  }
 
   def buildTopology(inputTopic: String, outputTopic: String): Topology = {
     val streamsBuilder = new StreamsBuilder()

@@ -18,8 +18,8 @@ package io.github.azhur.kafkaserdejson4s
 
 import java.nio.charset.StandardCharsets.UTF_8
 
-import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
-import org.json4s.{ DefaultFormats, jackson, native }
+import org.apache.kafka.common.serialization.{Deserializer, Serde, Serializer}
+import org.json4s.{jackson, native, DefaultFormats}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -43,7 +43,7 @@ class Json4sSupportSpec extends AnyFreeSpec with Matchers {
   import Json4sSupport._
   import Json4sSupportSpec._
 
-  private implicit val formats = DefaultFormats
+  implicit private val formats = DefaultFormats
 
   "Json4sSupport jackson" - {
     implicit val serialization = jackson.Serialization
@@ -58,7 +58,7 @@ class Json4sSupportSpec extends AnyFreeSpec with Matchers {
     }
 
     "should implicitly convert to Serde" in {
-      val foo           = Foo(1, "𝄞")
+      val foo = Foo(1, "𝄞")
       val serializedFoo = """{"a":1,"b":"𝄞"}""".getBytes(UTF_8)
 
       serdeFooDes(serializedFoo) shouldBe foo
@@ -82,7 +82,7 @@ class Json4sSupportSpec extends AnyFreeSpec with Matchers {
     }
 
     "should implicitly convert to Serde" in {
-      val foo           = Foo(1, "𝄞")
+      val foo = Foo(1, "𝄞")
       val serializedFoo = """{"a":1,"b":"𝄞"}""".getBytes(UTF_8)
 
       serdeFooDes(serializedFoo) shouldBe foo

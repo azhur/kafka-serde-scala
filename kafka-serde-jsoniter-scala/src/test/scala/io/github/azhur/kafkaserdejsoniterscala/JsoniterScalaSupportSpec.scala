@@ -20,7 +20,7 @@ import java.nio.charset.StandardCharsets.UTF_8
 
 import com.github.plokhotnyuk.jsoniter_scala.core.JsonValueCodec
 import com.github.plokhotnyuk.jsoniter_scala.macros.JsonCodecMaker
-import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
+import org.apache.kafka.common.serialization.{Deserializer, Serde, Serializer}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -44,7 +44,7 @@ class JsoniterScalaSupportSpec extends AnyFreeSpec with Matchers {
   import JsoniterScalaSupportSpec._
   import io.github.azhur.kafkaserdejsoniterscala.JsoniterScalaSupport._
 
-  private implicit val fooCodec: JsonValueCodec[Foo] = JsonCodecMaker.make[Foo]
+  implicit private val fooCodec: JsonValueCodec[Foo] = JsonCodecMaker.make[Foo]
 
   "JsoniterScalaSupport" - {
     "should implicitly convert to kafka Serializer" in {
@@ -58,7 +58,7 @@ class JsoniterScalaSupportSpec extends AnyFreeSpec with Matchers {
     }
 
     "should implicitly convert to Serde" in {
-      val foo           = Foo(1, "𝄞")
+      val foo = Foo(1, "𝄞")
       val serializedFoo = """{"a":1,"b":"𝄞"}""".getBytes(UTF_8)
 
       serdeFooDes(serializedFoo) shouldBe foo

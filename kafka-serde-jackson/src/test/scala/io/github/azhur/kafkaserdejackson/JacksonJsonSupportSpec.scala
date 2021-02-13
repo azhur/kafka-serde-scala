@@ -27,7 +27,7 @@ class JacksonJsonSupportSpec extends AnyFreeSpec with Matchers {
 
   "JacksonJson" - {
     implicit val om: ObjectMapper = new ObjectMapper().registerModule(DefaultScalaModule)
-    val foo                       = Foo(1, "𝄞")
+    val foo = Foo(1, "𝄞")
     "should implicitly convert to kafka Serializer/Deserializer" in {
       serializeFoo(null) shouldBe null
       deserializeFoo(null) shouldBe null
