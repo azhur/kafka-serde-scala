@@ -39,8 +39,8 @@ object Avro4sJsonSupportSpec {
     serde.serializer().serialize("unused_topic", foo)
 
   implicit val schemaFor = SchemaFor[Foo]
-  implicit val encoder = Encoder[Foo]
-  implicit val decoder = Decoder[Foo]
+  implicit val encoder   = Encoder[Foo]
+  implicit val decoder   = Decoder[Foo]
 }
 
 class Avro4sJsonSupportSpec extends AnyFreeSpec with Matchers {

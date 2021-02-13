@@ -37,8 +37,8 @@ object Avro4sDataSupportSpec {
     serde.serializer().serialize("unused_topic", foo)
 
   implicit val schemaFor = SchemaFor[Foo]
-  implicit val encoder = Encoder[Foo]
-  implicit val decoder = Decoder[Foo]
+  implicit val encoder   = Encoder[Foo]
+  implicit val decoder   = Decoder[Foo]
 }
 
 class Avro4sDataSupportSpec extends AnyFreeSpec with Matchers {
@@ -48,7 +48,7 @@ class Avro4sDataSupportSpec extends AnyFreeSpec with Matchers {
   "Avro4sDataSupport" - {
     "should implicitly convert to kafka Serializer/Deserializer/Serde" in {
       val schema = schemaFor.schema.toString
-      val foo = Foo(1, "𝄞", false)
+      val foo    = Foo(1, "𝄞", false)
 
       val serializedFoo = serializeFoo(foo)
       new String(serializedFoo) should include(schema)

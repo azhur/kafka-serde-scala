@@ -58,7 +58,7 @@ class JsoniterScalaSupportSpec extends AnyFreeSpec with Matchers {
     }
 
     "should implicitly convert to Serde" in {
-      val foo = Foo(1, "𝄞")
+      val foo           = Foo(1, "𝄞")
       val serializedFoo = """{"a":1,"b":"𝄞"}""".getBytes(UTF_8)
 
       serdeFooDes(serializedFoo) shouldBe foo

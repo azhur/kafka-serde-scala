@@ -74,7 +74,7 @@ trait JacksonFormatSchemaSupport {
     new Serde[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
       override def close(): Unit = {}
-      override def serializer(): Serializer[T] = toSerializer[T]
+      override def serializer(): Serializer[T]     = toSerializer[T]
       override def deserializer(): Deserializer[T] = toDeserializer[T]
     }
 }

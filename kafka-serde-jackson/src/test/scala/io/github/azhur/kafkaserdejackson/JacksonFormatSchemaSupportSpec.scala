@@ -31,8 +31,8 @@ class JacksonFormatSchemaSupportSpec extends AnyFreeSpec with Matchers {
     implicit val om: AvroMapper =
       new AvroMapper().registerModule(DefaultScalaModule).asInstanceOf[AvroMapper]
     implicit val schema: AvroSchema = om.schemaFor(classOf[Foo])
-    val foo = Foo(1, "𝄞")
-    val serializedFoo: Array[Byte] = Array(2, 2, 8, -16, -99, -124, -98)
+    val foo                         = Foo(1, "𝄞")
+    val serializedFoo: Array[Byte]  = Array(2, 2, 8, -16, -99, -124, -98)
     "should implicitly convert to kafka Serializer" in {
       serializeFoo(null) shouldBe null
       serializeFoo(foo) shouldBe serializedFoo
@@ -56,8 +56,8 @@ class JacksonFormatSchemaSupportSpec extends AnyFreeSpec with Matchers {
     implicit val om: ProtobufMapper =
       new ProtobufMapper().registerModule(DefaultScalaModule).asInstanceOf[ProtobufMapper]
     implicit val schema: ProtobufSchema = om.generateSchemaFor(classOf[Foo])
-    val foo = Foo(1, "𝄞")
-    val serializedFoo: Array[Byte] = Array(8, 1, 18, 4, -16, -99, -124, -98)
+    val foo                             = Foo(1, "𝄞")
+    val serializedFoo: Array[Byte]      = Array(8, 1, 18, 4, -16, -99, -124, -98)
     "should implicitly convert to kafka Serializer" in {
       serializeFoo(null) shouldBe null
       serializeFoo(foo) shouldBe serializedFoo
