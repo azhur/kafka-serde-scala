@@ -18,10 +18,10 @@ package io.github.azhur.kafkaserdeupickle
 
 import java.nio.charset.StandardCharsets.UTF_8
 
-import org.apache.kafka.common.serialization.{Deserializer, Serde, Serializer}
+import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
-import upickle.default.{macroRW, ReadWriter}
+import upickle.default.{ ReadWriter, macroRW }
 
 object UpickleSupportSpec {
   case class Foo(a: Int, b: String)

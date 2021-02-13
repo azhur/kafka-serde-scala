@@ -19,7 +19,7 @@ import java.util.Properties
 
 import io.github.azhur.kafkaserdecirce.CirceSupport
 import org.apache.kafka.clients.consumer.ConsumerConfig
-import org.apache.kafka.streams.{KafkaStreams, StreamsConfig, Topology}
+import org.apache.kafka.streams.{ KafkaStreams, StreamsConfig, Topology }
 import org.apache.kafka.streams.scala.StreamsBuilder
 
 object Application extends App with CirceSupport {

@@ -18,8 +18,8 @@ package io.github.azhur.kafkaserdejson4s
 
 import java.nio.charset.StandardCharsets.UTF_8
 
-import org.apache.kafka.common.serialization.{Deserializer, Serde, Serializer}
-import org.json4s.{jackson, native, DefaultFormats}
+import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
+import org.json4s.{ DefaultFormats, jackson, native }
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 

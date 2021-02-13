@@ -18,7 +18,7 @@ package io.github.azhur.kafkaserdecirce
 
 import java.nio.charset.StandardCharsets.UTF_8
 
-import org.apache.kafka.common.serialization.{Deserializer, Serde, Serializer}
+import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 

@@ -19,9 +19,9 @@ package io.github.azhur.kafkaserdecirce
 import java.nio.charset.StandardCharsets.UTF_8
 import java.util
 
-import io.circe.{Decoder, Encoder, Printer}
+import io.circe.{ Decoder, Encoder, Printer }
 import org.apache.kafka.common.errors.SerializationException
-import org.apache.kafka.common.serialization.{Deserializer, Serde, Serializer}
+import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
 
 import scala.language.implicitConversions
 import scala.util.control.NonFatal

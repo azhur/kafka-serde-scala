@@ -20,8 +20,8 @@ import java.nio.charset.StandardCharsets.UTF_8
 import java.util
 
 import org.apache.kafka.common.errors.SerializationException
-import org.apache.kafka.common.serialization.{Deserializer, Serde, Serializer}
-import org.json4s.{Formats, Serialization}
+import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
+import org.json4s.{ Formats, Serialization }
 
 import scala.language.implicitConversions
 import scala.util.control.NonFatal

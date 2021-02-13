@@ -18,8 +18,8 @@ package io.github.azhur.kafkaserdeavro4s
 
 import java.nio.charset.StandardCharsets.UTF_8
 
-import com.sksamuel.avro4s.{Decoder, Encoder, SchemaFor}
-import org.apache.kafka.common.serialization.{Deserializer, Serde, Serializer}
+import com.sksamuel.avro4s.{ Decoder, Encoder, SchemaFor }
+import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 

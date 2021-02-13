@@ -18,7 +18,7 @@ package io.github.azhur.kafkaserdejackson
 
 import com.fasterxml.jackson.core.`type`.TypeReference
 import scala.reflect.runtime.universe._
-import java.lang.reflect.{ParameterizedType, Type => JType}
+import java.lang.reflect.{ ParameterizedType, Type => JType }
 
 object Jackson {
   def typeReference[T: TypeTag]: TypeReference[T] = {

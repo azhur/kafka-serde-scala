@@ -23,7 +23,7 @@ import scala.reflect.runtime.universe._
 import com.fasterxml.jackson.core.FormatSchema
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.apache.kafka.common.errors.SerializationException
-import org.apache.kafka.common.serialization.{Deserializer, Serde, Serializer}
+import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
 import Jackson.typeReference
 
 import scala.language.implicitConversions

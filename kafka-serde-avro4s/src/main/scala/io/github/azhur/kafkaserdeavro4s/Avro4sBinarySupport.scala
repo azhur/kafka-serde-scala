@@ -19,12 +19,12 @@ package io.github.azhur.kafkaserdeavro4s
 import java.io.ByteArrayOutputStream
 import java.util
 
-import com.sksamuel.avro4s.{AvroInputStream, AvroOutputStream, AvroSchema, Decoder, Encoder, SchemaFor}
+import com.sksamuel.avro4s.{ AvroInputStream, AvroOutputStream, AvroSchema, Decoder, Encoder, SchemaFor }
 import org.apache.kafka.common.errors.SerializationException
-import org.apache.kafka.common.serialization.{Deserializer, Serde, Serializer}
+import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
 
 import scala.language.implicitConversions
-import scala.util.{Failure, Success}
+import scala.util.{ Failure, Success }
 import scala.util.control.NonFatal
 
 trait Avro4sBinarySupport {

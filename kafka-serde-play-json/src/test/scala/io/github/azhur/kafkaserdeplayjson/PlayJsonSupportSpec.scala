@@ -18,10 +18,10 @@ package io.github.azhur.kafkaserdeplayjson
 
 import java.nio.charset.StandardCharsets.UTF_8
 
-import org.apache.kafka.common.serialization.{Deserializer, Serde, Serializer}
+import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
-import play.api.libs.json.{Format, Json}
+import play.api.libs.json.{ Format, Json }
 
 object PlayJsonSupportSpec {
   case class Foo(a: Int, b: String)

@@ -16,7 +16,7 @@
 
 package io.github.azhur.kafkaserdejackson
 
-import com.fasterxml.jackson.dataformat.avro.{AvroMapper, AvroSchema}
+import com.fasterxml.jackson.dataformat.avro.{ AvroMapper, AvroSchema }
 import com.fasterxml.jackson.dataformat.protobuf.ProtobufMapper
 import com.fasterxml.jackson.dataformat.protobuf.schema.ProtobufSchema
 import com.fasterxml.jackson.module.scala.DefaultScalaModule

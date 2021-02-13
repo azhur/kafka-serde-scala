@@ -20,7 +20,7 @@ import java.util
 
 import com.github.plokhotnyuk.jsoniter_scala.core._
 import org.apache.kafka.common.errors.SerializationException
-import org.apache.kafka.common.serialization.{Deserializer, Serde, Serializer}
+import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
 
 import scala.language.implicitConversions
 import scala.util.control.NonFatal
