@@ -16,6 +16,7 @@ lazy val `kafka-serde-scala` =
       `kafka-serde-jsoniter-scala`,
       `kafka-serde-play-json`,
       `kafka-serde-upickle`,
+      `kafka-serde-scalapb`,
       `kafka-serde-scala-example`
     )
     .settings(commonSettings)
@@ -132,6 +133,25 @@ lazy val `kafka-serde-jackson` = project
       dependency.jacksonProtobuf % Test,
       dependency.jacksonAvro     % Test,
       dependency.scalaTest       % Test
+    )
+  )
+
+lazy val `kafka-serde-scalapb` = project
+  .enablePlugins(AutomateHeaderPlugin)
+  .settings(commonSettings)
+  .settings(scalafmtSettings)
+  .settings(publishSettings)
+  .settings(
+    crossScalaVersions := Seq(latest213, latest212),
+    startYear := Some(2021),
+    libraryDependencies ++= Seq(
+      dependency.kafkaClients,
+      dependency.scalaTest     % Test
+    )
+  )
+  .settings(
+    Compile / PB.targets := Seq(
+      scalapb.gen() -> (Compile / sourceManaged).value / "scalapb"
     )
   )
 
