@@ -72,6 +72,13 @@ libraryDependencies ++= List(
 )
 ```
 
+- for scalapb:
+``` scala
+libraryDependencies ++= List(
+  "io.github.azhur" %% "kafka-serde-scalapb" % "0.5.0"
+)
+```
+
 ## Usage
 
 Mix `xxxSupport` into your code which requires implicit Kafka 
@@ -87,6 +94,7 @@ Provide your implicit type class instances and the magic will convert them to Ka
 `com.github.plokhotnyuk.jsoniter_scala.core.WriterConfig` or/and `com.github.plokhotnyuk.jsoniter_scala.core.ReaderConfig`)
 - for play-json: `play.api.libs.json.Reads`, `play.api.libs.json.Writes`.  
 - for upickle: `upickle.default.Reader`, `upickle.default.Writer`.  
+- for scalapb: `scalapb.GeneratedMessageCompanion`
 
 For more info, please, take a look at unit tests and at `kafka-serde-scala-example` which is a kafka-streams (2.0) application with kafka-serde-scala usage.
 
