@@ -31,7 +31,7 @@ trait JacksonJsonSupport {
   implicit def toSerializer[T <: AnyRef](implicit mapper: ObjectMapper): Serializer[T] =
     new Serializer[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
-      override def close(): Unit                                                 = {}
+      override def close(): Unit = {}
       override def serialize(topic: String, data: T): Array[Byte] =
         if (data == null) null
         else
@@ -41,14 +41,14 @@ trait JacksonJsonSupport {
           }
     }
 
-  implicit def toDeserializer[T >: Null <: AnyRef](
-      implicit mapper: ObjectMapper,
-      tt: TypeTag[T]
+  implicit def toDeserializer[T >: Null <: AnyRef](implicit
+    mapper: ObjectMapper,
+    tt: TypeTag[T]
   ): Deserializer[T] =
     new Deserializer[T] {
-      private val tr                                                             = typeReference[T]
+      private val tr = typeReference[T]
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
-      override def close(): Unit                                                 = {}
+      override def close(): Unit = {}
       override def deserialize(topic: String, data: Array[Byte]): T =
         if (data == null) null
         else
@@ -58,15 +58,15 @@ trait JacksonJsonSupport {
           }
     }
 
-  implicit def toSerde[T >: Null <: AnyRef](
-      implicit mapper: ObjectMapper,
-      tt: TypeTag[T]
+  implicit def toSerde[T >: Null <: AnyRef](implicit
+    mapper: ObjectMapper,
+    tt: TypeTag[T]
   ): Serde[T] =
     new Serde[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
-      override def close(): Unit                                                 = {}
-      override def serializer(): Serializer[T]                                   = toSerializer[T]
-      override def deserializer(): Deserializer[T]                               = toDeserializer[T]
+      override def close(): Unit = {}
+      override def serializer(): Serializer[T]     = toSerializer[T]
+      override def deserializer(): Deserializer[T] = toDeserializer[T]
     }
 }
 

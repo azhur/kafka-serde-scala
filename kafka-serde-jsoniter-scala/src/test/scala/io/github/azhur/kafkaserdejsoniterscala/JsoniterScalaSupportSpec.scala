@@ -44,7 +44,7 @@ class JsoniterScalaSupportSpec extends AnyFreeSpec with Matchers {
   import JsoniterScalaSupportSpec._
   import io.github.azhur.kafkaserdejsoniterscala.JsoniterScalaSupport._
 
-  private implicit val fooCodec: JsonValueCodec[Foo] = JsonCodecMaker.make[Foo]
+  implicit private val fooCodec: JsonValueCodec[Foo] = JsonCodecMaker.make[Foo]
 
   "JsoniterScalaSupport" - {
     "should implicitly convert to kafka Serializer" in {

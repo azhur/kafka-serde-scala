@@ -19,14 +19,7 @@ package io.github.azhur.kafkaserdeavro4s
 import java.io.ByteArrayOutputStream
 import java.util
 
-import com.sksamuel.avro4s.{
-  AvroInputStream,
-  AvroOutputStream,
-  AvroSchema,
-  Decoder,
-  Encoder,
-  SchemaFor
-}
+import com.sksamuel.avro4s.{ AvroInputStream, AvroOutputStream, AvroSchema, Decoder, Encoder, SchemaFor }
 import org.apache.kafka.common.errors.SerializationException
 import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
 
@@ -38,35 +31,30 @@ trait Avro4sBinarySupport {
   implicit def toSerializer[T >: Null: Encoder]: Serializer[T] =
     new Serializer[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
-      override def close(): Unit                                                 = {}
+      override def close(): Unit = {}
       override def serialize(topic: String, data: T): Array[Byte] =
         if (data == null) null
         else {
           val baos = new ByteArrayOutputStream()
           try {
             val output = AvroOutputStream.binary[T].to(baos).build()
-            try {
-              output.write(data)
-            } finally {
-              output.close()
-            }
+            try output.write(data)
+            finally output.close()
             baos.toByteArray
           } catch {
             case NonFatal(e) => throw new SerializationException(e)
-          } finally {
-            baos.close()
-          }
+          } finally baos.close()
         }
     }
 
-  implicit def toDeserializer[T >: Null](
-      implicit schemaFor: SchemaFor[T],
-      decoder: Decoder[T]
+  implicit def toDeserializer[T >: Null](implicit
+    schemaFor: SchemaFor[T],
+    decoder: Decoder[T]
   ): Deserializer[T] =
     new Deserializer[T] {
-      private val schema                                                         = AvroSchema[T]
+      private val schema = AvroSchema[T]
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
-      override def close(): Unit                                                 = {}
+      override def close(): Unit = {}
       override def deserialize(topic: String, data: Array[Byte]): T =
         if (data == null) null
         else {
@@ -87,9 +75,9 @@ trait Avro4sBinarySupport {
   implicit def toSerde[T >: Null: SchemaFor: Encoder: Decoder]: Serde[T] =
     new Serde[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
-      override def close(): Unit                                                 = {}
-      override def serializer(): Serializer[T]                                   = toSerializer[T]
-      override def deserializer(): Deserializer[T]                               = toDeserializer[T]
+      override def close(): Unit = {}
+      override def serializer(): Serializer[T]     = toSerializer[T]
+      override def deserializer(): Deserializer[T] = toDeserializer[T]
     }
 }
 

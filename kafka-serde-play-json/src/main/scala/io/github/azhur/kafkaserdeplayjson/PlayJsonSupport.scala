@@ -28,13 +28,13 @@ import scala.language.implicitConversions
 import scala.util.control.NonFatal
 
 trait PlayJsonSupport {
-  implicit def toSerializer[T <: AnyRef](
-      implicit writes: Writes[T],
-      printer: JsValue => String = Json.stringify
+  implicit def toSerializer[T <: AnyRef](implicit
+    writes: Writes[T],
+    printer: JsValue => String = Json.stringify
   ): Serializer[T] =
     new Serializer[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
-      override def close(): Unit                                                 = {}
+      override def close(): Unit = {}
       override def serialize(topic: String, data: T): Array[Byte] =
         if (data == null) null
         else
@@ -44,12 +44,12 @@ trait PlayJsonSupport {
           }
     }
 
-  implicit def toDeserializer[T >: Null <: AnyRef: Manifest](
-      implicit reads: Reads[T]
+  implicit def toDeserializer[T >: Null <: AnyRef: Manifest](implicit
+    reads: Reads[T]
   ): Deserializer[T] =
     new Deserializer[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
-      override def close(): Unit                                                 = {}
+      override def close(): Unit = {}
       override def deserialize(topic: String, data: Array[Byte]): T =
         if (data == null) null
         else
@@ -60,16 +60,16 @@ trait PlayJsonSupport {
             }
     }
 
-  implicit def toSerde[T >: Null <: AnyRef: Manifest](
-      implicit writes: Writes[T],
-      reads: Reads[T],
-      printer: JsValue => String = Json.stringify
+  implicit def toSerde[T >: Null <: AnyRef: Manifest](implicit
+    writes: Writes[T],
+    reads: Reads[T],
+    printer: JsValue => String = Json.stringify
   ): Serde[T] =
     new Serde[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
-      override def close(): Unit                                                 = {}
-      override def serializer(): Serializer[T]                                   = toSerializer[T]
-      override def deserializer(): Deserializer[T]                               = toDeserializer[T]
+      override def close(): Unit = {}
+      override def serializer(): Serializer[T]     = toSerializer[T]
+      override def deserializer(): Deserializer[T] = toDeserializer[T]
     }
 }
 

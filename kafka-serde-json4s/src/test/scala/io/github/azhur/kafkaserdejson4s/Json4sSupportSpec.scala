@@ -43,7 +43,7 @@ class Json4sSupportSpec extends AnyFreeSpec with Matchers {
   import Json4sSupport._
   import Json4sSupportSpec._
 
-  private implicit val formats = DefaultFormats
+  implicit private val formats = DefaultFormats
 
   "Json4sSupport jackson" - {
     implicit val serialization = jackson.Serialization

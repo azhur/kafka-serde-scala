@@ -29,41 +29,36 @@ import scala.util.control.NonFatal
 import scala.util.{ Failure, Success }
 
 trait Avro4sDataSupport {
-  implicit def toSerializer[T >: Null](
-      implicit encoder: Encoder[T],
-      codec: CodecFactory = CodecFactory.nullCodec()
+  implicit def toSerializer[T >: Null](implicit
+    encoder: Encoder[T],
+    codec: CodecFactory = CodecFactory.nullCodec()
   ): Serializer[T] =
     new Serializer[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
-      override def close(): Unit                                                 = {}
+      override def close(): Unit = {}
       override def serialize(topic: String, data: T): Array[Byte] =
         if (data == null) null
         else {
           val baos = new ByteArrayOutputStream()
           try {
             val output = AvroDataOutputStream[T](baos, codec)
-            try {
-              output.write(data)
-            } finally {
-              output.close()
-            }
+            try output.write(data)
+            finally output.close()
             baos.toByteArray
           } catch {
             case NonFatal(e) => throw new SerializationException(e)
-          } finally {
-            baos.close()
-          }
+          } finally baos.close()
         }
     }
 
-  implicit def toDeserializer[T >: Null](
-      implicit schemaFor: SchemaFor[T],
-      decoder: Decoder[T]
+  implicit def toDeserializer[T >: Null](implicit
+    schemaFor: SchemaFor[T],
+    decoder: Decoder[T]
   ): Deserializer[T] =
     new Deserializer[T] {
-      private val schema                                                         = AvroSchema[T]
+      private val schema = AvroSchema[T]
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
-      override def close(): Unit                                                 = {}
+      override def close(): Unit = {}
       override def deserialize(topic: String, data: Array[Byte]): T =
         if (data == null) null
         else {
@@ -80,17 +75,17 @@ trait Avro4sDataSupport {
 
     }
 
-  implicit def toSerde[T >: Null](
-      implicit schemaFor: SchemaFor[T],
-      encoder: Encoder[T],
-      decoder: Decoder[T],
-      codec: CodecFactory = CodecFactory.nullCodec()
+  implicit def toSerde[T >: Null](implicit
+    schemaFor: SchemaFor[T],
+    encoder: Encoder[T],
+    decoder: Decoder[T],
+    codec: CodecFactory = CodecFactory.nullCodec()
   ): Serde[T] =
     new Serde[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
-      override def close(): Unit                                                 = {}
-      override def serializer(): Serializer[T]                                   = toSerializer[T]
-      override def deserializer(): Deserializer[T]                               = toDeserializer[T]
+      override def close(): Unit = {}
+      override def serializer(): Serializer[T]     = toSerializer[T]
+      override def deserializer(): Deserializer[T] = toDeserializer[T]
     }
 }
 
