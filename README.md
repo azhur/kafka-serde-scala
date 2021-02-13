@@ -15,6 +15,7 @@ Following target libraries are supported:
 - [jsoniter-scala](https://github.com/plokhotnyuk/jsoniter-scala)
 - [play-json](https://github.com/playframework/play-json)
 - [upickle](https://github.com/lihaoyi/upickle)
+- [scalapb](https://github.com/scalapb/ScalaPB)
 
 Inspired by [https://github.com/hseeberger/akka-http-json](https://github.com/hseeberger/akka-http-json).
 
