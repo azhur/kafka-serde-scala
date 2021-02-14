@@ -31,6 +31,7 @@ lazy val latest213 = "2.13.4"
 lazy val `kafka-serde-scala` =
   project
     .in(file("."))
+    .disablePlugins(MimaPlugin)
     .aggregate(
       `kafka-serde-avro4s`,
       `kafka-serde-circe`,
@@ -52,6 +53,7 @@ lazy val `kafka-serde-scala` =
 lazy val `kafka-serde-circe` = project
   .enablePlugins(AutomateHeaderPlugin)
   .settings(commonSettings)
+  .settings(mimaSettings)
   .settings(
     crossScalaVersions := Seq(latest213, latest212/*, latest211 Circe dropped Scala 2.11 support */),
     libraryDependencies ++= Seq(
@@ -67,6 +69,7 @@ lazy val `kafka-serde-circe` = project
 lazy val `kafka-serde-json4s` = project
   .enablePlugins(AutomateHeaderPlugin)
   .settings(commonSettings)
+  .settings(mimaSettings)
   .settings(
     crossScalaVersions := Seq(latest213, latest212, latest211),
     libraryDependencies ++= Seq(
@@ -81,6 +84,7 @@ lazy val `kafka-serde-json4s` = project
 lazy val `kafka-serde-jsoniter-scala` = project
   .enablePlugins(AutomateHeaderPlugin)
   .settings(commonSettings)
+  .settings(mimaSettings)
   .settings(
     crossScalaVersions := Seq(latest213, latest212, latest211),
     libraryDependencies ++= Seq(
@@ -94,6 +98,7 @@ lazy val `kafka-serde-jsoniter-scala` = project
 lazy val `kafka-serde-play-json` = project
   .enablePlugins(AutomateHeaderPlugin)
   .settings(commonSettings)
+  .settings(mimaSettings)
   .settings(
     crossScalaVersions := Seq(latest213, latest212/*, latest211 Play-JSON dropped Scala 2.11 support */),
     libraryDependencies ++= Seq(
@@ -106,6 +111,7 @@ lazy val `kafka-serde-play-json` = project
 lazy val `kafka-serde-upickle` = project
   .enablePlugins(AutomateHeaderPlugin)
   .settings(commonSettings)
+  .settings(mimaSettings)
   .settings(
     crossScalaVersions := Seq(latest213, latest212/*, latest211 uPickle dropped Scala 2.11 support */),
     libraryDependencies ++= Seq(
@@ -118,6 +124,7 @@ lazy val `kafka-serde-upickle` = project
 lazy val `kafka-serde-avro4s` = project
   .enablePlugins(AutomateHeaderPlugin)
   .settings(commonSettings)
+  .settings(mimaSettings)
   .settings(
     crossScalaVersions := Seq(latest213, latest212),
     libraryDependencies ++= Seq(
@@ -131,6 +138,7 @@ lazy val `kafka-serde-avro4s` = project
 lazy val `kafka-serde-jackson` = project
   .enablePlugins(AutomateHeaderPlugin)
   .settings(commonSettings)
+  .settings(mimaSettings)
   .settings(
     crossScalaVersions := Seq(latest213, latest212, latest211),
     libraryDependencies ++= Seq(
@@ -147,6 +155,7 @@ lazy val `kafka-serde-jackson` = project
 lazy val `kafka-serde-scalapb` = project
   .enablePlugins(AutomateHeaderPlugin)
   .settings(commonSettings)
+  .settings(mimaSettings)
   .settings(
     crossScalaVersions := Seq(latest213, latest212),
     startYear := Some(2021),
@@ -164,6 +173,7 @@ lazy val `kafka-serde-scalapb` = project
 lazy val `kafka-serde-scala-example` = project
   .dependsOn(`kafka-serde-circe`)
   .enablePlugins(AutomateHeaderPlugin)
+  .disablePlugins(MimaPlugin)
   .settings(commonSettings)
   .settings(
     publishArtifact := false,
@@ -225,3 +235,8 @@ lazy val commonSettings =
     pomIncludeRepository := (_ => false),
     scalafmtOnCompile := true
   )
+
+  lazy val mimaSettings = 
+    Seq(
+      mimaPreviousArtifacts := previousStableVersion.value.map(organization.value %% name.value % _).toSet
+    )
