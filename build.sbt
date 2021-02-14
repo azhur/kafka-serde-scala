@@ -1,6 +1,8 @@
 inThisBuild(
   Seq(
     organization := "io.github.azhur",
+    organizationName := "Artur Zhurat",
+    organizationHomepage := Some(url("https://github.com/azhur")),
     homepage := Some(url("https://github.com/azhur/kafka-serde-scala")),
     licenses := List("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
     scmInfo := Some(
@@ -212,12 +214,7 @@ lazy val commonSettings =
   Seq(
     resolvers += "Sonatype OSS Staging" at "https://oss.sonatype.org/content/repositories/staging",
     scalaVersion := latest213,
-    homepage := Some(url("https://github.com/azhur/kafka-serde-scala")),
-    organization := "io.github.azhur",
-    organizationName := "Artur Zhurat",
-    organizationHomepage := Some(url("https://github.com/azhur")),
     startYear := Some(2018),
-    licenses += ("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0")),
     scalacOptions ++= Seq(
       "-unchecked",
       "-deprecation",
