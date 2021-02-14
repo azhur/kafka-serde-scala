@@ -1,9 +1,7 @@
 # kafka-serde-scala
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/583da4938d754fa4a4927fa88385ee02)](https://app.codacy.com/app/azhur/kafka-serde-scala?utm_source=github.com&utm_medium=referral&utm_content=azhur/kafka-serde-scala&utm_campaign=Badge_Grade_Dashboard)
 [![Join the chat at https://gitter.im/azhur/kafka-serde-scala](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/azhur/kafka-serde-scala?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Build Status](https://travis-ci.org/azhur/kafka-serde-scala.svg?branch=master)](https://travis-ci.org/azhur/kafka-serde-scala)
-![Maven Central](https://img.shields.io/maven-central/v/io.github.azhur/kafka-serde-circe_2.12.svg)
+![Build Status](https://github.com/azhur/kafka-serde-scala/workflows/Build/badge.svg?branch=master)
 
 kafka-serde-scala provides implicit conversions from different type class Encoder/Decoder to kafka Serializer, Deserializer, Serde. 
 
@@ -21,62 +19,64 @@ Inspired by [https://github.com/hseeberger/akka-http-json](https://github.com/hs
 
 ## Installation
 
+![Maven Central](https://img.shields.io/maven-central/v/io.github.azhur/kafka-serde-circe_2.13.svg)
+
 Add dependencies for the selected integration:
 
 - for avro4s:
 ``` scala
 libraryDependencies ++= List(
-  "io.github.azhur" %% "kafka-serde-avro4s" % "0.6.0",
+  "io.github.azhur" %% "kafka-serde-avro4s" % version,
 )
 ```
 
 - for circe:
 ``` scala
 libraryDependencies ++= List(
-  "io.github.azhur" %% "kafka-serde-circe" % "0.6.0",
+  "io.github.azhur" %% "kafka-serde-circe" % version,
 )
 ```
 
 - for jackson:
 ``` scala
 libraryDependencies ++= List(
-  "io.github.azhur" %% "kafka-serde-jackson" % "0.6.0",
+  "io.github.azhur" %% "kafka-serde-jackson" % version,
 )
 ```
 
 - for json4s:
 ``` scala
 libraryDependencies ++= List(
-  "io.github.azhur" %% "kafka-serde-json4s" % "0.6.0",
+  "io.github.azhur" %% "kafka-serde-json4s" % version,
 )
 ```
 
 - for jsoniter-scala:
 ``` scala
 libraryDependencies ++= List(
-  "io.github.azhur" %% "kafka-serde-jsoniter-scala" % "0.6.0",
-  "com.github.plokhotnyuk.jsoniter-scala" %% "jsoniter-scala-macros" % "0.29.2" % Provided // required only in compile-time
+  "io.github.azhur" %% "kafka-serde-jsoniter-scala" % version,
+  "com.github.plokhotnyuk.jsoniter-scala" %% "jsoniter-scala-macros" % jsoniter_scala_version % Provided // required only in compile-time
 )
 ```
 
 - for play-json:
 ``` scala
 libraryDependencies ++= List(
-  "io.github.azhur" %% "kafka-serde-play-json" % "0.6.0"
+  "io.github.azhur" %% "kafka-serde-play-json" % version
 )
 ```
 
 - for upickle:
 ``` scala
 libraryDependencies ++= List(
-  "io.github.azhur" %% "kafka-serde-upickle" % "0.6.0"
+  "io.github.azhur" %% "kafka-serde-upickle" % version
 )
 ```
 
 - for scalapb:
 ``` scala
 libraryDependencies ++= List(
-  "io.github.azhur" %% "kafka-serde-scalapb" % "0.6.0"
+  "io.github.azhur" %% "kafka-serde-scalapb" % version
 )
 ```
 
@@ -97,7 +97,7 @@ Provide your implicit type class instances and the magic will convert them to Ka
 - for upickle: `upickle.default.Reader`, `upickle.default.Writer`  
 - for scalapb: `scalapb.GeneratedMessageCompanion`
 
-For more info, please, take a look at unit tests and at `kafka-serde-scala-example` which is a kafka-streams (2.0) application with kafka-serde-scala usage.
+For more info, please, take a look at unit tests and at `kafka-serde-scala-example` which is a kafka-streams (2.x) application with kafka-serde-scala usage.
 
 ## Contribution
 
