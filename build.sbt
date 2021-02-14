@@ -1,9 +1,30 @@
+inThisBuild(
+  Seq(
+    organization := "io.github.azhur",
+    homepage := Some(url("https://github.com/azhur/kafka-serde-scala")),
+    licenses := List("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
+    scmInfo := Some(
+      ScmInfo(
+        url("https://github.com/azhur/kafka-serde-scala"),
+        "git@github.com:azhur/kafka-serde-scala.git"
+      )
+    ),
+    developers := List(
+      Developer(
+        id = "azhur",
+        name = "Artur Zhurat",
+        email = "artur.zhurat@gmail.com",
+        url = url("https://twitter.com/a_zhur")
+      )
+    ),
+  )
+)
 
 lazy val latest211 = "2.11.12"
 
-lazy val latest212 = "2.12.12"
+lazy val latest212 = "2.12.13"
 
-lazy val latest213 = "2.13.3"
+lazy val latest213 = "2.13.4"
 
 lazy val `kafka-serde-scala` =
   project
@@ -20,18 +41,15 @@ lazy val `kafka-serde-scala` =
       `kafka-serde-scala-example`
     )
     .settings(commonSettings)
-    .settings(scalafmtSettings)
-    .settings(noPublishSettings)
     .settings(
       Compile / unmanagedSourceDirectories := Seq.empty,
-      Test / unmanagedSourceDirectories    := Seq.empty
+      Test / unmanagedSourceDirectories    := Seq.empty,
+      publishArtifact := false
     )
 
 lazy val `kafka-serde-circe` = project
   .enablePlugins(AutomateHeaderPlugin)
   .settings(commonSettings)
-  .settings(scalafmtSettings)
-  .settings(publishSettings)
   .settings(
     crossScalaVersions := Seq(latest213, latest212/*, latest211 Circe dropped Scala 2.11 support */),
     libraryDependencies ++= Seq(
@@ -47,8 +65,6 @@ lazy val `kafka-serde-circe` = project
 lazy val `kafka-serde-json4s` = project
   .enablePlugins(AutomateHeaderPlugin)
   .settings(commonSettings)
-  .settings(scalafmtSettings)
-  .settings(publishSettings)
   .settings(
     crossScalaVersions := Seq(latest213, latest212, latest211),
     libraryDependencies ++= Seq(
@@ -63,8 +79,6 @@ lazy val `kafka-serde-json4s` = project
 lazy val `kafka-serde-jsoniter-scala` = project
   .enablePlugins(AutomateHeaderPlugin)
   .settings(commonSettings)
-  .settings(scalafmtSettings)
-  .settings(publishSettings)
   .settings(
     crossScalaVersions := Seq(latest213, latest212, latest211),
     libraryDependencies ++= Seq(
@@ -78,8 +92,6 @@ lazy val `kafka-serde-jsoniter-scala` = project
 lazy val `kafka-serde-play-json` = project
   .enablePlugins(AutomateHeaderPlugin)
   .settings(commonSettings)
-  .settings(scalafmtSettings)
-  .settings(publishSettings)
   .settings(
     crossScalaVersions := Seq(latest213, latest212/*, latest211 Play-JSON dropped Scala 2.11 support */),
     libraryDependencies ++= Seq(
@@ -92,8 +104,6 @@ lazy val `kafka-serde-play-json` = project
 lazy val `kafka-serde-upickle` = project
   .enablePlugins(AutomateHeaderPlugin)
   .settings(commonSettings)
-  .settings(scalafmtSettings)
-  .settings(publishSettings)
   .settings(
     crossScalaVersions := Seq(latest213, latest212/*, latest211 uPickle dropped Scala 2.11 support */),
     libraryDependencies ++= Seq(
@@ -106,8 +116,6 @@ lazy val `kafka-serde-upickle` = project
 lazy val `kafka-serde-avro4s` = project
   .enablePlugins(AutomateHeaderPlugin)
   .settings(commonSettings)
-  .settings(scalafmtSettings)
-  .settings(publishSettings)
   .settings(
     crossScalaVersions := Seq(latest213, latest212),
     libraryDependencies ++= Seq(
@@ -121,8 +129,6 @@ lazy val `kafka-serde-avro4s` = project
 lazy val `kafka-serde-jackson` = project
   .enablePlugins(AutomateHeaderPlugin)
   .settings(commonSettings)
-  .settings(scalafmtSettings)
-  .settings(publishSettings)
   .settings(
     crossScalaVersions := Seq(latest213, latest212, latest211),
     libraryDependencies ++= Seq(
@@ -139,8 +145,6 @@ lazy val `kafka-serde-jackson` = project
 lazy val `kafka-serde-scalapb` = project
   .enablePlugins(AutomateHeaderPlugin)
   .settings(commonSettings)
-  .settings(scalafmtSettings)
-  .settings(publishSettings)
   .settings(
     crossScalaVersions := Seq(latest213, latest212),
     startYear := Some(2021),
@@ -159,9 +163,8 @@ lazy val `kafka-serde-scala-example` = project
   .dependsOn(`kafka-serde-circe`)
   .enablePlugins(AutomateHeaderPlugin)
   .settings(commonSettings)
-  .settings(scalafmtSettings)
-  .settings(noPublishSettings)
   .settings(
+    publishArtifact := false,
     crossScalaVersions := Seq(latest213, latest212/*, latest211 Circe dropped Scala 2.11 support */),
     libraryDependencies ++= Seq(
       dependency.kafkaStreamsScala,
@@ -205,12 +208,6 @@ lazy val dependency =
     val scalaTest           = "org.scalatest"                         %% "scalatest"                        % Version.scalaTest
   }
 
-
-lazy val settings =
-  commonSettings ++
-  scalafmtSettings ++
-  publishSettings
-
 lazy val commonSettings =
   Seq(
     resolvers += "Sonatype OSS Staging" at "https://oss.sonatype.org/content/repositories/staging",
@@ -228,37 +225,6 @@ lazy val commonSettings =
       "-target:jvm-1.8",
       "-encoding", "UTF-8"
     ),
-    developers := List(
-      Developer(
-        id = "azhur",
-        name = "Artur Zhurat",
-        email = "artur.zhurat@gmail.com",
-        url = url("https://twitter.com/a_zhur")
-      )
-    )
-  )
-
-lazy val scalafmtSettings =
-  Seq(
+    pomIncludeRepository := (_ => false),
     scalafmtOnCompile := true
   )
-
-
-lazy val noPublishSettings = Seq(
-  skip in publish := true,
-  publishTo := Some(if (isSnapshot.value) Opts.resolver.sonatypeSnapshots else Opts.resolver.sonatypeStaging)
-)
-
-lazy val publishSettings = Seq(
-  publishTo := sonatypePublishToBundle.value,
-  sonatypeProfileName := "io.github.azhur",
-  homepage := Some(url("https://github.com/azhur/kafka-serde-scala")),
-  scmInfo := Some(
-    ScmInfo(
-      url("https://github.com/azhur/kafka-serde-scala"),
-      "scm:git@github.com:azhur/kafka-serde-scala.git"
-    )
-  ),
-  publishMavenStyle := true,
-  pomIncludeRepository := { _ => false }
-)
