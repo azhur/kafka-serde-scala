@@ -250,7 +250,7 @@ lazy val noPublishSettings = Seq(
 )
 
 lazy val publishSettings = Seq(
-  publishTo := Some(if (isSnapshot.value) Opts.resolver.sonatypeSnapshots else Opts.resolver.sonatypeStaging),
+  publishTo := sonatypePublishToBundle.value,
   sonatypeProfileName := "io.github.azhur",
   homepage := Some(url("https://github.com/azhur/kafka-serde-scala")),
   scmInfo := Some(
