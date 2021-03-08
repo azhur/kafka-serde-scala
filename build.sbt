@@ -195,7 +195,7 @@ lazy val dependency =
       val scalaTest                     = "3.2.5"
       val kafka                         = "2.7.0"
       val play                          = "2.9.2"
-      val upickle                       = "1.2.3"
+      val upickle                       = "1.3.0"
       val jackson                       = "2.12.2"
     }
     val kafkaClients        = "org.apache.kafka"                      %  "kafka-clients"                    % Version.kafka
