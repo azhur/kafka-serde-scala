@@ -4,4 +4,4 @@ addSbtPlugin("de.heikoseeberger" % "sbt-header" % "5.6.0")
 addSbtPlugin("com.thesamet" % "sbt-protoc" % "1.0.3")
 addSbtPlugin("com.typesafe" % "sbt-mima-plugin" % "0.9.1")
 
-libraryDependencies += "com.thesamet.scalapb" %% "compilerplugin" % "0.11.1"
+libraryDependencies += "com.thesamet.scalapb" %% "compilerplugin" % "0.11.2"
