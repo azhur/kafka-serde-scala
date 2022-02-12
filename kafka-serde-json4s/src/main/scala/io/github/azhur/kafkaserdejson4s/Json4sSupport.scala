@@ -33,7 +33,7 @@ trait Json4sSupport {
   ): Serializer[T] =
     new Serializer[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
-      override def close(): Unit = {}
+      override def close(): Unit                                                 = {}
       override def serialize(topic: String, data: T): Array[Byte] =
         if (data == null) null
         else
@@ -49,7 +49,7 @@ trait Json4sSupport {
   ): Deserializer[T] =
     new Deserializer[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
-      override def close(): Unit = {}
+      override def close(): Unit                                                 = {}
       override def deserialize(topic: String, data: Array[Byte]): T =
         if (data == null) null
         else
@@ -65,9 +65,9 @@ trait Json4sSupport {
   ): Serde[T] =
     new Serde[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
-      override def close(): Unit = {}
-      override def serializer(): Serializer[T]     = toSerializer[T]
-      override def deserializer(): Deserializer[T] = toDeserializer[T]
+      override def close(): Unit                                                 = {}
+      override def serializer(): Serializer[T]                                   = toSerializer[T]
+      override def deserializer(): Deserializer[T]                               = toDeserializer[T]
     }
 }
 
