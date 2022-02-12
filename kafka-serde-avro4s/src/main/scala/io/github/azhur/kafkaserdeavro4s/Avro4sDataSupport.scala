@@ -35,7 +35,7 @@ trait Avro4sDataSupport {
   ): Serializer[T] =
     new Serializer[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
-      override def close(): Unit = {}
+      override def close(): Unit                                                 = {}
       override def serialize(topic: String, data: T): Array[Byte] =
         if (data == null) null
         else {
@@ -56,9 +56,9 @@ trait Avro4sDataSupport {
     decoder: Decoder[T]
   ): Deserializer[T] =
     new Deserializer[T] {
-      private val schema = AvroSchema[T]
+      private val schema                                                         = AvroSchema[T]
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
-      override def close(): Unit = {}
+      override def close(): Unit                                                 = {}
       override def deserialize(topic: String, data: Array[Byte]): T =
         if (data == null) null
         else {
@@ -83,9 +83,9 @@ trait Avro4sDataSupport {
   ): Serde[T] =
     new Serde[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
-      override def close(): Unit = {}
-      override def serializer(): Serializer[T]     = toSerializer[T]
-      override def deserializer(): Deserializer[T] = toDeserializer[T]
+      override def close(): Unit                                                 = {}
+      override def serializer(): Serializer[T]                                   = toSerializer[T]
+      override def deserializer(): Deserializer[T]                               = toDeserializer[T]
     }
 }
 
