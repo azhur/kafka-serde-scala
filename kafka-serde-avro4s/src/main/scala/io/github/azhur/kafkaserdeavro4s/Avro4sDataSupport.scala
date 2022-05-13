@@ -39,7 +39,7 @@ trait Avro4sDataSupport {
       override def serialize(topic: String, data: T): Array[Byte] =
         if (data == null) null
         else {
-          val baos = new ByteArrayOutputStream()
+          val baos = new ByteArrayOutputStream
           try {
             val output = AvroDataOutputStream[T](baos, codec)
             try output.write(data)

@@ -39,7 +39,7 @@ object Application extends App with CirceSupport {
   }
 
   def buildTopology(inputTopic: String, outputTopic: String): Topology = {
-    val streamsBuilder = new StreamsBuilder()
+    val streamsBuilder = new StreamsBuilder
     streamsBuilder
       .stream[String, User](inputTopic)
       .filter((_, user) => user.age > 18)

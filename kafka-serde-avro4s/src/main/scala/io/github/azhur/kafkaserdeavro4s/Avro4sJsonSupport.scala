@@ -35,7 +35,7 @@ trait Avro4sJsonSupport {
       override def serialize(topic: String, data: T): Array[Byte] =
         if (data == null) null
         else {
-          val baos = new ByteArrayOutputStream()
+          val baos = new ByteArrayOutputStream
           try {
             val output = AvroOutputStream.json[T].to(baos).build()
             try output.write(data)
