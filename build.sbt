@@ -24,9 +24,9 @@ inThisBuild(
 
 lazy val latest211 = "2.11.12"
 
-lazy val latest212 = "2.12.15"
+lazy val latest212 = "2.12.17"
 
-lazy val latest213 = "2.13.8"
+lazy val latest213 = "2.13.10"
 
 lazy val `kafka-serde-scala` =
   project
