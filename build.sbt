@@ -188,15 +188,15 @@ lazy val `kafka-serde-scala-example` = project
 lazy val dependency =
   new {
     object Version {
-      val avro4s        = "4.0.13"
+      val avro4s        = "4.1.0"
       val circe         = "0.14.3"
       val json4s        = "4.0.6"
       val jsoniterScala = "2.13.3"
       val scalaTest     = "3.2.15"
-      val kafka         = "3.2.0"
+      val kafka         = "3.2.3"
       val play          = "2.9.3"
       val upickle       = "2.0.0"
-      val jackson       = "2.13.4"
+      val jackson       = "2.14.1"
     }
     val kafkaClients        = "org.apache.kafka"                       % "kafka-clients"         % Version.kafka
     val kafkaStreamsScala   = "org.apache.kafka"                      %% "kafka-streams-scala"   % Version.kafka
