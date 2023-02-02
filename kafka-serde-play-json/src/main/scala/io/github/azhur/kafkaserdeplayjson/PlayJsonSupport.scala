@@ -24,7 +24,6 @@ import org.apache.kafka.common.errors.SerializationException
 import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
 import play.api.libs.json.{ JsError, JsValue, Json, Reads, Writes }
 
-import scala.language.implicitConversions
 import scala.util.control.NonFatal
 
 trait PlayJsonSupport {

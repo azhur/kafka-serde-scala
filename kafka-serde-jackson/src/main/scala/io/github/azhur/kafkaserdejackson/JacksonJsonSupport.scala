@@ -23,7 +23,6 @@ import Jackson.typeReference
 import org.apache.kafka.common.errors.SerializationException
 import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
 
-import scala.language.implicitConversions
 import scala.reflect.runtime.universe._
 import scala.util.control.NonFatal
 

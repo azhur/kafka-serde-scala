@@ -23,7 +23,6 @@ import com.sksamuel.avro4s.{ AvroInputStream, AvroOutputStream, AvroSchema, Deco
 import org.apache.kafka.common.errors.SerializationException
 import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
 
-import scala.language.implicitConversions
 import scala.util.control.NonFatal
 import scala.util.{ Failure, Success }
 

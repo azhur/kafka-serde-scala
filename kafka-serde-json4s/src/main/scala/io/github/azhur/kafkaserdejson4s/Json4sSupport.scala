@@ -23,7 +23,6 @@ import org.apache.kafka.common.errors.SerializationException
 import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
 import org.json4s.{ Formats, Serialization }
 
-import scala.language.implicitConversions
 import scala.util.control.NonFatal
 
 trait Json4sSupport {
@@ -43,9 +42,10 @@ trait Json4sSupport {
           }
     }
 
-  implicit def toDeserializer[T >: Null <: AnyRef: Manifest](implicit
+  implicit def toDeserializer[T >: Null <: AnyRef](implicit
     serialization: Serialization,
-    formats: Formats
+    formats: Formats,
+    mf: Manifest[T]
   ): Deserializer[T] =
     new Deserializer[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
@@ -59,9 +59,10 @@ trait Json4sSupport {
           }
     }
 
-  implicit def toSerde[T >: Null <: AnyRef: Manifest](implicit
+  implicit def toSerde[T >: Null <: AnyRef](implicit
     serialization: Serialization,
-    formats: Formats
+    formats: Formats,
+    mf: Manifest[T]
   ): Serde[T] =
     new Serde[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
