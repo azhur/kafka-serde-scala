@@ -22,11 +22,11 @@ inThisBuild(
   )
 )
 
-lazy val latest211 = "2.11.12"
-
 lazy val latest212 = "2.12.17"
 
 lazy val latest213 = "2.13.10"
+
+lazy val latest3 = "3.2.1"
 
 lazy val `kafka-serde-scala` =
   project
@@ -55,7 +55,7 @@ lazy val `kafka-serde-circe` = project
   .settings(commonSettings)
   .settings(mimaSettings)
   .settings(
-    crossScalaVersions := Seq(latest213, latest212 /*, latest211 Circe dropped Scala 2.11 support */ ),
+    crossScalaVersions := Seq(latest212, latest213, latest3),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.circe,
@@ -71,7 +71,7 @@ lazy val `kafka-serde-json4s` = project
   .settings(commonSettings)
   .settings(mimaSettings)
   .settings(
-    crossScalaVersions := Seq(latest213, latest212, latest211),
+    crossScalaVersions := Seq(latest212, latest213, latest3),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.json4sCore,
@@ -86,7 +86,7 @@ lazy val `kafka-serde-jsoniter-scala` = project
   .settings(commonSettings)
   .settings(mimaSettings)
   .settings(
-    crossScalaVersions := Seq(latest213, latest212, latest211),
+    crossScalaVersions := Seq(latest212, latest213, latest3),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.jsoniterScalaCore,
@@ -100,7 +100,7 @@ lazy val `kafka-serde-play-json` = project
   .settings(commonSettings)
   .settings(mimaSettings)
   .settings(
-    crossScalaVersions := Seq(latest213, latest212 /*, latest211 Play-JSON dropped Scala 2.11 support */ ),
+    crossScalaVersions := Seq(latest212, latest213),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.playJson,
@@ -113,7 +113,7 @@ lazy val `kafka-serde-upickle` = project
   .settings(commonSettings)
   .settings(mimaSettings)
   .settings(
-    crossScalaVersions := Seq(latest213, latest212 /*, latest211 uPickle dropped Scala 2.11 support */ ),
+    crossScalaVersions := Seq(latest212, latest213, latest3),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.upickle,
@@ -126,7 +126,7 @@ lazy val `kafka-serde-avro4s` = project
   .settings(commonSettings)
   .settings(mimaSettings)
   .settings(
-    crossScalaVersions := Seq(latest213, latest212),
+    crossScalaVersions := Seq(latest212, latest213),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.avro4sCore,
@@ -140,7 +140,7 @@ lazy val `kafka-serde-jackson` = project
   .settings(commonSettings)
   .settings(mimaSettings)
   .settings(
-    crossScalaVersions := Seq(latest213, latest212, latest211),
+    crossScalaVersions := Seq(latest212, latest213),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.jacksonCore,
@@ -157,7 +157,7 @@ lazy val `kafka-serde-scalapb` = project
   .settings(commonSettings)
   .settings(mimaSettings)
   .settings(
-    crossScalaVersions := Seq(latest213, latest212),
+    crossScalaVersions := Seq(latest212, latest213, latest3),
     startYear          := Some(2021),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
@@ -176,8 +176,7 @@ lazy val `kafka-serde-scala-example` = project
   .disablePlugins(MimaPlugin)
   .settings(commonSettings)
   .settings(
-    publishArtifact    := false,
-    crossScalaVersions := Seq(latest213, latest212 /*, latest211 Circe dropped Scala 2.11 support */ ),
+    publishArtifact := false,
     libraryDependencies ++= Seq(
       dependency.kafkaStreamsScala,
       dependency.circeGeneric,
@@ -228,11 +227,14 @@ lazy val commonSettings =
     scalacOptions ++= Seq(
       "-unchecked",
       "-deprecation",
-      "-language:_",
-      "-target:jvm-1.8",
+      "-Xfatal-warnings",
       "-encoding",
       "UTF-8"
-    ),
+    ) ++ (CrossVersion.partialVersion(scalaVersion.value) match {
+      case Some((2, 12)) => Seq("-target:jvm-1.8", "-language:_", "-Ywarn-dead-code", "-Xlint")
+      case Some((2, 13)) => Seq("-language:_", "-Ywarn-dead-code", "-Xlint", "-Xlint:-byname-implicit")
+      case _             => Seq.empty
+    }),
     pomIncludeRepository := (_ => false),
     scalafmtOnCompile    := true
   )

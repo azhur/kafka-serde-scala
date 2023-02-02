@@ -26,8 +26,6 @@ import org.apache.kafka.common.errors.SerializationException
 import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
 import Jackson.typeReference
 
-import scala.language.implicitConversions
-import scala.reflect.ClassTag
 import scala.util.control.NonFatal
 
 trait JacksonFormatSchemaSupport {

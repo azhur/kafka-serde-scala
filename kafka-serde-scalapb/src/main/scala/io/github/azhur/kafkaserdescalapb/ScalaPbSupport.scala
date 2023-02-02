@@ -16,8 +16,6 @@
 
 package io.github.azhur.kafkaserdescalapb
 
-import io.github.azhur.scalaserdescalapb.proto.SearchRequest.SearchRequest
-import java.io.InputStream
 import org.apache.kafka.common.serialization.Serializer
 import scalapb.GeneratedMessageCompanion
 import scalapb.GeneratedMessage

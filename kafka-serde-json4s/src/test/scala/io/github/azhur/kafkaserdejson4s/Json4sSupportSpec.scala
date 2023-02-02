@@ -22,6 +22,8 @@ import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
 import org.json4s.{ DefaultFormats, jackson, native }
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
+import org.json4s.Formats
+import org.json4s.Serialization
 
 object Json4sSupportSpec {
   case class Foo(a: Int, b: String)
@@ -43,10 +45,11 @@ class Json4sSupportSpec extends AnyFreeSpec with Matchers {
   import Json4sSupport._
   import Json4sSupportSpec._
 
-  implicit private val formats = DefaultFormats
+  implicit private val formats: Formats = DefaultFormats
+  implicit private val m: Manifest[Foo] = Manifest.classType[Foo](classOf[Foo])
 
   "Json4sSupport jackson" - {
-    implicit val serialization = jackson.Serialization
+    implicit val serialization: Serialization = jackson.Serialization
     "should implicitly convert to kafka Serializer" in {
       serializeFoo(Foo(1, "𝄞")) shouldBe """{"a":1,"b":"𝄞"}""".getBytes(UTF_8)
       serializeFoo(null) shouldBe null
@@ -70,7 +73,7 @@ class Json4sSupportSpec extends AnyFreeSpec with Matchers {
   }
 
   "Json4sSupport native" - {
-    implicit val serialization = native.Serialization
+    implicit val serialization: Serialization = native.Serialization
     "should implicitly convert to kafka Serializer" in {
       serializeFoo(Foo(1, "𝄞")) shouldBe """{"a":1,"b":"𝄞"}""".getBytes(UTF_8)
       serializeFoo(null) shouldBe null

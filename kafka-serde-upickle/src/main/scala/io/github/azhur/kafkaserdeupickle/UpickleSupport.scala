@@ -23,7 +23,6 @@ import org.apache.kafka.common.errors.SerializationException
 import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
 import upickle.default.{ Reader, Writer, read, write }
 
-import scala.language.implicitConversions
 import scala.util.control.NonFatal
 
 trait UpickleSupport {
