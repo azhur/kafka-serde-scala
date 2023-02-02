@@ -55,7 +55,7 @@ lazy val `kafka-serde-circe` = project
   .settings(commonSettings)
   .settings(mimaSettings)
   .settings(
-    crossScalaVersions := Seq(latest213, latest212, latest3),
+    crossScalaVersions := Seq(latest212, latest213, latest3),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.circe,
@@ -71,7 +71,7 @@ lazy val `kafka-serde-json4s` = project
   .settings(commonSettings)
   .settings(mimaSettings)
   .settings(
-    crossScalaVersions := Seq(latest213, latest212, latest3),
+    crossScalaVersions := Seq(latest212, latest213, latest3),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.json4sCore,
@@ -86,7 +86,7 @@ lazy val `kafka-serde-jsoniter-scala` = project
   .settings(commonSettings)
   .settings(mimaSettings)
   .settings(
-    crossScalaVersions := Seq(latest213, latest212, latest3),
+    crossScalaVersions := Seq(latest212, latest213, latest3),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.jsoniterScalaCore,
@@ -100,7 +100,7 @@ lazy val `kafka-serde-play-json` = project
   .settings(commonSettings)
   .settings(mimaSettings)
   .settings(
-    crossScalaVersions := Seq(latest213, latest212),
+    crossScalaVersions := Seq(latest212, latest213),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.playJson,
@@ -113,7 +113,7 @@ lazy val `kafka-serde-upickle` = project
   .settings(commonSettings)
   .settings(mimaSettings)
   .settings(
-    crossScalaVersions := Seq(latest213, latest212, latest3),
+    crossScalaVersions := Seq(latest212, latest213, latest3),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.upickle,
@@ -126,7 +126,7 @@ lazy val `kafka-serde-avro4s` = project
   .settings(commonSettings)
   .settings(mimaSettings)
   .settings(
-    crossScalaVersions := Seq(latest213, latest212),
+    crossScalaVersions := Seq(latest212, latest213),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.avro4sCore,
@@ -140,7 +140,7 @@ lazy val `kafka-serde-jackson` = project
   .settings(commonSettings)
   .settings(mimaSettings)
   .settings(
-    crossScalaVersions := Seq(latest213, latest212),
+    crossScalaVersions := Seq(latest212, latest213),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
       dependency.jacksonCore,
@@ -157,7 +157,7 @@ lazy val `kafka-serde-scalapb` = project
   .settings(commonSettings)
   .settings(mimaSettings)
   .settings(
-    crossScalaVersions := Seq(latest213, latest212, latest3),
+    crossScalaVersions := Seq(latest212, latest213, latest3),
     startYear          := Some(2021),
     libraryDependencies ++= Seq(
       dependency.kafkaClients,
@@ -229,7 +229,7 @@ lazy val commonSettings =
       "-deprecation",
       "-Xfatal-warnings",
       "-encoding",
-      "UTF-8",
+      "UTF-8"
     ) ++ (CrossVersion.partialVersion(scalaVersion.value) match {
       case Some((2, 12)) => Seq("-target:jvm-1.8", "-language:_", "-Ywarn-dead-code", "-Xlint")
       case Some((2, 13)) => Seq("-language:_", "-Ywarn-dead-code", "-Xlint", "-Xlint:-byname-implicit")
