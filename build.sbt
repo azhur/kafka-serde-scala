@@ -188,7 +188,7 @@ lazy val dependency =
   new {
     object Version {
       val avro4s        = "4.1.0"
-      val circe         = "0.14.3"
+      val circe         = "0.14.4"
       val json4s        = "4.0.6"
       val jsoniterScala = "2.20.7"
       val scalaTest     = "3.2.15"
