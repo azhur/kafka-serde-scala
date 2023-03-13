@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Artur Zhurat
+ * Copyright 2023 Artur Zhurat
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ class ZioJsonSupportSpec extends AnyFreeSpec with Matchers {
   import ZioJsonSupport._
   import ZioJsonSupportSpec._
 
-  "UpickleSupport" - {
+  "ZioJsonSupport" - {
     "should implicitly convert to kafka Serializer" in {
       serializeFoo(Foo(1, "𝄞")) shouldBe """{"a":1,"b":"𝄞"}""".getBytes(UTF_8)
       serializeFoo(null) shouldBe null
