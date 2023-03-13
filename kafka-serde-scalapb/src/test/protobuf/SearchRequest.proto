@@ -1,0 +1,9 @@
+syntax = "proto2";
+
+package io.github.azhur.serde.proto;
+
+message SearchRequest {
+  required string query = 1;
+  optional int32 page_number = 2;  // Which page number do we want?
+  optional int32 result_per_page = 3;  // Number of results to return per page.
+}
