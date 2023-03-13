@@ -14,6 +14,7 @@ Following target libraries are supported:
 - [play-json](https://github.com/playframework/play-json)
 - [upickle](https://github.com/lihaoyi/upickle)
 - [scalapb](https://github.com/scalapb/ScalaPB)
+- [zio-json](https://github.com/zio/zio-json)
 
 Inspired by [https://github.com/hseeberger/akka-http-json](https://github.com/hseeberger/akka-http-json).
 
@@ -26,28 +27,28 @@ Add dependencies for the selected integration:
 - for avro4s:
 ``` scala
 libraryDependencies ++= List(
-  "io.github.azhur" %% "kafka-serde-avro4s" % version,
+  "io.github.azhur" %% "kafka-serde-avro4s" % version
 )
 ```
 
 - for circe:
 ``` scala
 libraryDependencies ++= List(
-  "io.github.azhur" %% "kafka-serde-circe" % version,
+  "io.github.azhur" %% "kafka-serde-circe" % version
 )
 ```
 
 - for jackson:
 ``` scala
 libraryDependencies ++= List(
-  "io.github.azhur" %% "kafka-serde-jackson" % version,
+  "io.github.azhur" %% "kafka-serde-jackson" % version
 )
 ```
 
 - for json4s:
 ``` scala
 libraryDependencies ++= List(
-  "io.github.azhur" %% "kafka-serde-json4s" % version,
+  "io.github.azhur" %% "kafka-serde-json4s" % version
 )
 ```
 
@@ -80,6 +81,13 @@ libraryDependencies ++= List(
 )
 ```
 
+- for zio-json:
+``` scala
+libraryDependencies ++= List(
+  "io.github.azhur" %% "kafka-serde-zio-json" % version
+)
+```
+
 ## Usage
 
 Mix `xxxSupport` into your code which requires implicit Kafka 
@@ -96,6 +104,7 @@ Provide your implicit type class instances and the magic will convert them to Ka
 - for play-json: `play.api.libs.json.Reads`, `play.api.libs.json.Writes`  
 - for upickle: `upickle.default.Reader`, `upickle.default.Writer`  
 - for scalapb: `scalapb.GeneratedMessageCompanion`
+- for zio-json: `zio.json.JsonEncoder`, `zio.json.JsonDecoder`
 
 For more info, please, take a look at unit tests and at `kafka-serde-scala-example` which is a kafka-streams (2.x) application with kafka-serde-scala usage.
 

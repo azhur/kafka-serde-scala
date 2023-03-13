@@ -26,7 +26,7 @@ lazy val latest212 = "2.12.17"
 
 lazy val latest213 = "2.13.10"
 
-lazy val latest3 = "3.2.1"
+lazy val latest3 = "3.2.2"
 
 lazy val `kafka-serde-scala` =
   project
@@ -41,6 +41,7 @@ lazy val `kafka-serde-scala` =
       `kafka-serde-play-json`,
       `kafka-serde-upickle`,
       `kafka-serde-scalapb`,
+      `kafka-serde-zio-json`,
       `kafka-serde-scala-example`
     )
     .settings(commonSettings)
@@ -167,6 +168,22 @@ lazy val `kafka-serde-scalapb` = project
   .settings(
     Compile / PB.targets := Seq(
       scalapb.gen() -> (Compile / sourceManaged).value / "scalapb"
+    ),
+    Test / PB.targets := Seq(
+      scalapb.gen() -> (Test / sourceManaged).value / "scalapb"
+    )
+  )
+
+lazy val `kafka-serde-zio-json` = project
+  .enablePlugins(AutomateHeaderPlugin)
+  .settings(commonSettings)
+  .settings(mimaSettings)
+  .settings(
+    crossScalaVersions := Seq(latest212, latest213, latest3),
+    libraryDependencies ++= Seq(
+      dependency.kafkaClients,
+      dependency.zioJson,
+      dependency.scalaTest % Test
     )
   )
 
@@ -196,6 +213,7 @@ lazy val dependency =
       val play          = "2.9.4"
       val upickle       = "3.0.0"
       val jackson       = "2.14.2"
+      val zioJson       = "0.4.2"
     }
     val kafkaClients        = "org.apache.kafka"                       % "kafka-clients"         % Version.kafka
     val kafkaStreamsScala   = "org.apache.kafka"                      %% "kafka-streams-scala"   % Version.kafka
@@ -214,6 +232,7 @@ lazy val dependency =
     val upickle             = "com.lihaoyi"                           %% "upickle"               % Version.upickle
     val jacksonScala        = "com.fasterxml.jackson.module"          %% "jackson-module-scala"  % Version.jackson
     val jacksonCore         = "com.fasterxml.jackson.core"             % "jackson-core"          % Version.jackson
+    val zioJson             = "dev.zio"                               %% "zio-json"              % Version.zioJson
     val jacksonProtobuf = "com.fasterxml.jackson.dataformat" % "jackson-dataformat-protobuf" % Version.jackson
     val jacksonAvro     = "com.fasterxml.jackson.dataformat" % "jackson-dataformat-avro"     % Version.jackson
     val scalaTest       = "org.scalatest"                   %% "scalatest"                   % Version.scalaTest
