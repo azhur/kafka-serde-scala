@@ -16,10 +16,10 @@
 
 package io.github.azhur.kafka.serde
 
-import com.sksamuel.avro4s.{ Decoder, Encoder, SchemaFor }
 import org.apache.kafka.common.serialization.{ Deserializer, Serde, Serializer }
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
+import com.sksamuel.avro4s.SchemaFor
 
 object Avro4sBinarySupportSpec {
   case class Foo(a: Int, b: String, c: Boolean)
@@ -35,10 +35,6 @@ object Avro4sBinarySupportSpec {
 
   def serdeFooSer(foo: Foo)(implicit serde: Serde[Foo]): Array[Byte] =
     serde.serializer().serialize("unused_topic", foo)
-
-  implicit val schemaFor = SchemaFor[Foo]
-  implicit val encoder   = Encoder[Foo]
-  implicit val decoder   = Decoder[Foo]
 }
 
 class Avro4sBinarySupportSpec extends AnyFreeSpec with Matchers {
@@ -47,7 +43,7 @@ class Avro4sBinarySupportSpec extends AnyFreeSpec with Matchers {
 
   "Avro4sBinarySupport" - {
     "should implicitly convert to kafka Serializer/Deserializer/Serde" in {
-      val schema = schemaFor.schema.toString
+      val schema = SchemaFor[Foo].schema.toString
       val foo    = Foo(1, "𝄞", false)
 
       val serializedFoo = serializeFoo(foo)
