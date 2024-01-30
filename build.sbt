@@ -211,7 +211,7 @@ lazy val dependency =
       val scalaTest     = "3.2.17"
       val kafka         = "3.6.1"
       val play          = "3.0.2"
-      val upickle       = "3.1.3"
+      val upickle       = "3.1.4"
       val jackson       = "2.16.1"
       val zioJson       = "0.6.2"
     }
