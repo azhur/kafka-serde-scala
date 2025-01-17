@@ -205,15 +205,15 @@ lazy val dependency =
   new {
     object Version {
       val avro4s        = "4.1.1"
-      val circe         = "0.14.6"
+      val circe         = "0.14.10"
       val json4s        = "4.0.7"
-      val jsoniterScala = "2.28.1"
-      val scalaTest     = "3.2.17"
-      val kafka         = "3.6.1"
-      val play          = "3.0.2"
+      val jsoniterScala = "2.28.5"
+      val scalaTest     = "3.2.19"
+      val kafka         = "3.6.2"
+      val play          = "3.0.4"
       val upickle       = "3.1.4"
       val jackson       = "2.16.2"
-      val zioJson       = "0.6.2"
+      val zioJson       = "0.7.4"
     }
     val kafkaClients        = "org.apache.kafka"                       % "kafka-clients"         % Version.kafka
     val kafkaStreamsScala   = "org.apache.kafka"                      %% "kafka-streams-scala"   % Version.kafka
