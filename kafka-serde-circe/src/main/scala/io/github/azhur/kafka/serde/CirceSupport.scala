@@ -32,7 +32,7 @@ trait CirceSupport {
   ): Serializer[T] =
     new Serializer[T] {
       import io.circe.syntax._
-      override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
+      override def configure(configs: util.Map[String, ?], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
       override def serialize(topic: String, data: T): Array[Byte] =
         if (data == null) null
@@ -48,7 +48,7 @@ trait CirceSupport {
       import io.circe._
       import cats.syntax.either._
 
-      override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
+      override def configure(configs: util.Map[String, ?], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
       override def deserialize(topic: String, data: Array[Byte]): T =
         if (data == null) null
@@ -66,7 +66,7 @@ trait CirceSupport {
     decoder: Decoder[T]
   ): Serde[T] =
     new Serde[T] {
-      override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
+      override def configure(configs: util.Map[String, ?], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
       override def serializer(): Serializer[T]                                   = toSerializer[T]
       override def deserializer(): Deserializer[T]                               = toDeserializer[T]
