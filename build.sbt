@@ -22,11 +22,11 @@ inThisBuild(
   )
 )
 
-lazy val latest212 = "2.12.18"
+lazy val latest212 = "2.12.20"
 
-lazy val latest213 = "2.13.12"
+lazy val latest213 = "2.13.16"
 
-lazy val latest3 = "3.3.1"
+lazy val latest3 = "3.3.4"
 
 lazy val `kafka-serde-scala` =
   project
@@ -207,12 +207,12 @@ lazy val dependency =
       val avro4s        = "4.1.2"
       val circe         = "0.14.10"
       val json4s        = "4.0.7"
-      val jsoniterScala = "2.28.5"
+      val jsoniterScala = "2.33.0"
       val scalaTest     = "3.2.19"
       val kafka         = "3.7.0"
       val play          = "3.0.4"
       val upickle       = "3.1.4"
-      val jackson       = "2.16.2"
+      val jackson       = "2.18.2"
       val zioJson       = "0.7.4"
     }
     val kafkaClients        = "org.apache.kafka"                       % "kafka-clients"         % Version.kafka

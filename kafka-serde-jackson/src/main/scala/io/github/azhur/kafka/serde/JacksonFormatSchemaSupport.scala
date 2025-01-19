@@ -35,7 +35,7 @@ trait JacksonFormatSchemaSupport {
   ): Serializer[T] =
     new Serializer[T] {
       private val writer                                                         = mapper.writer(schema)
-      override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
+      override def configure(configs: util.Map[String, ?], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
       override def serialize(topic: String, data: T): Array[Byte] =
         if (data == null) null
@@ -53,7 +53,7 @@ trait JacksonFormatSchemaSupport {
   ): Deserializer[T] =
     new Deserializer[T] {
       private val reader = mapper.readerFor(typeReference[T]).`with`(schema)
-      override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
+      override def configure(configs: util.Map[String, ?], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
       override def deserialize(topic: String, data: Array[Byte]): T =
         if (data == null) null
@@ -70,7 +70,7 @@ trait JacksonFormatSchemaSupport {
     ct: TypeTag[T]
   ): Serde[T] =
     new Serde[T] {
-      override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
+      override def configure(configs: util.Map[String, ?], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
       override def serializer(): Serializer[T]                                   = toSerializer[T]
       override def deserializer(): Deserializer[T]                               = toDeserializer[T]
