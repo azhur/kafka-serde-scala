@@ -29,7 +29,7 @@ import scala.util.control.NonFatal
 trait Avro4sBinarySupport {
   implicit def toSerializer[T >: Null: Encoder]: Serializer[T] =
     new Serializer[T] {
-      override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
+      override def configure(configs: util.Map[String, ?], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
       override def serialize(topic: String, data: T): Array[Byte] =
         if (data == null) null
@@ -52,7 +52,7 @@ trait Avro4sBinarySupport {
   ): Deserializer[T] =
     new Deserializer[T] {
       private val schema                                                         = AvroSchema[T]
-      override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
+      override def configure(configs: util.Map[String, ?], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
       override def deserialize(topic: String, data: Array[Byte]): T =
         if (data == null) null
@@ -73,7 +73,7 @@ trait Avro4sBinarySupport {
 
   implicit def toSerde[T >: Null: SchemaFor: Encoder: Decoder]: Serde[T] =
     new Serde[T] {
-      override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
+      override def configure(configs: util.Map[String, ?], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
       override def serializer(): Serializer[T]                                   = toSerializer[T]
       override def deserializer(): Deserializer[T]                               = toDeserializer[T]
