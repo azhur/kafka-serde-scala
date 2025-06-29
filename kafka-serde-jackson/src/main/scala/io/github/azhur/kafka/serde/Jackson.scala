@@ -22,8 +22,8 @@ import java.lang.reflect.{ ParameterizedType, Type => JType }
 
 object Jackson {
   def typeReference[T: TypeTag]: TypeReference[T] = {
-    val t      = typeTag[T]
-    val mirror = t.mirror
+    val t                       = typeTag[T]
+    val mirror                  = t.mirror
     def mapType(t: Type): JType =
       if (t.typeArgs.isEmpty) {
         mirror.runtimeClass(t)

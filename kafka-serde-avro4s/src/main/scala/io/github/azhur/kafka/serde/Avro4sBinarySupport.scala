@@ -31,7 +31,7 @@ trait Avro4sBinarySupport {
     new Serializer[T] {
       override def configure(configs: util.Map[String, ?], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
-      override def serialize(topic: String, data: T): Array[Byte] =
+      override def serialize(topic: String, data: T): Array[Byte]                =
         if (data == null) null
         else {
           val baos = new ByteArrayOutputStream()
@@ -54,7 +54,7 @@ trait Avro4sBinarySupport {
       private val schema                                                         = AvroSchema[T]
       override def configure(configs: util.Map[String, ?], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
-      override def deserialize(topic: String, data: Array[Byte]): T =
+      override def deserialize(topic: String, data: Array[Byte]): T              =
         if (data == null) null
         else {
           val it = AvroInputStream.binary[T].from(data).build(schema).tryIterator
