@@ -5,7 +5,7 @@ inThisBuild(
     organizationHomepage := Some(url("https://github.com/azhur")),
     homepage             := Some(url("https://github.com/azhur/kafka-serde-scala")),
     licenses             := List("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
-    scmInfo := Some(
+    scmInfo              := Some(
       ScmInfo(
         url("https://github.com/azhur/kafka-serde-scala"),
         "git@github.com:azhur/kafka-serde-scala.git"
