@@ -31,7 +31,7 @@ trait JacksonJsonSupport {
     new Serializer[T] {
       override def configure(configs: util.Map[String, ?], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
-      override def serialize(topic: String, data: T): Array[Byte] =
+      override def serialize(topic: String, data: T): Array[Byte]                =
         if (data == null) null
         else
           try mapper.writeValueAsBytes(data)
@@ -48,7 +48,7 @@ trait JacksonJsonSupport {
       private val tr                                                             = typeReference[T]
       override def configure(configs: util.Map[String, ?], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
-      override def deserialize(topic: String, data: Array[Byte]): T =
+      override def deserialize(topic: String, data: Array[Byte]): T              =
         if (data == null) null
         else
           try mapper.readValue[T](data, tr)
