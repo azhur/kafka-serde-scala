@@ -30,7 +30,7 @@ trait UpickleSupport {
     new Serializer[T] {
       override def configure(configs: util.Map[String, ?], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
-      override def serialize(topic: String, data: T): Array[Byte] =
+      override def serialize(topic: String, data: T): Array[Byte]                =
         if (data == null) null
         else
           try write(data).getBytes(UTF_8)
@@ -43,7 +43,7 @@ trait UpickleSupport {
     new Deserializer[T] {
       override def configure(configs: util.Map[String, ?], isKey: Boolean): Unit = {}
       override def close(): Unit                                                 = {}
-      override def deserialize(topic: String, data: Array[Byte]): T =
+      override def deserialize(topic: String, data: Array[Byte]): T              =
         if (data == null) null
         else
           try read(new String(data, UTF_8))
